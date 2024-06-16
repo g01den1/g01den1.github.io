@@ -147,26 +147,21 @@ golden的部落阁 = title写得真好</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <h1 id="pwn学习笔记1"><a class="markdownIt-Anchor" href="#pwn学习笔记1">#</a> pwn 学习笔记（1）</h1>
-<h2 id="1pwn简介"><a class="markdownIt-Anchor" href="#1pwn简介">#</a> （1）pwn 简介：</h2>
-<pre><code>	以下来自于百度百科：”Pwn”是一个黑客语法的俚语词，是指攻破设备或者系统发音类似“砰”，对黑客而言，这就是成功实施黑客攻击的声音——砰的一声，被“黑”的电脑或手机就被你操纵了 。
+    <h1 id="pwn学习笔记（1）"><a href="#pwn学习笔记（1）" class="headerlink" title="pwn学习笔记（1）"></a>pwn学习笔记（1）</h1><h2 id="（1）pwn简介："><a href="#（1）pwn简介：" class="headerlink" title="（1）pwn简介："></a>（1）pwn简介：</h2><pre><code>    以下来自于百度百科：”Pwn”是一个黑客语法的俚语词，是指攻破设备或者系统发音类似“砰”，对黑客而言，这就是成功实施黑客攻击的声音——砰的一声，被“黑”的电脑或手机就被你操纵了 。
 </code></pre>
-<h2 id="2几个简单的名词"><a class="markdownIt-Anchor" href="#2几个简单的名词">#</a> （2）几个简单的名词：</h2>
-<pre><code>	exploit：用于攻击的脚本与方案
+<h2 id="（2）几个简单的名词："><a href="#（2）几个简单的名词：" class="headerlink" title="（2）几个简单的名词："></a>（2）几个简单的名词：</h2><pre><code>    exploit：用于攻击的脚本与方案
 
-	payload：攻击载荷，是对目标进程劫持控制流的数据
+    payload：攻击载荷，是对目标进程劫持控制流的数据
 
-	shellcode：调用攻击目标的shell代码，常见的有bash和sh
+    shellcode：调用攻击目标的shell代码，常见的有bash和sh
 </code></pre>
-<h2 id="3c源代码到可执行文件"><a class="markdownIt-Anchor" href="#3c源代码到可执行文件">#</a> （3）C 源代码到可执行文件：</h2>
-<pre><code>	如下图所示：
+<h2 id="（3）C源代码到可执行文件："><a href="#（3）C源代码到可执行文件：" class="headerlink" title="（3）C源代码到可执行文件："></a>（3）C源代码到可执行文件：</h2><pre><code>    如下图所示：
 </code></pre>
-<p><img data-src="https://s2.loli.net/2024/05/21/IrRs7DdMKH5i2be.png" alt=""></p>
-<pre><code>	C源代码经过编译成为汇编代码，汇编代码再经过汇编成为机器码，即生成一个elf（二进制）目标文件，进行链接后成为elf可执行文件：
+<p><img data-src="https://s2.loli.net/2024/05/21/IrRs7DdMKH5i2be.png"></p>
+<pre><code>    C源代码经过编译成为汇编代码，汇编代码再经过汇编成为机器码，即生成一个elf（二进制）目标文件，进行链接后成为elf可执行文件：
 </code></pre>
-<p><img data-src="https://s2.loli.net/2024/05/21/NLbaZoejBP1lyHd.png" alt=""></p>
-<h2 id="4可执行文件"><a class="markdownIt-Anchor" href="#4可执行文件">#</a> （4) 可执行文件：</h2>
-<p>1.Windows：PE</p>
+<p><img data-src="https://s2.loli.net/2024/05/21/NLbaZoejBP1lyHd.png"></p>
+<h2 id="（4-可执行文件："><a href="#（4-可执行文件：" class="headerlink" title="（4)可执行文件："></a>（4)可执行文件：</h2><p>1.Windows：PE</p>
 <pre><code>可执行程序  .exe
 
 动态链接库  .dll
@@ -180,31 +175,28 @@ golden的部落阁 = title写得真好</title>
 
 静态链接库  .a
 </code></pre>
-<h2 id="5elf文件信息"><a class="markdownIt-Anchor" href="#5elf文件信息">#</a> （5）ELF 文件信息：</h2>
-<pre><code>（1）段视图：在内存中程序加载到内存成为一个进程后，进行读写、执行权限划分的视图；节视图：是一个elf文件，存放在磁盘中，进行不同功能区域划分的视图
+<h2 id="（5）ELF文件信息："><a href="#（5）ELF文件信息：" class="headerlink" title="（5）ELF文件信息："></a>（5）ELF文件信息：</h2><pre><code>（1）段视图：在内存中程序加载到内存成为一个进程后，进行读写、执行权限划分的视图；节视图：是一个elf文件，存放在磁盘中，进行不同功能区域划分的视图
 
 （2）code节包含的内容是机器码。不同的分区有不同的功能，根据不同的功能被划分成不同的代码节。
 
 （3）不同的节可能属于一个段。多个节可以合并成一个段，段在elf文件加载到进程后起作用。
 </code></pre>
-<p><img data-src="https://s2.loli.net/2024/05/21/hQG4JDngTEmpskR.png" alt=""></p>
-<h2 id="6程序装在与虚拟内存"><a class="markdownIt-Anchor" href="#6程序装在与虚拟内存">#</a> （6）程序装在与虚拟内存：</h2>
-<pre><code>	硬盘中的ELF文件在启动的时候，会被装载到内存中形成一个虚拟映像，同时，ELF中相应的节会组合在一起成为一个个个段：
+<p><img data-src="https://s2.loli.net/2024/05/21/hQG4JDngTEmpskR.png"></p>
+<h2 id="（6）程序装在与虚拟内存："><a href="#（6）程序装在与虚拟内存：" class="headerlink" title="（6）程序装在与虚拟内存："></a>（6）程序装在与虚拟内存：</h2><pre><code>    硬盘中的ELF文件在启动的时候，会被装载到内存中形成一个虚拟映像，同时，ELF中相应的节会组合在一起成为一个个个段：
 </code></pre>
-<p><img data-src="https://s2.loli.net/2024/05/21/HtdbrK4Psmk2JuE.png" alt=""></p>
-<pre><code>	对于32位的ELF文件，操作系统会在装载的时候分出4G的虚拟内存空间，同时，最高位地址那1G属于内核空间，用来存放一些内核的代码，而剩下的3G属于用户空间，用户空间是各自独立的，但内核空间是共享的，在物理内存中只需要存在一份即可
+<p><img data-src="https://s2.loli.net/2024/05/21/HtdbrK4Psmk2JuE.png"></p>
+<pre><code>    对于32位的ELF文件，操作系统会在装载的时候分出4G的虚拟内存空间，同时，最高位地址那1G属于内核空间，用来存放一些内核的代码，而剩下的3G属于用户空间，用户空间是各自独立的，但内核空间是共享的，在物理内存中只需要存在一份即可
 </code></pre>
-<p><img data-src="https://s2.loli.net/2024/05/21/ovrHZ6SwsRGqn1a.png" alt=""></p>
-<pre><code>	对于一个虚拟内存而言存在很多个段：
+<p><img data-src="https://s2.loli.net/2024/05/21/ovrHZ6SwsRGqn1a.png"></p>
+<pre><code>    对于一个虚拟内存而言存在很多个段：
 
-	1.Bss段：用于存放未初始化的全局变量，未初始化的全局变量占用内存空间，不占用磁盘空间
+    1.Bss段：用于存放未初始化的全局变量，未初始化的全局变量占用内存空间，不占用磁盘空间
 
-	2.Text段：存放只读不写的数据和函数
+    2.Text段：存放只读不写的数据和函数
 
-	3.Stack段：用于存放局部变量以及函数的栈帧
+    3.Stack段：用于存放局部变量以及函数的栈帧
 </code></pre>
-<h2 id="7大端序与小端序"><a class="markdownIt-Anchor" href="#7大端序与小端序">#</a> （7）大端序与小端序：</h2>
-<p><img data-src="https://s2.loli.net/2024/05/21/ncKRAiSZkhGf36B.png" alt=""></p>
+<h2 id="（7）大端序与小端序："><a href="#（7）大端序与小端序：" class="headerlink" title="（7）大端序与小端序："></a>（7）大端序与小端序：</h2><p><img data-src="https://s2.loli.net/2024/05/21/ncKRAiSZkhGf36B.png"></p>
 
       <div class="tags">
           <a href="/tags/Pwn/" rel="tag"><i class="ic i-tag"></i> Pwn</a>
@@ -274,7 +266,7 @@ golden的部落阁 = title写得真好</title>
     <div class="item left">
       
 
-  <a href="/2024/01/01/hello-world/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture213.jpg" title="Hello World">
+  <a href="/2024/01/01/hello-world/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture252.png" title="Hello World">
   <span class="type">上一篇</span>
   <span class="category"><i class="ic i-flag"></i> </span>
   <h3>Hello World</h3>
@@ -306,7 +298,7 @@ golden的部落阁 = title写得真好</title>
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="文章目录">
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01"><span class="toc-number">1.</span> <span class="toc-text"> pwn 学习笔记（1）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1pwn%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text"> （1）pwn 简介：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E5%87%A0%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%90%8D%E8%AF%8D"><span class="toc-number">1.2.</span> <span class="toc-text"> （2）几个简单的名词：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3c%E6%BA%90%E4%BB%A3%E7%A0%81%E5%88%B0%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.</span> <span class="toc-text"> （3）C 源代码到可执行文件：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6"><span class="toc-number">1.4.</span> <span class="toc-text"> （4) 可执行文件：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5elf%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="toc-number">1.5.</span> <span class="toc-text"> （5）ELF 文件信息：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E7%A8%8B%E5%BA%8F%E8%A3%85%E5%9C%A8%E4%B8%8E%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="toc-number">1.6.</span> <span class="toc-text"> （6）程序装在与虚拟内存：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E5%A4%A7%E7%AB%AF%E5%BA%8F%E4%B8%8E%E5%B0%8F%E7%AB%AF%E5%BA%8F"><span class="toc-number">1.7.</span> <span class="toc-text"> （7）大端序与小端序：</span></a></li></ol></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">pwn学习笔记（1）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%881%EF%BC%89pwn%E7%AE%80%E4%BB%8B%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">（1）pwn简介：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E5%87%A0%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%90%8D%E8%AF%8D%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">（2）几个简单的名词：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%883%EF%BC%89C%E6%BA%90%E4%BB%A3%E7%A0%81%E5%88%B0%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%EF%BC%9A"><span class="toc-number">1.3.</span> <span class="toc-text">（3）C源代码到可执行文件：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%884-%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%EF%BC%9A"><span class="toc-number">1.4.</span> <span class="toc-text">（4)可执行文件：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%885%EF%BC%89ELF%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF%EF%BC%9A"><span class="toc-number">1.5.</span> <span class="toc-text">（5）ELF文件信息：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%886%EF%BC%89%E7%A8%8B%E5%BA%8F%E8%A3%85%E5%9C%A8%E4%B8%8E%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%EF%BC%9A"><span class="toc-number">1.6.</span> <span class="toc-text">（6）程序装在与虚拟内存：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%887%EF%BC%89%E5%A4%A7%E7%AB%AF%E5%BA%8F%E4%B8%8E%E5%B0%8F%E7%AB%AF%E5%BA%8F%EF%BC%9A"><span class="toc-number">1.7.</span> <span class="toc-text">（7）大端序与小端序：</span></a></li></ol></li></ol>
       </div>
       <div class="related panel pjax" data-title="系列文章">
         <ul>
@@ -415,42 +407,62 @@ golden的部落阁 = title写得真好</title>
   <li class="item">
     
 <div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/2024/02/04/Pwn/Pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89-ret-2-text-or-shellcode/" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/2024/05/26/Java/%E4%B8%80%E3%80%81Servlet%E5%92%8CJSP%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0/" title="一、Servlet和JSP技术概述">一、Servlet和JSP技术概述</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/2024/05/27/Java/%E4%B8%89%E3%80%81Servlet%E5%9F%BA%E7%A1%80/" title="三、Servlet基础">三、Servlet基础</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
 <a href="/categories/Major/" title="分类于 考研专业课">考研专业课</a>
 <i class="ic i-angle-right"></i>
 <a href="/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
 </div>
 
-    <span><a href="/2024/06/12/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0-2%E3%80%81%E7%BA%BF%E6%80%A7%E8%A1%A8/" title="数据结构笔记-2、线性表">数据结构笔记-2、线性表</a></span>
+    <span><a href="/2024/06/15/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-3%E3%80%81%E6%A0%88%E3%80%81%E9%98%9F%E5%88%97%E5%92%8C%E6%95%B0%E7%BB%84/" title="数据结构-3、栈、队列和数组">数据结构-3、栈、队列和数组</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
 </div>
 
-    <span><a href="/2024/05/20/Game/Ciscn2024/" title="Ciscn2024">Ciscn2024</a></span>
+    <span><a href="/2024/03/03/Web/SQL%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5/" title="SQL无列名注入">SQL无列名注入</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
 </div>
 
-    <span><a href="/2024/06/05/Game/%E3%80%902023%E3%80%91LitCTF/" title="【2023】LitCTF">【2023】LitCTF</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
-</div>
-
-    <span><a href="/2024/03/05/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%885%EF%BC%89-%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%EF%BC%88%E6%9C%AA%E5%AE%8C%E5%85%A8%E5%AE%8C%E6%88%90%EF%BC%89/" title="pwn学习笔记（5）--格式化字符串漏洞（未完全完成）">pwn学习笔记（5）--格式化字符串漏洞（未完全完成）</a></span>
+    <span><a href="/2024/05/29/Java/JavaWeb%E5%9F%BA%E7%A1%80-%E4%B8%80-IO%E6%93%8D%E4%BD%9C/" title="JavaWeb基础(一)-IO操作">JavaWeb基础(一)-IO操作</a></span>
   </li>
 
       
@@ -467,30 +479,20 @@ golden的部落阁 = title写得真好</title>
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
 </div>
 
-    <span><a href="/2024/02/19/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%884%EF%BC%89ret2libc/" title="pwn学习笔记（4）ret2libc">pwn学习笔记（4）ret2libc</a></span>
+    <span><a href="/2024/06/14/Daily/hexo%E9%83%A8%E7%BD%B2%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="hexo部署服务器">hexo部署服务器</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
 </div>
 
-    <span><a href="/2024/04/06/Web/%E6%97%A0%E5%8F%82%E6%95%B0RCE%E7%9A%84%E4%B8%80%E4%BA%9B%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/" title="无参数RCE的一些奇技淫巧">无参数RCE的一些奇技淫巧</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
-</div>
-
-    <span><a href="/2024/02/04/Pwn/Pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89-ret-2-text-or-shellcode/" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></span>
+    <span><a href="/2024/05/21/Daily/%E5%B0%8F%E5%B0%8F%E7%9A%84%E6%80%BB%E7%BB%93%EF%BC%88%E6%97%A5%E5%B8%B8%E5%8F%91%E7%99%AB%EF%BC%89/" title="小小的总结（日常发癫）">小小的总结（日常发癫）</a></span>
   </li>
 
       
@@ -501,16 +503,6 @@ golden的部落阁 = title写得真好</title>
 </div>
 
     <span><a href="/2024/03/23/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%886%EF%BC%89-%E5%A0%86%E5%9F%BA%E7%A1%80%E6%A6%82%E8%BF%B0/" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
-</div>
-
-    <span><a href="/2024/03/25/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%887%EF%BC%89-%E5%A0%86%E7%9B%B8%E5%85%B3%E6%BA%90%E7%A0%81/" title="pwn学习笔记（7）--堆相关源码">pwn学习笔记（7）--堆相关源码</a></span>
   </li>
 
   </ul>
