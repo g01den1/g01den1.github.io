@@ -8,10 +8,10 @@
         <pubDate>Wed, 29 May 2024 22:16:55 +0800</pubDate>
         <lastBuildDate>Wed, 29 May 2024 22:16:55 +0800</lastBuildDate>
         <category>Daily life</category>
-        <category>Game</category>
         <category>Java</category>
-        <category>Misc</category>
         <category>408</category>
+        <category>Misc</category>
+        <category>Game</category>
         <category>Pwn</category>
         <category>Web</category>
         <item>
@@ -202,7 +202,7 @@
             <link>https://g01den1.github.io/2024/05/26/Java/%E4%B8%80%E3%80%81Servlet%E5%92%8CJSP%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0/</link>
             <category>Java</category>
             <pubDate>Sun, 26 May 2024 20:53:19 +0800</pubDate>
-            <description><![CDATA[ &lt;p&gt;&lt;strong&gt;注：该系列笔记是用于我在 《Servlet 与 JSP 核心编程》这本书中的学习笔记，无其他意思，侵权请联系&lt;span class=&#34;exturl&#34; data-url=&#34;bWFpbHRvOiYjeDMyOyYjNDg7JiM1NjsmI3gzMjsmI3gzMDsmI3gzNDsmIzUzOyYjNTA7JiM1MDsmIzQ5OyYjNjQ7JiN4NzE7JiN4NzE7JiN4MmU7JiM5OTsmI3g2ZjsmI3g2ZDs=&#34;&gt;&amp;#x32;&amp;#48;&amp;#56;&amp;#x32;&amp;#x30;&amp;#x34;&amp;#53;&amp;#50;&amp;#50;&amp;#49;&amp;#64;&amp;#x71;&amp;#x71;&amp;#x2e;&amp;#99;&amp;#x6f;&amp;#x6d;&lt;/span&gt;删除。&lt;/strong&gt;&lt;/p&gt;
+            <description><![CDATA[ &lt;p&gt;&lt;strong&gt;注：该系列笔记是用于我在 《Servlet 与 JSP 核心编程》这本书中的学习笔记，无其他意思，侵权请联系&lt;span class=&#34;exturl&#34; data-url=&#34;bWFpbHRvOiYjeDMyOyYjNDg7JiN4Mzg7JiN4MzI7JiN4MzA7JiM1MjsmI3gzNTsmI3gzMjsmIzUwOyYjeDMxOyYjNjQ7JiMxMTM7JiN4NzE7JiN4MmU7JiM5OTsmIzExMTsmI3g2ZDs=&#34;&gt;&amp;#x32;&amp;#48;&amp;#x38;&amp;#x32;&amp;#x30;&amp;#52;&amp;#x35;&amp;#x32;&amp;#50;&amp;#x31;&amp;#64;&amp;#113;&amp;#x71;&amp;#x2e;&amp;#99;&amp;#111;&amp;#x6d;&lt;/span&gt;删除。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;​	第一章内容较少，所以暂时有用的笔记也不多。&lt;/p&gt;
 &lt;h1 id=&#34;1-1、Servlet-的功用：&#34;&gt;&lt;a href=&#34;#1-1、Servlet-的功用：&#34; class=&#34;headerlink&#34; title=&#34;1.1、Servlet 的功用：&#34;&gt;&lt;/a&gt;1.1、Servlet 的功用：&lt;/h1&gt;&lt;p&gt;​	Servlet 是运行在 Web 服务器或应用服务器上的 Java 程序，它是一个，负责连接来自 Web 浏览器或其他 HTTP 客户程序的请求和 HTTP 服务器上的数据库或应用程序。Servlet 的工作是执行下面的任务，如图 1.1 所示：&lt;/p&gt;
 &lt;p&gt;&lt;img data-src=&#34;https://img-blog.csdnimg.cn/direct/764d654f16ff499ca886496abc121f94.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
