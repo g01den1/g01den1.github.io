@@ -147,12 +147,11 @@ golden的部落阁 = title写得真好</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <h1 id="背景"><a class="markdownIt-Anchor" href="#背景">#</a> 背景：</h1>
-<h2 id="笨办法"><a class="markdownIt-Anchor" href="#笨办法">#</a> 笨办法：</h2>
-<p>​		我在经过无数次的尝试之后，发现无论我怎么操作，都存在一个问题，就是 git 无法成功推送到服务器，这个就很难办了，所以，个人感觉只有使用一个本办法才能操作了，如下：</p>
-<p>​		首先，老办法，将我们的 hexo 推送到 GitHub 上，之后等一会儿，能看了之后再说，</p>
-<p>​		然后，我们在目标服务器上运行以下代码（前提，创建一个 / Temp 目录）：</p>
+    <h1 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h1><h2 id="笨办法："><a href="#笨办法：" class="headerlink" title="笨办法："></a>笨办法：</h2><p>​		我在经过无数次的尝试之后，发现无论我怎么操作，都存在一个问题，就是git无法成功推送到服务器，这个就很难办了，所以，个人感觉只有使用一个本办法才能操作了，如下：</p>
+<p>​		首先，老办法，将我们的hexo推送到GitHub上，之后等一会儿，能看了之后再说，</p>
+<p>​		然后，我们在目标服务器上运行以下代码（前提，创建一个&#x2F;Temp目录）：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd /Temp/blog</span><br><span class="line">rm -rf *</span><br><span class="line">rm -rf /var/www/html/*</span><br><span class="line">git clone https://github.com/g01den1/g01den1.github.io.git</span><br><span class="line">mv ./g01den1.github.io/* /var/www/html/</span><br><span class="line">cd /Temp/blog</span><br><span class="line">rm -rf *</span><br></pre></td></tr></table></figure>
+
 <p>​		最后，似乎只能通过这样的本办法来进行推送了，别的办法就没了，不过可能只是因为我太菜了，所以才导致了这个的问题，之后再解决吧。</p>
 
       <div class="tags">
@@ -255,7 +254,7 @@ golden的部落阁 = title写得真好</title>
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="文章目录">
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text"> 背景：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%A8%E5%8A%9E%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text"> 笨办法：</span></a></li></ol></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">背景：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%A8%E5%8A%9E%E6%B3%95%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">笨办法：</span></a></li></ol></li></ol>
       </div>
       <div class="related panel pjax" data-title="系列文章">
         <ul>
@@ -364,10 +363,10 @@ golden的部落阁 = title写得真好</title>
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/2024/05/21/Daily/%E5%B0%8F%E5%B0%8F%E7%9A%84%E6%80%BB%E7%BB%93%EF%BC%88%E6%97%A5%E5%B8%B8%E5%8F%91%E7%99%AB%EF%BC%89/" title="小小的总结（日常发癫）">小小的总结（日常发癫）</a></span>
+    <span><a href="/2024/03/23/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%886%EF%BC%89-%E5%A0%86%E5%9F%BA%E7%A1%80%E6%A6%82%E8%BF%B0/" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></span>
   </li>
 
       
@@ -384,30 +383,22 @@ golden的部落阁 = title写得真好</title>
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Misc/" title="分类于 杂七杂八的知识点">杂七杂八的知识点</a>
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
 </div>
 
-    <span><a href="/2024/05/25/Misc/BUUCTF-Misc-%E7%AC%AC%E4%B8%80%E9%A1%B5-1-16/" title="BUUCTF-Misc-第一页(1-16)">BUUCTF-Misc-第一页(1-16)</a></span>
+    <span><a href="/2024/05/26/Java/%E4%B8%80%E3%80%81Servlet%E5%92%8CJSP%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0/" title="一、Servlet和JSP技术概述">一、Servlet和JSP技术概述</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+<a href="/categories/Major/" title="分类于 考研专业课">考研专业课</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
 </div>
 
-    <span><a href="/2024/06/05/Game/%E3%80%902023%E3%80%91LitCTF/" title="【2023】LitCTF">【2023】LitCTF</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
-</div>
-
-    <span><a href="/2024/06/11/Daily/%E9%9A%8F%E6%9C%BA%E4%BA%8C%E6%AC%A1%E5%85%83%E5%9B%BEapi%E7%9B%B8%E5%85%B3/" title="随机二次元图api相关">随机二次元图api相关</a></span>
+    <span><a href="/2024/06/12/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0-2%E3%80%81%E7%BA%BF%E6%80%A7%E8%A1%A8/" title="数据结构笔记-2、线性表">数据结构笔记-2、线性表</a></span>
   </li>
 
       
@@ -417,7 +408,27 @@ golden的部落阁 = title写得真好</title>
 <a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/2024/02/04/Pwn/Pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89-%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86/" title="Pwn学习笔记（1）--前置知识">Pwn学习笔记（1）--前置知识</a></span>
+    <span><a href="/2024/03/25/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%887%EF%BC%89-%E5%A0%86%E7%9B%B8%E5%85%B3%E6%BA%90%E7%A0%81/" title="pwn学习笔记（7）--堆相关源码">pwn学习笔记（7）--堆相关源码</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/2024/05/27/Java/%E4%B8%89%E3%80%81Servlet%E5%9F%BA%E7%A1%80/" title="三、Servlet基础">三、Servlet基础</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/2024/05/20/Game/Ciscn2024/" title="Ciscn2024">Ciscn2024</a></span>
   </li>
 
       
@@ -437,7 +448,7 @@ golden的部落阁 = title写得真好</title>
 <a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/2024/03/05/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%885%EF%BC%89-%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%EF%BC%88%E6%9C%AA%E5%AE%8C%E5%85%A8%E5%AE%8C%E6%88%90%EF%BC%89/" title="pwn学习笔记（5）--格式化字符串漏洞（未完全完成）">pwn学习笔记（5）--格式化字符串漏洞（未完全完成）</a></span>
+    <span><a href="/2024/02/04/Pwn/Pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89-ret-2-text-or-shellcode/" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></span>
   </li>
 
       
@@ -448,18 +459,6 @@ golden的部落阁 = title写得真好</title>
 </div>
 
     <span><a href="/2024/02/19/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%884%EF%BC%89ret2libc/" title="pwn学习笔记（4）ret2libc">pwn学习笔记（4）ret2libc</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Major/" title="分类于 考研专业课">考研专业课</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
-</div>
-
-    <span><a href="/2024/06/12/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0-2%E3%80%81%E7%BA%BF%E6%80%A7%E8%A1%A8/" title="数据结构笔记-2、线性表">数据结构笔记-2、线性表</a></span>
   </li>
 
   </ul>
