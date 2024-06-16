@@ -147,19 +147,21 @@ golden的部落阁 = title写得真好</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <h1 id="爬虫获取所有图片："><a href="#爬虫获取所有图片：" class="headerlink" title="爬虫获取所有图片："></a>爬虫获取所有图片：</h1><h2 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h2><p>​		最近做一些Web题，发现了些网页的背景会随机出现，每一次刷新都会出现不一样的图，感觉有点意思，试着研究下，当然，肯定不是研究咋弄的这个，而是，api里的图怎么爬取：</p>
-<h2 id="首先："><a href="#首先：" class="headerlink" title="首先："></a>首先：</h2><p>​		接口文档如下：</p>
-<p>[LoliApi]: <span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmxvbGlhcGkuY29tL2FwaS1zaGkteW9uZy13ZW4tZGFuZy9zdWktamktZXItY2kteXVhbi10dS1waWFu">https://docs.loliapi.com/api-shi-yong-wen-dang/sui-ji-er-ci-yuan-tu-pian</span>	“LoliApi”</p>
+    <h1 id="爬虫获取所有图片"><a class="markdownIt-Anchor" href="#爬虫获取所有图片">#</a> 爬虫获取所有图片：</h1>
+<h2 id="背景"><a class="markdownIt-Anchor" href="#背景">#</a> 背景：</h2>
+<p>​		最近做一些 Web 题，发现了些网页的背景会随机出现，每一次刷新都会出现不一样的图，感觉有点意思，试着研究下，当然，肯定不是研究咋弄的这个，而是，api 里的图怎么爬取：</p>
+<h2 id="首先"><a class="markdownIt-Anchor" href="#首先">#</a> 首先：</h2>
+<p>​		接口文档如下：</p>
 <p>之后直接上源码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pe</span>():</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">3400</span>):</span><br><span class="line">        url = <span class="string">&quot;https://img.loliapi.cn/i/pe/img&#123;&#125;.webp&quot;</span>.<span class="built_in">format</span>(<span class="built_in">str</span>(i))</span><br><span class="line">        <span class="built_in">print</span>(url)</span><br><span class="line">        resp = requests.get(url)</span><br><span class="line">        <span class="keyword">if</span> resp.status_code == <span class="number">404</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> os.path.exists(<span class="string">&quot;./img/pe/img&#123;&#125;.webp&quot;</span>.<span class="built_in">format</span>(i)):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;./img/pe/img&#123;&#125;.webp已存在&quot;</span>.<span class="built_in">format</span>(i))</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;./img/pe/img&#123;&#125;.webp&quot;</span>.<span class="built_in">format</span>(i), <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                f.write(resp.content)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pc</span>():</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">690</span>,<span class="number">1000</span>):</span><br><span class="line">        url = <span class="string">&quot;https://img.loliapi.cn/i/pc/img&#123;&#125;.webp&quot;</span>.<span class="built_in">format</span>(<span class="built_in">str</span>(i))</span><br><span class="line">        <span class="built_in">print</span>(url)</span><br><span class="line">        resp = requests.get(url)</span><br><span class="line">        <span class="keyword">if</span> resp.status_code == <span class="number">404</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> os.path.exists(<span class="string">&quot;./img/pc/img&#123;&#125;.webp&quot;</span>.<span class="built_in">format</span>(i)):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;./img/pc/img&#123;&#125;.webp已存在&quot;</span>.<span class="built_in">format</span>(i))</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;./img/pc/img&#123;&#125;.webp&quot;</span>.<span class="built_in">format</span>(i),<span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                f.write(resp.content)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    model = <span class="built_in">int</span>(<span class="built_in">input</span>())</span><br><span class="line">    <span class="keyword">if</span> model == <span class="number">1</span>:</span><br><span class="line">        pc()</span><br><span class="line">    <span class="keyword">elif</span> model == <span class="number">0</span>:</span><br><span class="line">        pe()</span><br></pre></td></tr></table></figure>
-
-<h1 id="几个不错的api："><a href="#几个不错的api：" class="headerlink" title="几个不错的api："></a>几个不错的api：</h1><p>樱花二次元图片API-Dmoe</p>
+<h1 id="几个不错的api"><a class="markdownIt-Anchor" href="#几个不错的api">#</a> 几个不错的 api：</h1>
+<p>樱花二次元图片 API-Dmoe</p>
 <p>​		<span class="exturl" data-url="aHR0cHM6Ly93d3cuZG1vZS5jYy8=">https://www.dmoe.cc/</span></p>
-<p>随机图API</p>
+<p>随机图 API</p>
 <p>​		<span class="exturl" data-url="aHR0cHM6Ly9pbWFnZS5hbm9zdS50b3AvaW5kZXguaHRtbA==">https://image.anosu.top/index.html</span></p>
 <p>LoliApi：</p>
 <p>​		<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmxvbGlhcGkuY29tLw==">https://docs.loliapi.com/</span></p>
-<p>随机图API——随机返回我老婆（</p>
+<p>随机图 API—— 随机返回我老婆（</p>
 <p>​		<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmppdHN1LnRvcC9hcmNoaXZlcy8zLw==">https://blog.jitsu.top/archives/3/</span></p>
 
       <div class="tags">
@@ -262,7 +264,7 @@ golden的部落阁 = title写得真好</title>
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="文章目录">
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%88%AC%E8%99%AB%E8%8E%B7%E5%8F%96%E6%89%80%E6%9C%89%E5%9B%BE%E7%89%87%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">爬虫获取所有图片：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">背景：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A6%96%E5%85%88%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">首先：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%A0%E4%B8%AA%E4%B8%8D%E9%94%99%E7%9A%84api%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">几个不错的api：</span></a></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%88%AC%E8%99%AB%E8%8E%B7%E5%8F%96%E6%89%80%E6%9C%89%E5%9B%BE%E7%89%87"><span class="toc-number">1.</span> <span class="toc-text"> 爬虫获取所有图片：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.1.</span> <span class="toc-text"> 背景：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A6%96%E5%85%88"><span class="toc-number">1.2.</span> <span class="toc-text"> 首先：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%A0%E4%B8%AA%E4%B8%8D%E9%94%99%E7%9A%84api"><span class="toc-number">2.</span> <span class="toc-text"> 几个不错的 api：</span></a></li></ol>
       </div>
       <div class="related panel pjax" data-title="系列文章">
         <ul>
@@ -371,10 +373,40 @@ golden的部落阁 = title写得真好</title>
   <li class="item">
     
 <div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/2024/04/06/Web/%E6%97%A0%E5%8F%82%E6%95%B0RCE%E7%9A%84%E4%B8%80%E4%BA%9B%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/" title="无参数RCE的一些奇技淫巧">无参数RCE的一些奇技淫巧</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/2024/05/17/Game/%E3%80%902024%E3%80%91H-NCTF/" title="【2024】H&amp;NCTF">【2024】H&NCTF</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
 <a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
 </div>
 
     <span><a href="/2024/05/21/Daily/%E5%B0%8F%E5%B0%8F%E7%9A%84%E6%80%BB%E7%BB%93%EF%BC%88%E6%97%A5%E5%B8%B8%E5%8F%91%E7%99%AB%EF%BC%89/" title="小小的总结（日常发癫）">小小的总结（日常发癫）</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/2024/05/29/Java/JavaWeb%E5%9F%BA%E7%A1%80-%E4%B8%80-IO%E6%93%8D%E4%BD%9C/" title="JavaWeb基础(一)-IO操作">JavaWeb基础(一)-IO操作</a></span>
   </li>
 
       
@@ -401,30 +433,10 @@ golden的部落阁 = title写得真好</title>
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
-</div>
-
-    <span><a href="/2024/03/23/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%886%EF%BC%89-%E5%A0%86%E5%9F%BA%E7%A1%80%E6%A6%82%E8%BF%B0/" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
-</div>
-
-    <span><a href="/2024/02/04/Pwn/Pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89-ret-2-text-or-shellcode/" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
 <a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
 </div>
 
-    <span><a href="/2024/05/29/Java/JavaWeb%E5%9F%BA%E7%A1%80-%E4%B8%80-IO%E6%93%8D%E4%BD%9C/" title="JavaWeb基础(一)-IO操作">JavaWeb基础(一)-IO操作</a></span>
+    <span><a href="/2024/05/27/Java/%E4%B8%89%E3%80%81Servlet%E5%9F%BA%E7%A1%80/" title="三、Servlet基础">三、Servlet基础</a></span>
   </li>
 
       
@@ -434,37 +446,27 @@ golden的部落阁 = title写得真好</title>
 <a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/2024/03/05/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%885%EF%BC%89-%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%EF%BC%88%E6%9C%AA%E5%AE%8C%E5%85%A8%E5%AE%8C%E6%88%90%EF%BC%89/" title="pwn学习笔记（5）--格式化字符串漏洞（未完全完成）">pwn学习笔记（5）--格式化字符串漏洞（未完全完成）</a></span>
+    <span><a href="/2024/02/13/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89ret2syscall/" title="pwn学习笔记（3）ret2syscall">pwn学习笔记（3）ret2syscall</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
 </div>
 
-    <span><a href="/2024/02/04/Pwn/Pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89-%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86/" title="Pwn学习笔记（1）--前置知识">Pwn学习笔记（1）--前置知识</a></span>
+    <span><a href="/2024/06/05/Game/%E3%80%902023%E3%80%91LitCTF/" title="【2023】LitCTF">【2023】LitCTF</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Misc/" title="分类于 杂七杂八的知识点">杂七杂八的知识点</a>
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
 </div>
 
-    <span><a href="/2024/05/25/Misc/BUUCTF-Misc-%E7%AC%AC%E4%B8%80%E9%A1%B5-1-16/" title="BUUCTF-Misc-第一页(1-16)">BUUCTF-Misc-第一页(1-16)</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
-</div>
-
-    <span><a href="/2024/06/11/Daily/%E9%9A%8F%E6%9C%BA%E4%BA%8C%E6%AC%A1%E5%85%83%E5%9B%BEapi%E7%9B%B8%E5%85%B3/" title="随机二次元图api相关">随机二次元图api相关</a></span>
+    <span><a href="/2024/05/20/Game/Ciscn2024/" title="Ciscn2024">Ciscn2024</a></span>
   </li>
 
   </ul>

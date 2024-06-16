@@ -150,58 +150,68 @@ golden的部落阁 = title写得真好</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <h1 id="3-1、栈"><a href="#3-1、栈" class="headerlink" title="3.1、栈"></a>3.1、栈</h1><h2 id="3-1-1、栈的基本概念："><a href="#3-1-1、栈的基本概念：" class="headerlink" title="3.1.1、栈的基本概念："></a>3.1.1、栈的基本概念：</h2><h3 id="1、栈的定义："><a href="#1、栈的定义：" class="headerlink" title="1、栈的定义："></a>1、栈的定义：</h3><p>​	栈是只允许在一端进行插入或删除操作的线性表。首先，栈是一种线性表，但限定这种线性表只能在某一端进行插入和删除操作，如下图：</p>
+    <h1 id="31-栈"><a class="markdownIt-Anchor" href="#31-栈">#</a> 3.1、栈</h1>
+<h2 id="311-栈的基本概念"><a class="markdownIt-Anchor" href="#311-栈的基本概念">#</a> 3.1.1、栈的基本概念：</h2>
+<h3 id="1-栈的定义"><a class="markdownIt-Anchor" href="#1-栈的定义">#</a> 1、栈的定义：</h3>
+<p>​	栈是只允许在一端进行插入或删除操作的线性表。首先，栈是一种线性表，但限定这种线性表只能在某一端进行插入和删除操作，如下图：</p>
 <p><img data-src="https://img-blog.csdnimg.cn/direct/277222dabf06428490300ed5d9714ed4.png#pic_center" alt="在这里插入图片描述"></p>
 <p>​	栈顶（Top）。线性表允许进行插入删除的那一端。</p>
 <p>​	栈底（Bottom）。固定的，不允许进行插入和删除的另一端。</p>
 <p>​	空栈。不包含任何元素的空表。</p>
-<p>​	假设某个栈 $S&#x3D;(a_1,a_2,a_3,a_4,a_5)$，如上图所示，则 $a_1$为栈底元素，$a_5$为栈顶元素。由于栈只能在栈顶进行插入和删除操作，进栈次序依次为 $a_1,a_2,a_3,a_4,a_5$，而出栈次序则与入栈次序相反。由此可见，栈的操作特性可以明显地概括为后进先出（LIFO）。</p>
-<p>​	栈的数学性质：n 个不同元素进栈，出栈元素不同排列的个数为 $\frac{1}{n+1}C^n_2n$ 。上述公式称为卡特兰数，可采用数学归纳法证明。</p>
-<h3 id="2、栈的基本操作："><a href="#2、栈的基本操作：" class="headerlink" title="2、栈的基本操作："></a>2、栈的基本操作：</h3><p>​	栈的基本操作：</p>
+<p>​	假设某个栈 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mo stretchy="false">(</mo><msub><mi>a</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>a</mi><mn>2</mn></msub><mo separator="true">,</mo><msub><mi>a</mi><mn>3</mn></msub><mo separator="true">,</mo><msub><mi>a</mi><mn>4</mn></msub><mo separator="true">,</mo><msub><mi>a</mi><mn>5</mn></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">S=(a_1,a_2,a_3,a_4,a_5)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>，如上图所示，则 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">a_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 为栈底元素，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>5</mn></msub></mrow><annotation encoding="application/x-tex">a_5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 为栈顶元素。由于栈只能在栈顶进行插入和删除操作，进栈次序依次为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>a</mi><mn>2</mn></msub><mo separator="true">,</mo><msub><mi>a</mi><mn>3</mn></msub><mo separator="true">,</mo><msub><mi>a</mi><mn>4</mn></msub><mo separator="true">,</mo><msub><mi>a</mi><mn>5</mn></msub></mrow><annotation encoding="application/x-tex">a_1,a_2,a_3,a_4,a_5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，而出栈次序则与入栈次序相反。由此可见，栈的操作特性可以明显地概括为后进先出（LIFO）。</p>
+<p>​	栈的数学性质：n 个不同元素进栈，出栈元素不同排列的个数为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><msubsup><mi>C</mi><mn>2</mn><mi>n</mi></msubsup><mi>n</mi></mrow><annotation encoding="application/x-tex">\frac{1}{n+1}C^n_2n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2484389999999999em;vertical-align:-0.403331em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.403331em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.4518920000000004em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.24810799999999997em;"><span></span></span></span></span></span></span><span class="mord mathnormal">n</span></span></span></span> 。上述公式称为卡特兰数，可采用数学归纳法证明。</p>
+<h3 id="2-栈的基本操作"><a class="markdownIt-Anchor" href="#2-栈的基本操作">#</a> 2、栈的基本操作：</h3>
+<p>​	栈的基本操作：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">InitStack(&amp;S)		<span class="comment">//初始化一个空栈。</span></span><br><span class="line">StackEmpty(S)		<span class="comment">//判断一个栈是否为空，若栈 S 为空则返回 ture ，否则返回 false。</span></span><br><span class="line">Push(&amp;S,x)			<span class="comment">//进栈，若栈 S 未满，则将 x 加入使之成为新栈顶。</span></span><br><span class="line">Pop(&amp;S,&amp;x)			<span class="comment">//出栈，若栈 S 非空，则弹出栈顶元素，并用 x 返回。</span></span><br><span class="line">GetTop(S,&amp;x)		<span class="comment">//读取栈顶元素，若栈 S 非空，则用 x 返回栈顶元素。</span></span><br><span class="line">DestroyStack(&amp;S)	<span class="comment">//销毁栈，并释放栈 S 占用的存储空间（“&amp; 表示引用调用”）。</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="3-1-2、栈的顺序存储结构："><a href="#3-1-2、栈的顺序存储结构：" class="headerlink" title="3.1.2、栈的顺序存储结构："></a>3.1.2、栈的顺序存储结构：</h2><p>​	栈是一种操作受限的线性表，类似于线性表，它也有对应的两种存储方式。</p>
-<h3 id="1、顺序栈的实现："><a href="#1、顺序栈的实现：" class="headerlink" title="1、顺序栈的实现："></a>1、顺序栈的实现：</h3><p>​	采用顺序存储的栈称为顺序栈，它利用一组地址连续的存储单元存放自栈顶到栈顶的数据元素，同时附设一个指针（top）指示当前栈顶元素的位置。</p>
+<h2 id="312-栈的顺序存储结构"><a class="markdownIt-Anchor" href="#312-栈的顺序存储结构">#</a> 3.1.2、栈的顺序存储结构：</h2>
+<p>​	栈是一种操作受限的线性表，类似于线性表，它也有对应的两种存储方式。</p>
+<h3 id="1-顺序栈的实现"><a class="markdownIt-Anchor" href="#1-顺序栈的实现">#</a> 1、顺序栈的实现：</h3>
+<p>​	采用顺序存储的栈称为顺序栈，它利用一组地址连续的存储单元存放自栈顶到栈顶的数据元素，同时附设一个指针（top）指示当前栈顶元素的位置。</p>
 <p>​	栈的顺序存储类型可描述为：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MaxSize 50</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    Elemtype data[MaxSize];</span><br><span class="line">    <span class="type">int</span> top;</span><br><span class="line">&#125; SqStack;</span><br></pre></td></tr></table></figure>
-
-<p>​	栈顶指针：s.top，初始时设置 S.top&#x3D;-1；栈顶元素：S.data[S.top]。</p>
+<p>​	栈顶指针：s.top，初始时设置 S.top=-1；栈顶元素：S.data [S.top]。</p>
 <p>​	进栈操作：栈不满时，栈顶指针先加 1 ，再送值到栈顶元素。</p>
 <p>​	出栈操作：栈非空时，先取栈顶元素值，再将栈顶指针减 1.</p>
-<p>​	栈空条件：S.top&#x3D;&#x3D;-1；栈满条件：S.top&#x3D;&#x3D;MaxSize-1；栈长：S.top+1.</p>
+<p>​	栈空条件：S.top==-1；栈满条件：S.top==MaxSize-1；栈长：S.top+1.</p>
 <p>​	由于顺序栈的入栈操作受数组上界的约束，当对栈的最大使用空间估计不足时，有可能发生栈上溢，此时应及时向用户报告信息，以便及时处理，避免出错。</p>
-<h3 id="2、顺序栈的基本运算："><a href="#2、顺序栈的基本运算：" class="headerlink" title="2、顺序栈的基本运算："></a>2、顺序栈的基本运算：</h3><p>​	栈操作的示意图如下图所示：（a）是空栈，（c）是 A、B、C、D、E 共 5 个元素依次入栈后的结果，（d）是在（c）之后 E、D、C相继出栈，此时栈中还有 2 个元素，或许最近出栈的元素 C、D、E仍在原先的单元存储着，但 top 指针已经指向了新的栈顶，元素 C、D、E 已不在栈中。</p>
+<h3 id="2-顺序栈的基本运算"><a class="markdownIt-Anchor" href="#2-顺序栈的基本运算">#</a> 2、顺序栈的基本运算：</h3>
+<p>​	栈操作的示意图如下图所示：（a）是空栈，（c）是 A、B、C、D、E 共 5 个元素依次入栈后的结果，（d）是在（c）之后 E、D、C 相继出栈，此时栈中还有 2 个元素，或许最近出栈的元素 C、D、E 仍在原先的单元存储着，但 top 指针已经指向了新的栈顶，元素 C、D、E 已不在栈中。</p>
 <p><img data-src="https://img-blog.csdnimg.cn/direct/b96bea57eb3f411b9349911d140b2277.png#pic_center" alt="在这里插入图片描述"></p>
 <p>​	下面是顺序栈上常用的基本运算实现：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdio.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MaxSize 50</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> data[MaxSize];</span><br><span class="line">    <span class="type">int</span> top;</span><br><span class="line">&#125; SqStack;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">InitStack</span><span class="params">(SqStack *S)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">StackEmpty</span><span class="params">(SqStack *S)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">Push</span><span class="params">(SqStack *S,<span class="type">int</span> x)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">Pop</span><span class="params">(SqStack *S,<span class="type">int</span> *x)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">GetTop</span><span class="params">(SqStack *S,<span class="type">int</span> *x)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    SqStack S;</span><br><span class="line">    <span class="type">int</span> x;</span><br><span class="line">    InitStack(&amp;S);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>;i &lt;= <span class="number">6</span>;i++)&#123;</span><br><span class="line">        Push(&amp;S,i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(GetTop(&amp;S,&amp;x))</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//初始化栈</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">InitStack</span><span class="params">(SqStack *S)</span>&#123;</span><br><span class="line">    S-&gt;top = <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//判断栈是否为空</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">StackEmpty</span><span class="params">(SqStack *S)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (S-&gt;top == <span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//入栈操作</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">Push</span><span class="params">(SqStack *S,<span class="type">int</span> x)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(S-&gt;top == MaxSize <span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    S-&gt;data[++S-&gt;top] = x;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//出栈操作</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">Pop</span><span class="params">(SqStack *S,<span class="type">int</span> *x)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(S-&gt;top == <span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    *x = S-&gt;data[S-&gt;top--];</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//读取栈顶元素</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">GetTop</span><span class="params">(SqStack *S,<span class="type">int</span> *x)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(S-&gt;top == <span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    *x = S-&gt;data[S-&gt;top];</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="3、共享栈："><a href="#3、共享栈：" class="headerlink" title="3、共享栈："></a>3、共享栈：</h3><p>​	利用栈底位置相对不变的特性，可让两个顺序栈共享一个以为数组空间，将两个栈的栈底分别设置在共享空间的两端，两个栈顶向共享空间的中间眼神，如下图：</p>
+<h3 id="3-共享栈"><a class="markdownIt-Anchor" href="#3-共享栈">#</a> 3、共享栈：</h3>
+<p>​	利用栈底位置相对不变的特性，可让两个顺序栈共享一个以为数组空间，将两个栈的栈底分别设置在共享空间的两端，两个栈顶向共享空间的中间眼神，如下图：</p>
 <p><img data-src="https://img-blog.csdnimg.cn/direct/404d770f650a49e5bec8c623ef629c40.png#pic_center" alt="在这里插入图片描述"></p>
-<p>​	两个栈的栈顶指针都指向栈顶元素，top0&#x3D;-1 时 0 号栈为空，top1&#x3D;MaxSize 时 1 号栈为空；仅当两个栈顶指针相邻 （top0-top1&#x3D;1）时，判断为栈满。当 0 号栈进栈时 top0 先加 1 再赋值，1 号栈进栈时 top1 先减 1 再赋值；出栈时则刚好相反。</p>
-<p>​	共享栈时为了更有效地利用存储空间，两个栈的空间相互调节，只有在整个存储空间被占满时才发生上溢。其存取数据的时间复杂度为 O(1) ，所以对存取效率没有什么影响。</p>
-<h2 id="3-1-3、栈的链式存储结构："><a href="#3-1-3、栈的链式存储结构：" class="headerlink" title="3.1.3、栈的链式存储结构："></a>3.1.3、栈的链式存储结构：</h2><p>​	采用链式存储的栈称为链栈，链栈的优点是便于多个栈共享存储空间和提高其效率，且不存在栈满上溢的情况。通常采用单链表实现，并规定所有操作都是在单链表的表头进行的。这里规定链栈没有头结点，Lhead 指向栈顶元素，如下图：</p>
+<p>​	两个栈的栈顶指针都指向栈顶元素，top0=-1 时 0 号栈为空，top1=MaxSize 时 1 号栈为空；仅当两个栈顶指针相邻 （top0-top1=1）时，判断为栈满。当 0 号栈进栈时 top0 先加 1 再赋值，1 号栈进栈时 top1 先减 1 再赋值；出栈时则刚好相反。</p>
+<p>​	共享栈时为了更有效地利用存储空间，两个栈的空间相互调节，只有在整个存储空间被占满时才发生上溢。其存取数据的时间复杂度为 O (1) ，所以对存取效率没有什么影响。</p>
+<h2 id="313-栈的链式存储结构"><a class="markdownIt-Anchor" href="#313-栈的链式存储结构">#</a> 3.1.3、栈的链式存储结构：</h2>
+<p>​	采用链式存储的栈称为链栈，链栈的优点是便于多个栈共享存储空间和提高其效率，且不存在栈满上溢的情况。通常采用单链表实现，并规定所有操作都是在单链表的表头进行的。这里规定链栈没有头结点，Lhead 指向栈顶元素，如下图：</p>
 <p><img data-src="https://img-blog.csdnimg.cn/direct/574afc86cafd4c37b2f51933fbd90877.png#pic_center" alt="在这里插入图片描述"></p>
 <p>​	栈的链式存储类型可描述为：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Linknode</span>&#123;</span></span><br><span class="line">    ElemType data;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">LinkNode</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125; *LiStack;</span><br></pre></td></tr></table></figure>
-
 <p>​	采用链式存储，便于结点的插入与删除。链栈的操作与链表类似，入栈和出栈的操作都在链表的表头进行。需要注意的是，对于带头结点和不带头结点的链栈，具体的实现会有所不同。</p>
-<h1 id="3-2、队列"><a href="#3-2、队列" class="headerlink" title="3.2、队列;"></a>3.2、队列;</h1><h2 id="3-2-1、队列的基本概念："><a href="#3-2-1、队列的基本概念：" class="headerlink" title="3.2.1、队列的基本概念："></a>3.2.1、队列的基本概念：</h2><h3 id="1、队列的定义："><a href="#1、队列的定义：" class="headerlink" title="1、队列的定义："></a>1、队列的定义：</h3><p>​	队列，也是一种操作受限的线性表，只允许在表的一端进行插入，而表的另一端进行删除。向队列中插入元素成为入队或进队；删除元素称为出队或离队。这和我们日常生活中的排队时一致的，最早排队的也是最早离队的，其操作的特性是先进先出（FIFO），如下图：</p>
+<h1 id="32-队列"><a class="markdownIt-Anchor" href="#32-队列">#</a> 3.2、队列；</h1>
+<h2 id="321-队列的基本概念"><a class="markdownIt-Anchor" href="#321-队列的基本概念">#</a> 3.2.1、队列的基本概念：</h2>
+<h3 id="1-队列的定义"><a class="markdownIt-Anchor" href="#1-队列的定义">#</a> 1、队列的定义：</h3>
+<p>​	队列，也是一种操作受限的线性表，只允许在表的一端进行插入，而表的另一端进行删除。向队列中插入元素成为入队或进队；删除元素称为出队或离队。这和我们日常生活中的排队时一致的，最早排队的也是最早离队的，其操作的特性是先进先出（FIFO），如下图：</p>
 <p><img data-src="https://img-blog.csdnimg.cn/direct/0af06018a2fb45e7829ac849c4bc386d.png#pic_center" alt="在这里插入图片描述"></p>
 <p>​	对头。允许删除的一端，又称队首。</p>
 <p>​	队尾。允许插入的一端。</p>
 <p>​	空队列。不含任何元素的空表。</p>
-<h3 id="2、队列常见的基本操作："><a href="#2、队列常见的基本操作：" class="headerlink" title="2、队列常见的基本操作："></a>2、队列常见的基本操作：</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">InitQueue(*Q)		<span class="comment">//初始化队列，构造一个空队列 Q。</span></span><br><span class="line">QueueEmpty(*Q)		<span class="comment">//判队列空，若队列 Q 为空返回 true ，否则返回 false。</span></span><br><span class="line">EnQueue(*Q,x)		<span class="comment">//入队，若队列 Q 未满，将 x 加入，使之成为新的队尾。</span></span><br><span class="line">DeQueue(*Q,*x)		<span class="comment">//出队，若队列 Q 非空，删除队头元素，并用 x 返回。</span></span><br><span class="line">GetHead(*Q,*x)		<span class="comment">//读队头元素，若队列 Q 非空，则将对头元素赋值给 x。</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="3-2-2、队列的顺序存储结构："><a href="#3-2-2、队列的顺序存储结构：" class="headerlink" title="3.2.2、队列的顺序存储结构："></a>3.2.2、队列的顺序存储结构：</h2><h3 id="1、队列的顺序存储："><a href="#1、队列的顺序存储：" class="headerlink" title="1、队列的顺序存储："></a>1、队列的顺序存储：</h3><p>​	队列的顺序实现是指分配一块连续的存储单位存放队列的元素，并附设两个指针：队头指针 front 指向队头元素，队尾指针 rear 指向队尾元素的下一个位置。</p>
+<h3 id="2-队列常见的基本操作"><a class="markdownIt-Anchor" href="#2-队列常见的基本操作">#</a> 2、队列常见的基本操作：</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">InitQueue(*Q)		<span class="comment">//初始化队列，构造一个空队列 Q。</span></span><br><span class="line">QueueEmpty(*Q)		<span class="comment">//判队列空，若队列 Q 为空返回 true ，否则返回 false。</span></span><br><span class="line">EnQueue(*Q,x)		<span class="comment">//入队，若队列 Q 未满，将 x 加入，使之成为新的队尾。</span></span><br><span class="line">DeQueue(*Q,*x)		<span class="comment">//出队，若队列 Q 非空，删除队头元素，并用 x 返回。</span></span><br><span class="line">GetHead(*Q,*x)		<span class="comment">//读队头元素，若队列 Q 非空，则将对头元素赋值给 x。</span></span><br></pre></td></tr></table></figure>
+<h2 id="322-队列的顺序存储结构"><a class="markdownIt-Anchor" href="#322-队列的顺序存储结构">#</a> 3.2.2、队列的顺序存储结构：</h2>
+<h3 id="1-队列的顺序存储"><a class="markdownIt-Anchor" href="#1-队列的顺序存储">#</a> 1、队列的顺序存储：</h3>
+<p>​	队列的顺序实现是指分配一块连续的存储单位存放队列的元素，并附设两个指针：队头指针 front 指向队头元素，队尾指针 rear 指向队尾元素的下一个位置。</p>
 <p>​	队列的顺序存储类型可描述为：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MaxSize 50</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    ElemType data[MaxSize];</span><br><span class="line">    <span class="type">int</span> front,rear;</span><br><span class="line">&#125; SqQueue;</span><br></pre></td></tr></table></figure>
-
-<p>​	初始时：Q.front &#x3D; Q.rear &#x3D; 0。</p>
+<p>​	初始时：Q.front = Q.rear = 0。</p>
 <p>​	进队操作：队不满时，先送值到队尾元素，再将队尾指针加 1。</p>
 <p>​	出队操作：队不空时，先取队头元素值，再将队头指针加 1.</p>
-<p>​	如下图（a）所示为列表的初始状态，有 <code>Q.front==Qrear==0</code>成立，该条件可以作为队列判断空的条件。但能否用 Q.rear&#x3D;&#x3D;MaxSize 作为队列满的条件呢？显然不能，如图（d），队列中仅有一个元素，但扔满足该条件。这时入队出现“上溢出”，但这种溢出不是真正的溢出，在 data 数组中依然存在可以存放元素的空位置，所以时一种“假溢出”。</p>
+<p>​	如下图（a）所示为列表的初始状态，有  <code>Q.front==Qrear==0</code>  成立，该条件可以作为队列判断空的条件。但能否用 Q.rear==MaxSize 作为队列满的条件呢？显然不能，如图（d），队列中仅有一个元素，但扔满足该条件。这时入队出现 “上溢出”，但这种溢出不是真正的溢出，在 data 数组中依然存在可以存放元素的空位置，所以时一种 “假溢出”。</p>
 <p><img data-src="https://img-blog.csdnimg.cn/direct/c906a4afeb404f1aa7fa40e6c3fbcfda.png#pic_center" alt="在这里插入图片描述"></p>
-<h3 id="2、循环队列："><a href="#2、循环队列：" class="headerlink" title="2、循环队列："></a>2、循环队列：</h3>
+<h3 id="2-循环队列"><a class="markdownIt-Anchor" href="#2-循环队列">#</a> 2、循环队列：</h3>
+
       <div class="tags">
           <a href="/tags/408/" rel="tag"><i class="ic i-tag"></i> 408</a>
       </div>
@@ -294,7 +304,7 @@ golden的部落阁 = title写得真好</title>
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="文章目录">
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#3-1%E3%80%81%E6%A0%88"><span class="toc-number">1.</span> <span class="toc-text">3.1、栈</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-1%E3%80%81%E6%A0%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">3.1.1、栈的基本概念：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E6%A0%88%E7%9A%84%E5%AE%9A%E4%B9%89%EF%BC%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text">1、栈的定义：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E6%A0%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%9A"><span class="toc-number">1.1.2.</span> <span class="toc-text">2、栈的基本操作：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-2%E3%80%81%E6%A0%88%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">3.1.2、栈的顺序存储结构：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E9%A1%BA%E5%BA%8F%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0%EF%BC%9A"><span class="toc-number">1.2.1.</span> <span class="toc-text">1、顺序栈的实现：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E9%A1%BA%E5%BA%8F%E6%A0%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E8%BF%90%E7%AE%97%EF%BC%9A"><span class="toc-number">1.2.2.</span> <span class="toc-text">2、顺序栈的基本运算：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E5%85%B1%E4%BA%AB%E6%A0%88%EF%BC%9A"><span class="toc-number">1.2.3.</span> <span class="toc-text">3、共享栈：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-3%E3%80%81%E6%A0%88%E7%9A%84%E9%93%BE%E5%BC%8F%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%EF%BC%9A"><span class="toc-number">1.3.</span> <span class="toc-text">3.1.3、栈的链式存储结构：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-2%E3%80%81%E9%98%9F%E5%88%97"><span class="toc-number">2.</span> <span class="toc-text">3.2、队列;</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-1%E3%80%81%E9%98%9F%E5%88%97%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%EF%BC%9A"><span class="toc-number">2.1.</span> <span class="toc-text">3.2.1、队列的基本概念：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9A%E4%B9%89%EF%BC%9A"><span class="toc-number">2.1.1.</span> <span class="toc-text">1、队列的定义：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E9%98%9F%E5%88%97%E5%B8%B8%E8%A7%81%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%9A"><span class="toc-number">2.1.2.</span> <span class="toc-text">2、队列常见的基本操作：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-2%E3%80%81%E9%98%9F%E5%88%97%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%EF%BC%9A"><span class="toc-number">2.2.</span> <span class="toc-text">3.2.2、队列的顺序存储结构：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E9%98%9F%E5%88%97%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%EF%BC%9A"><span class="toc-number">2.2.1.</span> <span class="toc-text">1、队列的顺序存储：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97%EF%BC%9A"><span class="toc-number">2.2.2.</span> <span class="toc-text">2、循环队列：</span></a></li></ol></li></ol></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#31-%E6%A0%88"><span class="toc-number">1.</span> <span class="toc-text"> 3.1、栈</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#311-%E6%A0%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text"> 3.1.1、栈的基本概念：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A0%88%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1、栈的定义：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%A0%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 2、栈的基本操作：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#312-%E6%A0%88%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text"> 3.1.2、栈的顺序存储结构：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%A1%BA%E5%BA%8F%E6%A0%88%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1、顺序栈的实现：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%A1%BA%E5%BA%8F%E6%A0%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E8%BF%90%E7%AE%97"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 2、顺序栈的基本运算：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%85%B1%E4%BA%AB%E6%A0%88"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 3、共享栈：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#313-%E6%A0%88%E7%9A%84%E9%93%BE%E5%BC%8F%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.</span> <span class="toc-text"> 3.1.3、栈的链式存储结构：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#32-%E9%98%9F%E5%88%97"><span class="toc-number">2.</span> <span class="toc-text"> 3.2、队列；</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#321-%E9%98%9F%E5%88%97%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">2.1.</span> <span class="toc-text"> 3.2.1、队列的基本概念：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">2.1.1.</span> <span class="toc-text"> 1、队列的定义：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%98%9F%E5%88%97%E5%B8%B8%E8%A7%81%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-number">2.1.2.</span> <span class="toc-text"> 2、队列常见的基本操作：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#322-%E9%98%9F%E5%88%97%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="toc-number">2.2.</span> <span class="toc-text"> 3.2.2、队列的顺序存储结构：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%98%9F%E5%88%97%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8"><span class="toc-number">2.2.1.</span> <span class="toc-text"> 1、队列的顺序存储：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%BE%AA%E7%8E%AF%E9%98%9F%E5%88%97"><span class="toc-number">2.2.2.</span> <span class="toc-text"> 2、循环队列：</span></a></li></ol></li></ol></li></ol>
       </div>
       <div class="related panel pjax" data-title="系列文章">
         <ul>
@@ -404,36 +414,7 @@ golden的部落阁 = title写得真好</title>
 <a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/2024/02/13/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89ret2syscall/" title="pwn学习笔记（3）ret2syscall">pwn学习笔记（3）ret2syscall</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
-</div>
-
-    <span><a href="/2024/06/11/Daily/%E9%9A%8F%E6%9C%BA%E4%BA%8C%E6%AC%A1%E5%85%83%E5%9B%BEapi%E7%9B%B8%E5%85%B3/" title="随机二次元图api相关">随机二次元图api相关</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
-</div>
-
-    <span><a href="/2024/05/26/Java/%E4%B8%80%E3%80%81Servlet%E5%92%8CJSP%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0/" title="一、Servlet和JSP技术概述">一、Servlet和JSP技术概述</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-</div>
-
-    <span><a href="/2024/01/01/hello-world/" title="Hello World">Hello World</a></span>
+    <span><a href="/2024/03/25/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%887%EF%BC%89-%E5%A0%86%E7%9B%B8%E5%85%B3%E6%BA%90%E7%A0%81/" title="pwn学习笔记（7）--堆相关源码">pwn学习笔记（7）--堆相关源码</a></span>
   </li>
 
       
@@ -445,17 +426,27 @@ golden的部落阁 = title写得真好</title>
 <a href="/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
 </div>
 
-    <span><a href="/2024/06/12/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0-2%E3%80%81%E7%BA%BF%E6%80%A7%E8%A1%A8/" title="数据结构笔记-2、线性表">数据结构笔记-2、线性表</a></span>
+    <span><a href="/2024/06/15/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-3%E3%80%81%E6%A0%88%E3%80%81%E9%98%9F%E5%88%97%E5%92%8C%E6%95%B0%E7%BB%84/" title="数据结构-3、栈、队列和数组">数据结构-3、栈、队列和数组</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
 </div>
 
-    <span><a href="/2024/03/03/Web/SQL%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5/" title="SQL无列名注入">SQL无列名注入</a></span>
+    <span><a href="/2024/06/14/Daily/hexo%E9%83%A8%E7%BD%B2%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="hexo部署服务器">hexo部署服务器</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/2024/02/19/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%884%EF%BC%89ret2libc/" title="pwn学习笔记（4）ret2libc">pwn学习笔记（4）ret2libc</a></span>
   </li>
 
       
@@ -472,10 +463,20 @@ golden的部落阁 = title写得真好</title>
   <li class="item">
     
 <div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/2024/06/05/Game/%E3%80%902023%E3%80%91LitCTF/" title="【2023】LitCTF">【2023】LitCTF</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
 <a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
 </div>
 
-    <span><a href="/2024/05/29/Java/JavaWeb%E5%9F%BA%E7%A1%80-%E4%B8%80-IO%E6%93%8D%E4%BD%9C/" title="JavaWeb基础(一)-IO操作">JavaWeb基础(一)-IO操作</a></span>
+    <span><a href="/2024/05/26/Java/%E4%B8%80%E3%80%81Servlet%E5%92%8CJSP%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0/" title="一、Servlet和JSP技术概述">一、Servlet和JSP技术概述</a></span>
   </li>
 
       
@@ -485,17 +486,27 @@ golden的部落阁 = title写得真好</title>
 <a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/2024/03/23/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%886%EF%BC%89-%E5%A0%86%E5%9F%BA%E7%A1%80%E6%A6%82%E8%BF%B0/" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></span>
+    <span><a href="/2024/02/13/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89ret2syscall/" title="pwn学习笔记（3）ret2syscall">pwn学习笔记（3）ret2syscall</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
 </div>
 
-    <span><a href="/2024/05/20/Game/Ciscn2024/" title="Ciscn2024">Ciscn2024</a></span>
+    <span><a href="/2024/03/03/Web/SQL%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5/" title="SQL无列名注入">SQL无列名注入</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/2024/05/29/Java/JavaWeb%E5%9F%BA%E7%A1%80-%E4%B8%80-IO%E6%93%8D%E4%BD%9C/" title="JavaWeb基础(一)-IO操作">JavaWeb基础(一)-IO操作</a></span>
   </li>
 
   </ul>

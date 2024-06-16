@@ -89,12 +89,12 @@
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://gitee.com/gou-dengyue/images/raw/master/picture190.jpg"></li>
-          <li class="item" data-background-image="https://gitee.com/gou-dengyue/images/raw/master/picture198.jpg"></li>
           <li class="item" data-background-image="https://gitee.com/gou-dengyue/images/raw/master/picture180.jpg"></li>
-          <li class="item" data-background-image="https://gitee.com/gou-dengyue/images/raw/master/picture84.jpg"></li>
-          <li class="item" data-background-image="https://gitee.com/gou-dengyue/images/raw/master/picture174.jpg"></li>
+          <li class="item" data-background-image="https://gitee.com/gou-dengyue/images/raw/master/picture220.jpg"></li>
+          <li class="item" data-background-image="https://s2.loli.net/2024/06/16/tHruoRQTsxE5eJf.jpg"></li>
+          <li class="item" data-background-image="https://gitee.com/gou-dengyue/images/raw/master/picture252.png"></li>
           <li class="item" data-background-image="https://gitee.com/gou-dengyue/images/raw/master/picture263.jpg"></li>
+          <li class="item" data-background-image="https://gitee.com/gou-dengyue/images/raw/master/picture84.jpg"></li>
         </ul>
       </div>
     </header>
@@ -135,7 +135,12 @@
 
     <h3><a href="/2024/02/13/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%883%EF%BC%89ret2syscall/" itemprop="url" title="pwn学习笔记（3）ret2syscall">pwn学习笔记（3）ret2syscall</a></h3>
     <div class="excerpt">
-        pwn学习笔记（3）ROP原理：​	ROP(Return Oriented...
+        # pwn 学习笔记（3）
+# ROP 原理：
+​	ROP (Return Oriented Programming) 返回导向编程，主要思想是通过在程序中已有的小片段（gadgets）来改变某些寄存器或者变量的值，从而控制程序的执行流程。
+# 栈溢出–ret2syscall：
+# 1. 系统调用：
+​	对于一个已经存在于标准库中的函数，例如 printf ()，我们编写某个程序的时候，这个函数仅仅只用了 printf (参数); 这么一行，但是，其工作可是很复杂的，printf () 调用了函数库当中的其他更加底层的函数，然后被调用的函数肯定会调用再底层的函数，知道调用到系统调用中的...
     </div>
     <div class="meta footer">
       <span>
@@ -164,12 +169,15 @@
 
     <h3><a href="/2024/02/04/Pwn/Pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89-ret-2-text-or-shellcode/" itemprop="url" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></h3>
     <div class="excerpt">
-        pwn学习笔记（2）1.三种常见的寄存器：​	ax寄存器：通用寄存器，可用于存放多种数据
-​	bp寄存器：存放的是栈帧的栈底地址
-​	sp寄存器：存放的是栈顶的地址
-2.栈帧与栈工作的简介：​		栈帧是存储函数的一些信息的地方，栈帧存储有函数的局部变量，传递给子函数的实际参数，父函数的地址以及上一个栈帧栈底的地址，大致情况如下：
+        # pwn 学习笔记（2）
+# 1. 三种常见的寄存器：
+​	ax 寄存器：通用寄存器，可用于存放多种数据
+​	bp 寄存器：存放的是栈帧的栈底地址
+​	sp 寄存器：存放的是栈顶的地址
+# 2. 栈帧与栈工作的简介：
+​		栈帧是存储函数的一些信息的地方，栈帧存储有函数的局部变量，传递给子函数的实际参数，父函数的地址以及上一个栈帧栈底的地址，大致情况如下：
 
-​	在函数调用的过程中，首先会讲bp寄存器的值进行压栈，以方便在恢复的时候恢复栈底寄存器的值，再之后，会按顺序将局部变量压栈，最后是子函数的实际参数，会按照先入栈的后出栈，从最后一个实际参数先入栈再到第一个实际参数，比如函数a(int a , int...
+​	在函数调用的过程中，首先会讲 bp 寄存器的值进行压栈，以方便在恢复的时候恢复栈底寄存器的值，再之后，会按顺序将局部变量压栈，最后是子函数的实际参数，会按照先入栈的后出栈，从最后一个实际参数先入栈再到第一个实际参数，比如函数 a...
     </div>
     <div class="meta footer">
       <span>
@@ -198,15 +206,18 @@
 
     <h3><a href="/2024/02/04/Pwn/Pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%881%EF%BC%89-%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86/" itemprop="url" title="Pwn学习笔记（1）--前置知识">Pwn学习笔记（1）--前置知识</a></h3>
     <div class="excerpt">
-        pwn学习笔记（1）（1）pwn简介： 以下来自于百度百科：”Pwn”是一个黑客语法的俚语词，是指攻破设备或者系统发音类似“砰”，对黑客而言，这就是成功实施黑客攻击的声音——砰的一声，被“黑”的电脑或手机就被你操纵了 。
+        # pwn 学习笔记（1）
+# （1）pwn 简介：
+	以下来自于百度百科：”Pwn”是一个黑客语法的俚语词，是指攻破设备或者系统发音类似“砰”，对黑客而言，这就是成功实施黑客攻击的声音——砰的一声，被“黑”的电脑或手机就被你操纵了 。
 
-（2）几个简单的名词： exploit：用于攻击的脚本与方案
+# （2）几个简单的名词：
+	exploit：用于攻击的脚本与方案
 
-payload：攻击载荷，是对目标进程劫持控制流的数据
+	payload：攻击载荷，是对目标进程劫持控制流的数据
 
-shellcode：调用攻击目标的shell代码，常见的有bash和sh
+	shellcode：调用攻击目标的shell代码，常见的有bash和sh
 
-（3）C源代码到可执行文件：...
+# （3）C...
     </div>
     <div class="meta footer">
       <span>
@@ -220,7 +231,7 @@ shellcode：调用攻击目标的shell代码，常见的有bash和sh
         
 <article class="item">
   <div class="cover">
-    <a href="/2024/01/01/hello-world/" itemprop="url" title="Hello World"><img data-src="https://s2.loli.net/2024/06/16/tHruoRQTsxE5eJf.jpg"></a>
+    <a href="/2024/01/01/hello-world/" itemprop="url" title="Hello World"><img data-src="https://gitee.com/gou-dengyue/images/raw/master/picture174.jpg"></a>
   </div>
   <div class="info">
     
@@ -236,10 +247,11 @@ shellcode：调用攻击目标的shell代码，常见的有bash和sh
     <h3><a href="/2024/01/01/hello-world/" itemprop="url" title="Hello World">Hello World</a></h3>
     <div class="excerpt">
         Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick StartCreate a new post1$ hexo new &amp;quot;My New Post&amp;quot;
-
+# Quick Start
+# Create a new post
+1$ hexo new &amp;quot;My New Post&amp;quot;
 More info: Writing
-Run server1$...
+# Run...
     </div>
     <a href="/2024/01/01/hello-world/" itemprop="url" title="Hello World" class="btn">more...</a>
   </div>
@@ -369,10 +381,50 @@ Run server1$...
   <li class="item">
     
 <div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/2024/06/14/Daily/hexo%E9%83%A8%E7%BD%B2%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="hexo部署服务器">hexo部署服务器</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/2024/06/11/Daily/%E9%9A%8F%E6%9C%BA%E4%BA%8C%E6%AC%A1%E5%85%83%E5%9B%BEapi%E7%9B%B8%E5%85%B3/" title="随机二次元图api相关">随机二次元图api相关</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/2024/05/27/Java/%E4%B8%89%E3%80%81Servlet%E5%9F%BA%E7%A1%80/" title="三、Servlet基础">三、Servlet基础</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Misc/" title="分类于 杂七杂八的知识点">杂七杂八的知识点</a>
+</div>
+
+    <span><a href="/2024/05/25/Misc/BUUCTF-Misc-%E7%AC%AC%E4%B8%80%E9%A1%B5-1-16/" title="BUUCTF-Misc-第一页(1-16)">BUUCTF-Misc-第一页(1-16)</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
 <a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
 </div>
 
-    <span><a href="/2024/06/06/Game/%E3%80%902024%E3%80%91LitCTF/" title="【2024】LitCTF">【2024】LitCTF</a></span>
+    <span><a href="/2024/06/05/Game/%E3%80%902023%E3%80%91LitCTF/" title="【2023】LitCTF">【2023】LitCTF</a></span>
   </li>
 
       
@@ -389,36 +441,6 @@ Run server1$...
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
-</div>
-
-    <span><a href="/2024/02/04/Pwn/Pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%882%EF%BC%89-ret-2-text-or-shellcode/" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
-</div>
-
-    <span><a href="/2024/04/06/Web/%E6%97%A0%E5%8F%82%E6%95%B0RCE%E7%9A%84%E4%B8%80%E4%BA%9B%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/" title="无参数RCE的一些奇技淫巧">无参数RCE的一些奇技淫巧</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
-</div>
-
-    <span><a href="/2024/05/20/Game/Ciscn2024/" title="Ciscn2024">Ciscn2024</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
 <a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
 </div>
 
@@ -429,42 +451,30 @@ Run server1$...
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/2024/05/17/Game/%E3%80%902024%E3%80%91H-NCTF/" title="【2024】H&amp;NCTF">【2024】H&NCTF</a></span>
+    <span><a href="/2024/02/19/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%884%EF%BC%89ret2libc/" title="pwn学习笔记（4）ret2libc">pwn学习笔记（4）ret2libc</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/2024/06/14/Daily/hexo%E9%83%A8%E7%BD%B2%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="hexo部署服务器">hexo部署服务器</a></span>
+    <span><a href="/2024/03/23/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%886%EF%BC%89-%E5%A0%86%E5%9F%BA%E7%A1%80%E6%A6%82%E8%BF%B0/" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Major/" title="分类于 考研专业课">考研专业课</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/2024/06/12/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0-2%E3%80%81%E7%BA%BF%E6%80%A7%E8%A1%A8/" title="数据结构笔记-2、线性表">数据结构笔记-2、线性表</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
-</div>
-
-    <span><a href="/2024/05/26/Java/%E4%B8%80%E3%80%81Servlet%E5%92%8CJSP%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0/" title="一、Servlet和JSP技术概述">一、Servlet和JSP技术概述</a></span>
+    <span><a href="/2024/03/05/Pwn/pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%885%EF%BC%89-%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%EF%BC%88%E6%9C%AA%E5%AE%8C%E5%85%A8%E5%AE%8C%E6%88%90%EF%BC%89/" title="pwn学习笔记（5）--格式化字符串漏洞（未完全完成）">pwn学习笔记（5）--格式化字符串漏洞（未完全完成）</a></span>
   </li>
 
   </ul>
