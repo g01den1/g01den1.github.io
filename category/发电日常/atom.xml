@@ -4,14 +4,14 @@
     <title>title写得真好 • Posts by &#34;发电日常&#34; category</title>
     <link href="https://g01den1.github.io" />
     <updated>2024-06-14T12:14:55.000Z</updated>
-    <category term="Java" />
+    <category term="Daily life" />
     <category term="CVE" />
     <category term="Web" />
-    <category term="408" />
-    <category term="Pwn" />
-    <category term="Game" />
-    <category term="Daily life" />
     <category term="Misc" />
+    <category term="Game" />
+    <category term="408" />
+    <category term="Java" />
+    <category term="Pwn" />
     <entry>
         <id>https://g01den1.github.io/2024/06/14/Daily/hexo%E9%83%A8%E7%BD%B2%E6%9C%8D%E5%8A%A1%E5%99%A8/</id>
         <title>hexo部署服务器</title>
