@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <rss version="2.0">
     <channel>
-        <title>title写得真好 • Posts by &#34;杂七杂八的知识点&#34; category</title>
+        <title>golden的部落阁 • Posts by &#34;杂七杂八的知识点&#34; category</title>
         <link>https://g01den1.github.io</link>
         <description>golden的部落阁</description>
         <language>zh-CN</language>
@@ -12,13 +12,13 @@
         <category>Web</category>
         <category>Java</category>
         <category>Game</category>
-        <category>408</category>
-        <category>Pwn</category>
         <category>Misc</category>
+        <category>Pwn</category>
+        <category>408</category>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/2024/05/25/Misc/BUUCTF-Misc-%E7%AC%AC%E4%B8%80%E9%A1%B5-1-16/</guid>
+            <guid isPermalink="true">https://g01den1.github.io/posts/d63a55bd.html</guid>
             <title>BUUCTF-Misc-第一页(1-16)</title>
-            <link>https://g01den1.github.io/2024/05/25/Misc/BUUCTF-Misc-%E7%AC%AC%E4%B8%80%E9%A1%B5-1-16/</link>
+            <link>https://g01den1.github.io/posts/d63a55bd.html</link>
             <category>Misc</category>
             <pubDate>Sat, 25 May 2024 20:10:34 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;Misc-BUU刷题-第一页&#34;&gt;&lt;a href=&#34;#Misc-BUU刷题-第一页&#34; class=&#34;headerlink&#34; title=&#34;Misc-BUU刷题-第一页&#34;&gt;&lt;/a&gt;Misc-BUU刷题-第一页&lt;/h1&gt;&lt;h2 id=&#34;1-签到：&#34;&gt;&lt;a href=&#34;#1-签到：&#34; class=&#34;headerlink&#34; title=&#34;1.签到：&#34;&gt;&lt;/a&gt;1.签到：&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;    flag在题目描述里，直接交了。
@@ -29,12 +29,12 @@
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;3-你竟然赶我走&#34;&gt;&lt;a href=&#34;#3-你竟然赶我走&#34; class=&#34;headerlink&#34; title=&#34;3.你竟然赶我走:&#34;&gt;&lt;/a&gt;3.你竟然赶我走:&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;    附件是一个jpg文件，但是，打开啥都没有。
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img data-src=&#34;https://img-blog.csdnimg.cn/direct/023e9e456e124c96a7064953c4f3dd0c.jpeg#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img-blog.csdnimg.cn/direct/023e9e456e124c96a7064953c4f3dd0c.jpeg#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;    直接用记事本打开，翻到最底下，flag&amp;#123;stego_is_s0_bor1ing&amp;#125;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;4-二维码：&#34;&gt;&lt;a href=&#34;#4-二维码：&#34; class=&#34;headerlink&#34; title=&#34;4.二维码：&#34;&gt;&lt;/a&gt;4.二维码：&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;    图片是个二维码，这里不放出来了，扫了之后没啥内容，那么记事本看看，存在一个4number.txt的一个文件，那么，通过010editor打开图片分析，发现图片里面含有一个txt文件，还是在压缩包中。
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img data-src=&#34;https://img-blog.csdnimg.cn/direct/42f5b1d576ca41ab84588b0601ae5891.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img-blog.csdnimg.cn/direct/42f5b1d576ca41ab84588b0601ae5891.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;补充知识：&lt;/strong&gt;&lt;br&gt;一个完整的 JPG 文件由 FF D8 开头，FF D9结尾&lt;br&gt;在使用图片浏览器时，图片浏览器会忽略 FF D9 以后的内容，因此可以在 JPG 文件中加入其他文件。其他文件隐藏如png.gif文件隐藏也是这个道理。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -48,15 +48,15 @@
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;5-大白&#34;&gt;&lt;a href=&#34;#5-大白&#34; class=&#34;headerlink&#34; title=&#34;5.大白:&#34;&gt;&lt;/a&gt;5.大白:&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;    题目描述：看不到图？ 是不是屏幕太小了
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img data-src=&#34;https://img-blog.csdnimg.cn/img_convert/d2fcef14ca008586d5f3830bd1c4ed79.png&#34; alt=&#34;image-20220727085631438&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img-blog.csdnimg.cn/img_convert/d2fcef14ca008586d5f3830bd1c4ed79.png&#34; alt=&#34;image-20220727085631438&#34;&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;    题目描述的是屏幕太小了，但是，感觉并不是屏幕的问题，应该是图片大小的问题，还有一部分的图片被隐藏起来了。
 
     修改图片的大小试试看：
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img data-src=&#34;https://img-blog.csdnimg.cn/direct/aedc385a6b7c4356b699fd770e53b961.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img-blog.csdnimg.cn/direct/aedc385a6b7c4356b699fd770e53b961.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;    修改红色的这一部分，修改的值和前面某部分一样，随后得到了新的图片，打开看看：
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img data-src=&#34;https://img-blog.csdnimg.cn/direct/c938b2b70f264d9897cf0a0636369dd8.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img-blog.csdnimg.cn/direct/c938b2b70f264d9897cf0a0636369dd8.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;    最后拿到flag
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;6-鸟镇：&#34;&gt;&lt;a href=&#34;#6-鸟镇：&#34; class=&#34;headerlink&#34; title=&#34;6.鸟镇：&#34;&gt;&lt;/a&gt;6.鸟镇：&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;    题目描述：(不知道为啥，这部分不让写)，他们的照片里隐藏着什么信息呢？
@@ -71,10 +71,10 @@
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;8-wireshark：&#34;&gt;&lt;a href=&#34;#8-wireshark：&#34; class=&#34;headerlink&#34; title=&#34;8.wireshark：&#34;&gt;&lt;/a&gt;8.wireshark：&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;    题目是个流量包，猜测目的流量包应该是在http或者https协议包中，那么过滤http协议再看看：
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img data-src=&#34;https://img-blog.csdnimg.cn/direct/9a92da7ed6184f04b141197f71a8e147.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img-blog.csdnimg.cn/direct/9a92da7ed6184f04b141197f71a8e147.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;    第三行发现一个POST包，跟进看看：
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img data-src=&#34;https://img-blog.csdnimg.cn/direct/72b07a3455d8486db4d2e28a24abf4d3.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img-blog.csdnimg.cn/direct/72b07a3455d8486db4d2e28a24abf4d3.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;    最后成功找到了flag  ：  flag&amp;#123;ffb7567a1d4f4abdffdb54e022f8facd&amp;#125;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;9-基础破解&#34;&gt;&lt;a href=&#34;#9-基础破解&#34; class=&#34;headerlink&#34; title=&#34;9.基础破解&#34;&gt;&lt;/a&gt;9.基础破解&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;    题目描述：给你一个压缩包，你并不能获得什么，因为他是四位数字加密的哈哈哈哈哈哈哈。。。不对= =我说了什么了不得的东西。。
@@ -91,17 +91,17 @@
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;11-L-S-B：&#34;&gt;&lt;a href=&#34;#11-L-S-B：&#34; class=&#34;headerlink&#34; title=&#34;11.L S B：&#34;&gt;&lt;/a&gt;11.L S B：&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;    这是一个图，看上去没啥用，根据题目，应该是L S B隐写，那么直接上Stegsolve。勾选这几个选项
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img data-src=&#34;https://img-blog.csdnimg.cn/direct/de50050858db4177acd11f838754f086.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img-blog.csdnimg.cn/direct/de50050858db4177acd11f838754f086.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;    然后保存图片，改后缀为png，然后直接扫二维码得到flag：  flag&amp;#123;&amp;#123;1sb_i4_s0_Ea4y&amp;#125;&amp;#125;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;12-zip伪加密：&#34;&gt;&lt;a href=&#34;#12-zip伪加密：&#34; class=&#34;headerlink&#34; title=&#34;12.zip伪加密：&#34;&gt;&lt;/a&gt;12.zip伪加密：&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;    附件是一个加了密的压缩包，通过010Editor打开
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img data-src=&#34;https://img-blog.csdnimg.cn/direct/f51667f74a544b16be996503c2b62061.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img-blog.csdnimg.cn/direct/f51667f74a544b16be996503c2b62061.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;    这儿的两个0900修改为0000，保存之后直接解压，完事儿了。
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;13-被嗅探的流量：&#34;&gt;&lt;a href=&#34;#13-被嗅探的流量：&#34; class=&#34;headerlink&#34; title=&#34;13.被嗅探的流量：&#34;&gt;&lt;/a&gt;13.被嗅探的流量：&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;    无脑过滤ftp，发现没有内容，再无脑过滤http协议，发现有几个内容，在这几个内容中看到了个请求，推测获取的内容是一个图片，然后跟随这个请求，最后得到了flag：
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img data-src=&#34;https://img-blog.csdnimg.cn/direct/0488c1498e724c6f8df812e22aaafc31.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img-blog.csdnimg.cn/direct/0488c1498e724c6f8df812e22aaafc31.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;14-rar：&#34;&gt;&lt;a href=&#34;#14-rar：&#34; class=&#34;headerlink&#34; title=&#34;14.rar：&#34;&gt;&lt;/a&gt;14.rar：&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;    题目描述：这个是一个rar文件，里面好像隐藏着什么秘密，但是压缩包被加密了，毫无保留的告诉你，rar的密码是4位纯数字。
 
     老规矩，直接用ARCHPR四位数数字密码一把梭，得到密码为8795，最后得到flag ： flag&amp;#123;1773c5da790bd3caff38e3decd180eb7&amp;#125;
@@ -110,7 +110,7 @@
 
     二维码，扫就完事儿了，flag&amp;#123;878865ce73370a4ce607d21ca01b5e59&amp;#125;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&#34;16-镜子里面的世界&#34;&gt;&lt;a href=&#34;#16-镜子里面的世界&#34; class=&#34;headerlink&#34; title=&#34;16.镜子里面的世界:&#34;&gt;&lt;/a&gt;16.镜子里面的世界:&lt;/h2&gt;&lt;p&gt;&lt;img data-src=&#34;https://img-blog.csdnimg.cn/direct/e4b5f99147c840178ed7c7a0e9dfd1ce.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;16-镜子里面的世界&#34;&gt;&lt;a href=&#34;#16-镜子里面的世界&#34; class=&#34;headerlink&#34; title=&#34;16.镜子里面的世界:&#34;&gt;&lt;/a&gt;16.镜子里面的世界:&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://img-blog.csdnimg.cn/direct/e4b5f99147c840178ed7c7a0e9dfd1ce.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;    根据附件名字，steg，推测应该是用Stegsolve来打开，所以，首先直接data extract最低位隐写，得到结果：
 &lt;/code&gt;&lt;/pre&gt;
 &lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;4865792049207468 696e6b2077652063  Hey I th ink we c&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;616e207772697465 20736166656c7920  an write  safely &lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;696e207468697320 66696c6520776974  in this  file wit&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;686f757420616e79 6f6e652073656569  hout any one seei&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6e672069742e2041 6e797761792c2074  ng it. A nyway, t&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6865207365637265 74206b6579206973  he secre t key is&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3a2073743367305f 7361757275735f77  : st3g0_ saurus_w&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7233636b73000000 0000000000000000  r3cks... ........&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
