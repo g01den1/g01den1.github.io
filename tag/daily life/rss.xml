@@ -10,11 +10,11 @@
         <category>CVE</category>
         <category>Web</category>
         <category>Daily life</category>
-        <category>Game</category>
-        <category>Java</category>
         <category>408</category>
         <category>Misc</category>
+        <category>Game</category>
         <category>Pwn</category>
+        <category>Java</category>
         <item>
             <guid isPermalink="true">https://g01den1.github.io/posts/27a95d1a.html</guid>
             <title>hexo部署服务器</title>
