@@ -9,12 +9,12 @@
         <lastBuildDate>Thu, 06 Jun 2024 19:39:33 +0800</lastBuildDate>
         <category>CVE</category>
         <category>Web</category>
-        <category>Game</category>
-        <category>408</category>
         <category>Daily life</category>
+        <category>Game</category>
         <category>Java</category>
-        <category>Pwn</category>
+        <category>408</category>
         <category>Misc</category>
+        <category>Pwn</category>
         <item>
             <guid isPermalink="true">https://g01den1.github.io/posts/4bf5e0ee.html</guid>
             <title>【2024】LitCTF</title>
