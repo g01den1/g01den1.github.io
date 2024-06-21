@@ -7,14 +7,14 @@
         <language>zh-CN</language>
         <pubDate>Tue, 18 Jun 2024 19:57:36 +0800</pubDate>
         <lastBuildDate>Tue, 18 Jun 2024 19:57:36 +0800</lastBuildDate>
+        <category>Daily life</category>
         <category>CVE</category>
         <category>Web</category>
-        <category>Daily life</category>
-        <category>408</category>
-        <category>Misc</category>
-        <category>Game</category>
-        <category>Pwn</category>
         <category>Java</category>
+        <category>Game</category>
+        <category>Misc</category>
+        <category>408</category>
+        <category>Pwn</category>
         <item>
             <guid isPermalink="true">https://g01den1.github.io/posts/2f610211.html</guid>
             <title>反弹shell</title>
