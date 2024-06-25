@@ -2,23 +2,23 @@
 <rss version="2.0">
     <channel>
         <title>golden的部落阁</title>
-        <link>https://g01den1.github.io</link>
+        <link>http://blog.g01den.top</link>
         <description>golden的部落阁</description>
         <language>zh-CN</language>
         <pubDate>Sun, 23 Jun 2024 18:49:18 +0800</pubDate>
         <lastBuildDate>Sun, 23 Jun 2024 18:49:18 +0800</lastBuildDate>
-        <category>Daily life</category>
-        <category>Java</category>
         <category>CVE</category>
         <category>Web</category>
+        <category>Daily life</category>
+        <category>Java</category>
+        <category>Game</category>
         <category>Misc</category>
         <category>408</category>
         <category>Pwn</category>
-        <category>Game</category>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/9b0d93f7.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/9b0d93f7.html</guid>
             <title>Pwn刷题记录（不停更新）</title>
-            <link>https://g01den1.github.io/posts/9b0d93f7.html</link>
+            <link>http://blog.g01den.top/posts/9b0d93f7.html</link>
             <category>Pwn</category>
             <pubDate>Sun, 23 Jun 2024 18:49:18 +0800</pubDate>
             <description><![CDATA[ &lt;h2 id=&#34;1、CTFshow-pwn04（基础canary）&#34;&gt;&lt;a href=&#34;#1、CTFshow-pwn04（基础canary）&#34; class=&#34;headerlink&#34; title=&#34;1、CTFshow-pwn04（基础canary）&#34;&gt;&lt;/a&gt;1、CTFshow-pwn04（基础canary）&lt;/h2&gt;&lt;p&gt;​		好久没碰过pwn了，今天临时做一道吧，毕竟刚联合了WSL和VSCode，想着试着做一道题看看，结果随手一点，就是一个很少接触的，拿来刷刷：&lt;/p&gt;
@@ -46,9 +46,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/d7e2e20f.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/d7e2e20f.html</guid>
             <title>pwn学习笔记（0）-事后补充</title>
-            <link>https://g01den1.github.io/posts/d7e2e20f.html</link>
+            <link>http://blog.g01den.top/posts/d7e2e20f.html</link>
             <category>Pwn</category>
             <pubDate>Sun, 23 Jun 2024 17:35:42 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;Pwn环境部署：&#34;&gt;&lt;a href=&#34;#Pwn环境部署：&#34; class=&#34;headerlink&#34; title=&#34;Pwn环境部署：&#34;&gt;&lt;/a&gt;Pwn环境部署：&lt;/h1&gt;&lt;h2 id=&#34;1、背景：&#34;&gt;&lt;a href=&#34;#1、背景：&#34; class=&#34;headerlink&#34; title=&#34;1、背景：&#34;&gt;&lt;/a&gt;1、背景：&lt;/h2&gt;&lt;p&gt;​		首先是在最开始的时候装环境此次碰壁，搞得没心思写这篇博客，其次，又因为虚拟机本身的问题，导致我对虚拟机有很强的不满，所以我最开始没有写这篇博客，但是，转念一想，为什么我必须得执着于 虚拟机呢？不是同样都是Linux吗，为啥我不直接采用 WSL 来部署 Pwn 环境呢？所以，这里我选择了重装了下 Pwn 环境，不过，因为我装好很大一部分之后才想起来记录博客，所以我只会把前面的内容简单记录一下，不进行二次实操了。&lt;/p&gt;
@@ -102,9 +102,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/2f610211.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/2f610211.html</guid>
             <title>反弹shell</title>
-            <link>https://g01den1.github.io/posts/2f610211.html</link>
+            <link>http://blog.g01den.top/posts/2f610211.html</link>
             <category>Web</category>
             <pubDate>Tue, 18 Jun 2024 19:57:36 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;反弹shell：&#34;&gt;&lt;a href=&#34;#反弹shell：&#34; class=&#34;headerlink&#34; title=&#34;反弹shell：&#34;&gt;&lt;/a&gt;反弹shell：&lt;/h1&gt;&lt;h2 id=&#34;简介&#34;&gt;&lt;a href=&#34;#简介&#34; class=&#34;headerlink&#34; title=&#34;简介;&#34;&gt;&lt;/a&gt;简介;&lt;/h2&gt;&lt;p&gt;​		反弹shell，就是攻击机监听在某个TCP&amp;#x2F;UDP端口为服务端，目标机主动发起请求到攻击机监听的端口，并将其命令行的输入输出转到攻击机。&lt;/p&gt;
@@ -187,9 +187,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/2bb7953f.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/2bb7953f.html</guid>
             <title>部分CVE复现Web（1）</title>
-            <link>https://g01den1.github.io/posts/2bb7953f.html</link>
+            <link>http://blog.g01den.top/posts/2bb7953f.html</link>
             <category>CVE</category>
             <category>Web</category>
             <pubDate>Mon, 17 Jun 2024 22:14:26 +0800</pubDate>
@@ -264,9 +264,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/2c763aa6.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/2c763aa6.html</guid>
             <title>数据结构-3、栈、队列和数组</title>
-            <link>https://g01den1.github.io/posts/2c763aa6.html</link>
+            <link>http://blog.g01den.top/posts/2c763aa6.html</link>
             <category>408</category>
             <pubDate>Sat, 15 Jun 2024 21:00:51 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;3-1、栈&#34;&gt;&lt;a href=&#34;#3-1、栈&#34; class=&#34;headerlink&#34; title=&#34;3.1、栈&#34;&gt;&lt;/a&gt;3.1、栈&lt;/h1&gt;&lt;h2 id=&#34;3-1-1、栈的基本概念：&#34;&gt;&lt;a href=&#34;#3-1-1、栈的基本概念：&#34; class=&#34;headerlink&#34; title=&#34;3.1.1、栈的基本概念：&#34;&gt;&lt;/a&gt;3.1.1、栈的基本概念：&lt;/h2&gt;&lt;h3 id=&#34;1、栈的定义：&#34;&gt;&lt;a href=&#34;#1、栈的定义：&#34; class=&#34;headerlink&#34; title=&#34;1、栈的定义：&#34;&gt;&lt;/a&gt;1、栈的定义：&lt;/h3&gt;&lt;p&gt;​	栈是只允许在一端进行插入或删除操作的线性表。首先，栈是一种线性表，但限定这种线性表只能在某一端进行插入和删除操作，如下图：&lt;/p&gt;
@@ -323,9 +323,9 @@
 &lt;h3 id=&#34;2、循环队列：&#34;&gt;&lt;a href=&#34;#2、循环队列：&#34; class=&#34;headerlink&#34; title=&#34;2、循环队列：&#34;&gt;&lt;/a&gt;2、循环队列：&lt;/h3&gt; ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/27a95d1a.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/27a95d1a.html</guid>
             <title>hexo部署服务器</title>
-            <link>https://g01den1.github.io/posts/27a95d1a.html</link>
+            <link>http://blog.g01den.top/posts/27a95d1a.html</link>
             <category>Daily life</category>
             <pubDate>Fri, 14 Jun 2024 20:14:55 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;背景：&#34;&gt;&lt;a href=&#34;#背景：&#34; class=&#34;headerlink&#34; title=&#34;背景：&#34;&gt;&lt;/a&gt;背景：&lt;/h1&gt;&lt;h2 id=&#34;笨办法：&#34;&gt;&lt;a href=&#34;#笨办法：&#34; class=&#34;headerlink&#34; title=&#34;笨办法：&#34;&gt;&lt;/a&gt;笨办法：&lt;/h2&gt;&lt;p&gt;​		我在经过无数次的尝试之后，发现无论我怎么操作，都存在一个问题，就是git无法成功推送到服务器，这个就很难办了，所以，个人感觉只有使用一个本办法才能操作了，如下：&lt;/p&gt;
@@ -337,9 +337,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/95e7063c.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/95e7063c.html</guid>
             <title>数据结构笔记-2、线性表</title>
-            <link>https://g01den1.github.io/posts/95e7063c.html</link>
+            <link>http://blog.g01den.top/posts/95e7063c.html</link>
             <category>408</category>
             <pubDate>Wed, 12 Jun 2024 15:08:37 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;2-1、线性表的定义和基本操作&#34;&gt;&lt;a href=&#34;#2-1、线性表的定义和基本操作&#34; class=&#34;headerlink&#34; title=&#34;2.1、线性表的定义和基本操作&#34;&gt;&lt;/a&gt;2.1、线性表的定义和基本操作&lt;/h1&gt;&lt;p&gt;如有侵权请联系删除。&lt;/p&gt;
@@ -490,9 +490,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/e3418ca3.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/e3418ca3.html</guid>
             <title>随机二次元图api相关</title>
-            <link>https://g01den1.github.io/posts/e3418ca3.html</link>
+            <link>http://blog.g01den.top/posts/e3418ca3.html</link>
             <category>Daily life</category>
             <pubDate>Tue, 11 Jun 2024 00:32:54 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;爬虫获取所有图片：&#34;&gt;&lt;a href=&#34;#爬虫获取所有图片：&#34; class=&#34;headerlink&#34; title=&#34;爬虫获取所有图片：&#34;&gt;&lt;/a&gt;爬虫获取所有图片：&lt;/h1&gt;&lt;h2 id=&#34;背景：&#34;&gt;&lt;a href=&#34;#背景：&#34; class=&#34;headerlink&#34; title=&#34;背景：&#34;&gt;&lt;/a&gt;背景：&lt;/h2&gt;&lt;p&gt;​		最近做一些Web题，发现了些网页的背景会随机出现，每一次刷新都会出现不一样的图，感觉有点意思，试着研究下，当然，肯定不是研究咋弄的这个，而是，api里的图怎么爬取：&lt;/p&gt;
@@ -512,9 +512,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/4bf5e0ee.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/4bf5e0ee.html</guid>
             <title>【2024】LitCTF</title>
-            <link>https://g01den1.github.io/posts/4bf5e0ee.html</link>
+            <link>http://blog.g01den.top/posts/4bf5e0ee.html</link>
             <category>Game</category>
             <pubDate>Thu, 06 Jun 2024 19:39:33 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;Misc：&#34;&gt;&lt;a href=&#34;#Misc：&#34; class=&#34;headerlink&#34; title=&#34;Misc：&#34;&gt;&lt;/a&gt;Misc：&lt;/h1&gt;&lt;h2 id=&#34;1、涐贪恋和伱、甾―⑺de毎兮毎秒：&#34;&gt;&lt;a href=&#34;#1、涐贪恋和伱、甾―⑺de毎兮毎秒：&#34; class=&#34;headerlink&#34; title=&#34;1、涐贪恋和伱、甾―⑺dé毎兮毎秒：&#34;&gt;&lt;/a&gt;1、涐贪恋和伱、甾―⑺dé毎兮毎秒：&lt;/h2&gt;&lt;p&gt;​	题目描述：laosebi，无脑LSB隐写，全取最低位的LSB隐写，拿到flag。有大佬直接&lt;a href=&#34;https://so.csdn.net/so/search?q=zsteg&amp;spm=1001.2101.3001.7020&#34;&gt;zsteg&lt;/a&gt;秒了，在这里提一下&lt;/p&gt;
@@ -619,9 +619,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/a929fb97.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/a929fb97.html</guid>
             <title>【2023】LitCTF</title>
-            <link>https://g01den1.github.io/posts/a929fb97.html</link>
+            <link>http://blog.g01den.top/posts/a929fb97.html</link>
             <category>Game</category>
             <pubDate>Wed, 05 Jun 2024 19:39:33 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;LitCTF2023（复现）&#34;&gt;&lt;a href=&#34;#LitCTF2023（复现）&#34; class=&#34;headerlink&#34; title=&#34;LitCTF2023（复现）&#34;&gt;&lt;/a&gt;LitCTF2023（复现）&lt;/h1&gt;&lt;h1 id=&#34;Web：&#34;&gt;&lt;a href=&#34;#Web：&#34; class=&#34;headerlink&#34; title=&#34;Web：&#34;&gt;&lt;/a&gt;Web：&lt;/h1&gt;&lt;h2 id=&#34;1、我Flag呢？&#34;&gt;&lt;a href=&#34;#1、我Flag呢？&#34; class=&#34;headerlink&#34; title=&#34;1、我Flag呢？&#34;&gt;&lt;/a&gt;1、我Flag呢？&lt;/h2&gt;&lt;p&gt;​	ctrl+u 读取源码，在最后发现了flag：&lt;/p&gt;
@@ -652,7 +652,7 @@
 
 &lt;h2 id=&#34;6、1zjs：&#34;&gt;&lt;a href=&#34;#6、1zjs：&#34; class=&#34;headerlink&#34; title=&#34;6、1zjs：&#34;&gt;&lt;/a&gt;6、1zjs：&lt;/h2&gt;&lt;p&gt;​	这个1z真的1点也不Ez  (&amp;gt;_&amp;lt;)&lt;/p&gt;
 &lt;p&gt;​	第一件事儿查看源码，发现文件.&amp;#x2F;dist&amp;#x2F;index.umd.js&lt;/p&gt;
-&lt;p&gt;​	在这个文件的注释中找到了一个文件：&lt;a href=&#34;mailto:&amp;#x66;&amp;#64;&amp;#x6b;&amp;#51;&amp;#x66;&amp;#x31;&amp;#x61;&amp;#103;&amp;#x2e;&amp;#x70;&amp;#104;&amp;#x70;&#34;&gt;&amp;#x66;&amp;#64;&amp;#x6b;&amp;#51;&amp;#x66;&amp;#x31;&amp;#x61;&amp;#103;&amp;#x2e;&amp;#x70;&amp;#104;&amp;#x70;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;​	在这个文件的注释中找到了一个文件：&lt;a href=&#34;mailto:&amp;#x66;&amp;#64;&amp;#107;&amp;#x33;&amp;#102;&amp;#x31;&amp;#97;&amp;#103;&amp;#46;&amp;#112;&amp;#x68;&amp;#x70;&#34;&gt;&amp;#x66;&amp;#64;&amp;#107;&amp;#x33;&amp;#102;&amp;#x31;&amp;#97;&amp;#103;&amp;#46;&amp;#112;&amp;#x68;&amp;#x70;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;​	之后访问这个文件：&lt;/p&gt;
 &lt;figure class=&#34;highlight js&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;(+[![]]+[])[+[]]+(+[]+([]+[])[([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+(+[]+([]+[])[([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]][([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[+!+[]]+(+(!+[]+!+[]+[+!+[]]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+!+[]+[+!+[]])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]])()(([]+[])[([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[+[]]+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]())[!+[]+!+[]]+(+[![]]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]][([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+!+[]]]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]][([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(![]+[])[+!+[]]+(+(!+[]+!+[]+[+!+[]]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+!+[]+[+!+[]])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]])()([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[(![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]]((+((+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+[+[]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+!+[]]])+[])[!+[]+!+[]]+[+!+[]])+(![]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]])()())[!+[]+!+[]+!+[]+[+[]]]+(+[]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]][([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]])[+!+[]+[+[]]]+(!![]+[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]])[!+[]+!+[]+[+[]]]+[+[]]+[]+(![]+[])[+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+[]+(![]+[])[+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+[]+[!+[]+!+[]+!+[]+!+[]]+[]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+[]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+[]+(+((+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+[+[]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+!+[]]])+[])[!+[]+!+[]]+(![]+[])[+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]]+[]+[+[]]+[]+[!+[]+!+[]]+[]+(+((+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+[+[]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+!+[]]])+[])[!+[]+!+[]]+[!+[]+!+[]+!+[]+!+[]]+[]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+[]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]+[+!+[]]+[]+(+((+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+[+[]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+!+[]]])+[])[!+[]+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+[]+(![]+[])[+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(+((+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+[+[]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+!+[]]])+[])[!+[]+!+[]]+[+[]]+[]+[+!+[]]+[]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]+[!+[]+!+[]]+[]+[!+[]+!+[]+!+[]+!+[]]+[]+[!+[]+!+[]+!+[]]+[]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+[]+(![]+[])[+!+[]]+([][(!![]+[])[!+[]+!+[]+!+[]]+([][[]]+[])[+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]+!+[]]]()+[])[!+[]+!+[]]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+[]+[+[]]+[]+[!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]+!+[]]+[]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[(![]+[])[!+[]+!+[]+!+[]]+(![]+[])[!+[]+!+[]]+([![]]+[][[]])[+!+[]+[+[]]]+([][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]+(![]+[])[!+[]+!+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]]((+((+(+!+[]+[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+[!+[]+!+[]]+[+[]])+[])[+!+[]]+[+[]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+[]]+[+!+[]]])+[])[!+[]+!+[]]+[+!+[]])&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 
@@ -860,9 +860,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/20a3be2d.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/20a3be2d.html</guid>
             <title>JavaWeb基础(一)-IO操作</title>
-            <link>https://g01den1.github.io/posts/20a3be2d.html</link>
+            <link>http://blog.g01den.top/posts/20a3be2d.html</link>
             <category>Java</category>
             <pubDate>Wed, 29 May 2024 22:16:55 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;Java-I-O工作机制：&#34;&gt;&lt;a href=&#34;#Java-I-O工作机制：&#34; class=&#34;headerlink&#34; title=&#34;Java I&amp;#x2F;O工作机制：&#34;&gt;&lt;/a&gt;Java I&amp;#x2F;O工作机制：&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;注：简要笔记，示例代码可能较少，甚至没有。&lt;/strong&gt;&lt;/p&gt;
@@ -939,9 +939,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/3d5d6561.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/3d5d6561.html</guid>
             <title>三、Servlet基础</title>
-            <link>https://g01den1.github.io/posts/3d5d6561.html</link>
+            <link>http://blog.g01den.top/posts/3d5d6561.html</link>
             <category>Java</category>
             <pubDate>Mon, 27 May 2024 12:07:54 +0800</pubDate>
             <description><![CDATA[ &lt;p&gt;&lt;strong&gt;注：因为我并不完全是为了从0开始Java开发，因此，我这里先暂时跳过第二章服务器环境相关的内容，直接开始第三章的内容。&lt;/strong&gt;&lt;/p&gt;
@@ -1042,12 +1042,12 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/3fe30769.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/3fe30769.html</guid>
             <title>一、Servlet和JSP技术概述</title>
-            <link>https://g01den1.github.io/posts/3fe30769.html</link>
+            <link>http://blog.g01den.top/posts/3fe30769.html</link>
             <category>Java</category>
             <pubDate>Sun, 26 May 2024 20:53:19 +0800</pubDate>
-            <description><![CDATA[ &lt;p&gt;&lt;strong&gt;注：该系列笔记是用于我在 《Servlet 与 JSP 核心编程》这本书中的学习笔记，无其他意思，侵权请联系&lt;a href=&#34;mailto:&amp;#x32;&amp;#48;&amp;#x38;&amp;#50;&amp;#48;&amp;#52;&amp;#53;&amp;#50;&amp;#50;&amp;#49;&amp;#x40;&amp;#113;&amp;#113;&amp;#x2e;&amp;#x63;&amp;#x6f;&amp;#x6d;&#34;&gt;&amp;#x32;&amp;#48;&amp;#x38;&amp;#50;&amp;#48;&amp;#52;&amp;#53;&amp;#50;&amp;#50;&amp;#49;&amp;#x40;&amp;#113;&amp;#113;&amp;#x2e;&amp;#x63;&amp;#x6f;&amp;#x6d;&lt;/a&gt;删除。&lt;/strong&gt;&lt;/p&gt;
+            <description><![CDATA[ &lt;p&gt;&lt;strong&gt;注：该系列笔记是用于我在 《Servlet 与 JSP 核心编程》这本书中的学习笔记，无其他意思，侵权请联系&lt;a href=&#34;mailto:&amp;#x32;&amp;#x30;&amp;#x38;&amp;#x32;&amp;#48;&amp;#x34;&amp;#53;&amp;#50;&amp;#x32;&amp;#49;&amp;#64;&amp;#x71;&amp;#113;&amp;#x2e;&amp;#x63;&amp;#111;&amp;#109;&#34;&gt;&amp;#x32;&amp;#x30;&amp;#x38;&amp;#x32;&amp;#48;&amp;#x34;&amp;#53;&amp;#50;&amp;#x32;&amp;#49;&amp;#64;&amp;#x71;&amp;#113;&amp;#x2e;&amp;#x63;&amp;#111;&amp;#109;&lt;/a&gt;删除。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;​	第一章内容较少，所以暂时有用的笔记也不多。&lt;/p&gt;
 &lt;h1 id=&#34;1-1、Servlet-的功用：&#34;&gt;&lt;a href=&#34;#1-1、Servlet-的功用：&#34; class=&#34;headerlink&#34; title=&#34;1.1、Servlet 的功用：&#34;&gt;&lt;/a&gt;1.1、Servlet 的功用：&lt;/h1&gt;&lt;p&gt;​	Servlet 是运行在 Web 服务器或应用服务器上的 Java 程序，它是一个，负责连接来自 Web 浏览器或其他 HTTP 客户程序的请求和 HTTP 服务器上的数据库或应用程序。Servlet 的工作是执行下面的任务，如图 1.1 所示：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://img-blog.csdnimg.cn/direct/764d654f16ff499ca886496abc121f94.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
@@ -1095,9 +1095,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/d63a55bd.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/d63a55bd.html</guid>
             <title>BUUCTF-Misc-第一页(1-16)</title>
-            <link>https://g01den1.github.io/posts/d63a55bd.html</link>
+            <link>http://blog.g01den.top/posts/d63a55bd.html</link>
             <category>Misc</category>
             <pubDate>Sat, 25 May 2024 20:10:34 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;Misc-BUU刷题-第一页&#34;&gt;&lt;a href=&#34;#Misc-BUU刷题-第一页&#34; class=&#34;headerlink&#34; title=&#34;Misc-BUU刷题-第一页&#34;&gt;&lt;/a&gt;Misc-BUU刷题-第一页&lt;/h1&gt;&lt;h2 id=&#34;1-签到：&#34;&gt;&lt;a href=&#34;#1-签到：&#34; class=&#34;headerlink&#34; title=&#34;1.签到：&#34;&gt;&lt;/a&gt;1.签到：&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;    flag在题目描述里，直接交了。
@@ -1199,9 +1199,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/7232a36b.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/7232a36b.html</guid>
             <title>小小的总结（日常发癫）</title>
-            <link>https://g01den1.github.io/posts/7232a36b.html</link>
+            <link>http://blog.g01den.top/posts/7232a36b.html</link>
             <category>Daily life</category>
             <pubDate>Tue, 21 May 2024 21:23:52 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;总地看看这个学期：&#34;&gt;&lt;a href=&#34;#总地看看这个学期：&#34; class=&#34;headerlink&#34; title=&#34;总地看看这个学期：&#34;&gt;&lt;/a&gt;总地看看这个学期：&lt;/h1&gt;&lt;p&gt;​		眨眼之间，我等的一个游戏快要公测了，原来是到了五月了。时间过得真快，这个学期感觉啥都没学就快要结束了。&lt;/p&gt;
@@ -1237,9 +1237,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/9dd9bec.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/9dd9bec.html</guid>
             <title>Ciscn2024</title>
-            <link>https://g01den1.github.io/posts/9dd9bec.html</link>
+            <link>http://blog.g01den.top/posts/9dd9bec.html</link>
             <category>Game</category>
             <pubDate>Mon, 20 May 2024 19:10:34 +0800</pubDate>
             <description><![CDATA[ &lt;h2 id=&#34;Web&#34;&gt;&lt;a href=&#34;#Web&#34; class=&#34;headerlink&#34; title=&#34;Web&#34;&gt;&lt;/a&gt;Web&lt;/h2&gt;&lt;h3 id=&#34;Simple-php&#34;&gt;&lt;a href=&#34;#Simple-php&#34; class=&#34;headerlink&#34; title=&#34;Simple_php&#34;&gt;&lt;/a&gt;Simple_php&lt;/h3&gt;&lt;p&gt;​		这个Simple_php一点儿也不Simple (⋟﹏⋞)&lt;br&gt;​		源码放这儿了：&lt;/p&gt;
@@ -1309,9 +1309,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/955175a5.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/955175a5.html</guid>
             <title>【2024】H&amp;NCTF</title>
-            <link>https://g01den1.github.io/posts/955175a5.html</link>
+            <link>http://blog.g01den.top/posts/955175a5.html</link>
             <category>Game</category>
             <pubDate>Fri, 17 May 2024 19:10:34 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;Web&#34;&gt;&lt;a href=&#34;#Web&#34; class=&#34;headerlink&#34; title=&#34;Web&#34;&gt;&lt;/a&gt;Web&lt;/h1&gt;&lt;h2 id=&#34;Please-RCE-Me&#34;&gt;&lt;a href=&#34;#Please-RCE-Me&#34; class=&#34;headerlink&#34; title=&#34;Please_RCE_Me&#34;&gt;&lt;/a&gt;Please_RCE_Me&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://img-blog.csdnimg.cn/img_convert/32f566d418dc4544b9e20d8d13411b66.png&#34; alt=&#34;Screenshot 2024-05-12 131227.png&#34;&gt;&lt;/p&gt;
@@ -1421,9 +1421,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/fe4eec6d.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/fe4eec6d.html</guid>
             <title>【2024】高校网络安全管理运维赛</title>
-            <link>https://g01den1.github.io/posts/fe4eec6d.html</link>
+            <link>http://blog.g01den.top/posts/fe4eec6d.html</link>
             <category>Game</category>
             <pubDate>Mon, 06 May 2024 19:10:34 +0800</pubDate>
             <description><![CDATA[ &lt;p&gt;比赛时间：2024-05-06&lt;/p&gt;
@@ -1509,9 +1509,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/88915f6f.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/88915f6f.html</guid>
             <title>无参数RCE的一些奇技淫巧</title>
-            <link>https://g01den1.github.io/posts/88915f6f.html</link>
+            <link>http://blog.g01den.top/posts/88915f6f.html</link>
             <category>Web</category>
             <pubDate>Sat, 06 Apr 2024 19:06:19 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;简述：&#34;&gt;&lt;a href=&#34;#简述：&#34; class=&#34;headerlink&#34; title=&#34;简述：&#34;&gt;&lt;/a&gt;简述：&lt;/h1&gt;&lt;p&gt;​	首先说一下什么是无参数RCE，对于很多时候，我们通常遇到PHP中存在eval函数的时候，一般是通过构造：&lt;/p&gt;
@@ -1641,9 +1641,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/efb4c08.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/efb4c08.html</guid>
             <title>pwn学习笔记（7）--堆相关源码</title>
-            <link>https://g01den1.github.io/posts/efb4c08.html</link>
+            <link>http://blog.g01den.top/posts/efb4c08.html</link>
             <category>Pwn</category>
             <pubDate>Mon, 25 Mar 2024 19:10:34 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;相关源码：&#34;&gt;&lt;a href=&#34;#相关源码：&#34; class=&#34;headerlink&#34; title=&#34;相关源码：&#34;&gt;&lt;/a&gt;相关源码：&lt;/h1&gt;&lt;h2 id=&#34;1-chunk-相关源码：&#34;&gt;&lt;a href=&#34;#1-chunk-相关源码：&#34; class=&#34;headerlink&#34; title=&#34;1. chunk 相关源码：&#34;&gt;&lt;/a&gt;1. chunk 相关源码：&lt;/h2&gt;&lt;p&gt;​	对于用户来说，只需要确保malloc()函数返回的内存不会发生溢出，并且在不用的时候使用free() 函数将其释放，以后也不再做任何操作即可。而对于glibc来说’它要在用户第一次调用malloc()函数之前对堆进行初始化；在用户频繁申请和释放时维护堆的结构’保证时间和空间上的效率；同时还要检测过程中可能产生的错误，并及时终止程序。&lt;/p&gt;

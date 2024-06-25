@@ -2,23 +2,23 @@
 <rss version="2.0">
     <channel>
         <title>golden的部落阁 • Posts by &#34;web&#34; category</title>
-        <link>https://g01den1.github.io</link>
+        <link>http://blog.g01den.top</link>
         <description>golden的部落阁</description>
         <language>zh-CN</language>
         <pubDate>Mon, 17 Jun 2024 22:14:26 +0800</pubDate>
         <lastBuildDate>Mon, 17 Jun 2024 22:14:26 +0800</lastBuildDate>
-        <category>Daily life</category>
-        <category>Java</category>
         <category>CVE</category>
         <category>Web</category>
+        <category>Daily life</category>
+        <category>Java</category>
+        <category>Game</category>
         <category>Misc</category>
         <category>408</category>
         <category>Pwn</category>
-        <category>Game</category>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/2bb7953f.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/2bb7953f.html</guid>
             <title>部分CVE复现Web（1）</title>
-            <link>https://g01den1.github.io/posts/2bb7953f.html</link>
+            <link>http://blog.g01den.top/posts/2bb7953f.html</link>
             <category>CVE</category>
             <category>Web</category>
             <pubDate>Mon, 17 Jun 2024 22:14:26 +0800</pubDate>

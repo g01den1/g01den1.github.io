@@ -2,23 +2,23 @@
 <rss version="2.0">
     <channel>
         <title>golden的部落阁 • Posts by &#34;java&#34; tag</title>
-        <link>https://g01den1.github.io</link>
+        <link>http://blog.g01den.top</link>
         <description>golden的部落阁</description>
         <language>zh-CN</language>
         <pubDate>Wed, 29 May 2024 22:16:55 +0800</pubDate>
         <lastBuildDate>Wed, 29 May 2024 22:16:55 +0800</lastBuildDate>
-        <category>Daily life</category>
-        <category>Java</category>
         <category>CVE</category>
         <category>Web</category>
+        <category>Daily life</category>
+        <category>Java</category>
+        <category>Game</category>
         <category>Misc</category>
         <category>408</category>
         <category>Pwn</category>
-        <category>Game</category>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/20a3be2d.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/20a3be2d.html</guid>
             <title>JavaWeb基础(一)-IO操作</title>
-            <link>https://g01den1.github.io/posts/20a3be2d.html</link>
+            <link>http://blog.g01den.top/posts/20a3be2d.html</link>
             <category>Java</category>
             <pubDate>Wed, 29 May 2024 22:16:55 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;Java-I-O工作机制：&#34;&gt;&lt;a href=&#34;#Java-I-O工作机制：&#34; class=&#34;headerlink&#34; title=&#34;Java I&amp;#x2F;O工作机制：&#34;&gt;&lt;/a&gt;Java I&amp;#x2F;O工作机制：&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;注：简要笔记，示例代码可能较少，甚至没有。&lt;/strong&gt;&lt;/p&gt;
@@ -95,9 +95,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/3d5d6561.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/3d5d6561.html</guid>
             <title>三、Servlet基础</title>
-            <link>https://g01den1.github.io/posts/3d5d6561.html</link>
+            <link>http://blog.g01den.top/posts/3d5d6561.html</link>
             <category>Java</category>
             <pubDate>Mon, 27 May 2024 12:07:54 +0800</pubDate>
             <description><![CDATA[ &lt;p&gt;&lt;strong&gt;注：因为我并不完全是为了从0开始Java开发，因此，我这里先暂时跳过第二章服务器环境相关的内容，直接开始第三章的内容。&lt;/strong&gt;&lt;/p&gt;
@@ -198,12 +198,12 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/3fe30769.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/3fe30769.html</guid>
             <title>一、Servlet和JSP技术概述</title>
-            <link>https://g01den1.github.io/posts/3fe30769.html</link>
+            <link>http://blog.g01den.top/posts/3fe30769.html</link>
             <category>Java</category>
             <pubDate>Sun, 26 May 2024 20:53:19 +0800</pubDate>
-            <description><![CDATA[ &lt;p&gt;&lt;strong&gt;注：该系列笔记是用于我在 《Servlet 与 JSP 核心编程》这本书中的学习笔记，无其他意思，侵权请联系&lt;a href=&#34;mailto:&amp;#x32;&amp;#48;&amp;#x38;&amp;#50;&amp;#48;&amp;#52;&amp;#53;&amp;#50;&amp;#50;&amp;#49;&amp;#x40;&amp;#113;&amp;#113;&amp;#x2e;&amp;#x63;&amp;#x6f;&amp;#x6d;&#34;&gt;&amp;#x32;&amp;#48;&amp;#x38;&amp;#50;&amp;#48;&amp;#52;&amp;#53;&amp;#50;&amp;#50;&amp;#49;&amp;#x40;&amp;#113;&amp;#113;&amp;#x2e;&amp;#x63;&amp;#x6f;&amp;#x6d;&lt;/a&gt;删除。&lt;/strong&gt;&lt;/p&gt;
+            <description><![CDATA[ &lt;p&gt;&lt;strong&gt;注：该系列笔记是用于我在 《Servlet 与 JSP 核心编程》这本书中的学习笔记，无其他意思，侵权请联系&lt;a href=&#34;mailto:&amp;#x32;&amp;#x30;&amp;#x38;&amp;#x32;&amp;#48;&amp;#x34;&amp;#53;&amp;#50;&amp;#x32;&amp;#49;&amp;#64;&amp;#x71;&amp;#113;&amp;#x2e;&amp;#x63;&amp;#111;&amp;#109;&#34;&gt;&amp;#x32;&amp;#x30;&amp;#x38;&amp;#x32;&amp;#48;&amp;#x34;&amp;#53;&amp;#50;&amp;#x32;&amp;#49;&amp;#64;&amp;#x71;&amp;#113;&amp;#x2e;&amp;#x63;&amp;#111;&amp;#109;&lt;/a&gt;删除。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;​	第一章内容较少，所以暂时有用的笔记也不多。&lt;/p&gt;
 &lt;h1 id=&#34;1-1、Servlet-的功用：&#34;&gt;&lt;a href=&#34;#1-1、Servlet-的功用：&#34; class=&#34;headerlink&#34; title=&#34;1.1、Servlet 的功用：&#34;&gt;&lt;/a&gt;1.1、Servlet 的功用：&lt;/h1&gt;&lt;p&gt;​	Servlet 是运行在 Web 服务器或应用服务器上的 Java 程序，它是一个，负责连接来自 Web 浏览器或其他 HTTP 客户程序的请求和 HTTP 服务器上的数据库或应用程序。Servlet 的工作是执行下面的任务，如图 1.1 所示：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://img-blog.csdnimg.cn/direct/764d654f16ff499ca886496abc121f94.png#pic_center&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;

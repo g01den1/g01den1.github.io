@@ -2,23 +2,23 @@
 <rss version="2.0">
     <channel>
         <title>golden的部落阁 • Posts by &#34;misc&#34; tag</title>
-        <link>https://g01den1.github.io</link>
+        <link>http://blog.g01den.top</link>
         <description>golden的部落阁</description>
         <language>zh-CN</language>
         <pubDate>Sat, 25 May 2024 20:10:34 +0800</pubDate>
         <lastBuildDate>Sat, 25 May 2024 20:10:34 +0800</lastBuildDate>
-        <category>Daily life</category>
-        <category>Java</category>
         <category>CVE</category>
         <category>Web</category>
+        <category>Daily life</category>
+        <category>Java</category>
+        <category>Game</category>
         <category>Misc</category>
         <category>408</category>
         <category>Pwn</category>
-        <category>Game</category>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/d63a55bd.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/d63a55bd.html</guid>
             <title>BUUCTF-Misc-第一页(1-16)</title>
-            <link>https://g01den1.github.io/posts/d63a55bd.html</link>
+            <link>http://blog.g01den.top/posts/d63a55bd.html</link>
             <category>Misc</category>
             <pubDate>Sat, 25 May 2024 20:10:34 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;Misc-BUU刷题-第一页&#34;&gt;&lt;a href=&#34;#Misc-BUU刷题-第一页&#34; class=&#34;headerlink&#34; title=&#34;Misc-BUU刷题-第一页&#34;&gt;&lt;/a&gt;Misc-BUU刷题-第一页&lt;/h1&gt;&lt;h2 id=&#34;1-签到：&#34;&gt;&lt;a href=&#34;#1-签到：&#34; class=&#34;headerlink&#34; title=&#34;1.签到：&#34;&gt;&lt;/a&gt;1.签到：&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;    flag在题目描述里，直接交了。

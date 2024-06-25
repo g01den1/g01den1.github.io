@@ -2,23 +2,23 @@
 <rss version="2.0">
     <channel>
         <title>golden的部落阁 • Posts by &#34;发电日常&#34; category</title>
-        <link>https://g01den1.github.io</link>
+        <link>http://blog.g01den.top</link>
         <description>golden的部落阁</description>
         <language>zh-CN</language>
         <pubDate>Fri, 14 Jun 2024 20:14:55 +0800</pubDate>
         <lastBuildDate>Fri, 14 Jun 2024 20:14:55 +0800</lastBuildDate>
-        <category>Daily life</category>
-        <category>Java</category>
         <category>CVE</category>
         <category>Web</category>
+        <category>Daily life</category>
+        <category>Java</category>
+        <category>Game</category>
         <category>Misc</category>
         <category>408</category>
         <category>Pwn</category>
-        <category>Game</category>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/27a95d1a.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/27a95d1a.html</guid>
             <title>hexo部署服务器</title>
-            <link>https://g01den1.github.io/posts/27a95d1a.html</link>
+            <link>http://blog.g01den.top/posts/27a95d1a.html</link>
             <category>Daily life</category>
             <pubDate>Fri, 14 Jun 2024 20:14:55 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;背景：&#34;&gt;&lt;a href=&#34;#背景：&#34; class=&#34;headerlink&#34; title=&#34;背景：&#34;&gt;&lt;/a&gt;背景：&lt;/h1&gt;&lt;h2 id=&#34;笨办法：&#34;&gt;&lt;a href=&#34;#笨办法：&#34; class=&#34;headerlink&#34; title=&#34;笨办法：&#34;&gt;&lt;/a&gt;笨办法：&lt;/h2&gt;&lt;p&gt;​		我在经过无数次的尝试之后，发现无论我怎么操作，都存在一个问题，就是git无法成功推送到服务器，这个就很难办了，所以，个人感觉只有使用一个本办法才能操作了，如下：&lt;/p&gt;
@@ -30,9 +30,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/e3418ca3.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/e3418ca3.html</guid>
             <title>随机二次元图api相关</title>
-            <link>https://g01den1.github.io/posts/e3418ca3.html</link>
+            <link>http://blog.g01den.top/posts/e3418ca3.html</link>
             <category>Daily life</category>
             <pubDate>Tue, 11 Jun 2024 00:32:54 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;爬虫获取所有图片：&#34;&gt;&lt;a href=&#34;#爬虫获取所有图片：&#34; class=&#34;headerlink&#34; title=&#34;爬虫获取所有图片：&#34;&gt;&lt;/a&gt;爬虫获取所有图片：&lt;/h1&gt;&lt;h2 id=&#34;背景：&#34;&gt;&lt;a href=&#34;#背景：&#34; class=&#34;headerlink&#34; title=&#34;背景：&#34;&gt;&lt;/a&gt;背景：&lt;/h2&gt;&lt;p&gt;​		最近做一些Web题，发现了些网页的背景会随机出现，每一次刷新都会出现不一样的图，感觉有点意思，试着研究下，当然，肯定不是研究咋弄的这个，而是，api里的图怎么爬取：&lt;/p&gt;
@@ -52,9 +52,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">https://g01den1.github.io/posts/7232a36b.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/7232a36b.html</guid>
             <title>小小的总结（日常发癫）</title>
-            <link>https://g01den1.github.io/posts/7232a36b.html</link>
+            <link>http://blog.g01den.top/posts/7232a36b.html</link>
             <category>Daily life</category>
             <pubDate>Tue, 21 May 2024 21:23:52 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;总地看看这个学期：&#34;&gt;&lt;a href=&#34;#总地看看这个学期：&#34; class=&#34;headerlink&#34; title=&#34;总地看看这个学期：&#34;&gt;&lt;/a&gt;总地看看这个学期：&lt;/h1&gt;&lt;p&gt;​		眨眼之间，我等的一个游戏快要公测了，原来是到了五月了。时间过得真快，这个学期感觉啥都没学就快要结束了。&lt;/p&gt;
