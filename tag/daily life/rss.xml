@@ -5,16 +5,32 @@
         <link>http://blog.g01den.top</link>
         <description>golden的部落阁</description>
         <language>zh-CN</language>
-        <pubDate>Fri, 14 Jun 2024 20:14:55 +0800</pubDate>
-        <lastBuildDate>Fri, 14 Jun 2024 20:14:55 +0800</lastBuildDate>
+        <pubDate>Thu, 27 Jun 2024 17:36:38 +0800</pubDate>
+        <lastBuildDate>Thu, 27 Jun 2024 17:36:38 +0800</lastBuildDate>
+        <category>Java</category>
+        <category>Daily life</category>
+        <category>Game</category>
+        <category>Misc</category>
+        <category>408</category>
+        <category>Pwn</category>
         <category>CVE</category>
         <category>Web</category>
-        <category>Game</category>
-        <category>Daily life</category>
-        <category>Java</category>
-        <category>Pwn</category>
-        <category>408</category>
-        <category>Misc</category>
+        <item>
+            <guid isPermalink="true">http://blog.g01den.top/posts/ef2fddc9.html</guid>
+            <title>arcaea闲谈</title>
+            <link>http://blog.g01den.top/posts/ef2fddc9.html</link>
+            <category>Daily life</category>
+            <pubDate>Thu, 27 Jun 2024 17:36:38 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;1、关于我对这些谱面的评价：&#34;&gt;&lt;a href=&#34;#1、关于我对这些谱面的评价：&#34; class=&#34;headerlink&#34; title=&#34;1、关于我对这些谱面的评价：&#34;&gt;&lt;/a&gt;1、关于我对这些谱面的评价：&lt;/h1&gt;&lt;p&gt;​		我只会挑一些我印象比较深的谱面来说。&lt;/p&gt;
+&lt;h2 id=&#34;9-：&#34;&gt;&lt;a href=&#34;#9-：&#34; class=&#34;headerlink&#34; title=&#34;&amp;lt;1&amp;gt;9+：&#34;&gt;&lt;/a&gt;&amp;lt;1&amp;gt;9+：&lt;/h2&gt;&lt;h3 id=&#34;（1）sulfer（硫磺）：&#34;&gt;&lt;a href=&#34;#（1）sulfer（硫磺）：&#34; class=&#34;headerlink&#34; title=&#34;（1）sulfer（硫磺）：&#34;&gt;&lt;/a&gt;（1）sulfer（硫磺）：&lt;/h3&gt;&lt;p&gt;​		&lt;img src=&#34;https://gitee.com/gou-dengyue/images/raw/master/IMG_1343.PNG&#34; alt=&#34;IMG_1343&#34;&gt;&lt;/p&gt;
+&lt;p&gt;​		9+首pm的歌，神谱无需多言，大量的地面交互以及天地交互虽然给不少花紫人带来了巨大的挑战，但是，身为一首9+，它给我们带来的不只是交互力的提升，还有任我们疯狂压榨的ptt，在我花紫以及红框时期，这谱给我的ptt带来了至少0.2的提升妥妥的榨汁机。&lt;/p&gt;
+&lt;h2 id=&#34;10：&#34;&gt;&lt;a href=&#34;#10：&#34; class=&#34;headerlink&#34; title=&#34;&amp;lt;2&amp;gt;10：&#34;&gt;&lt;/a&gt;&amp;lt;2&amp;gt;10：&lt;/h2&gt;&lt;h3 id=&#34;（1）sheriruth（黑魔王-：&#34;&gt;&lt;a href=&#34;#（1）sheriruth（黑魔王-：&#34; class=&#34;headerlink&#34; title=&#34;（1）sheriruth（黑魔王)：&#34;&gt;&lt;/a&gt;（1）sheriruth（黑魔王)：&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://gitee.com/gou-dengyue/images/raw/master/IMG_1345.PNG&#34;&gt;&lt;/p&gt;
+&lt;p&gt;​		谱确实不错，但是，耐不住我在花紫甚至没到花紫的时候高强度越级导致了手癖，最后一直收不了。&lt;/p&gt;
+&lt;p&gt;​		总的来说下吧，前面的交互很不错，要求一定的协调性，以及要求一定的底力。在我严重手癖的情况下感觉尾杀稍微有点脑裂以外，其他的整体很不错，神谱。&lt;/p&gt;
+&lt;h3 id=&#34;（2）&#34;&gt;&lt;a href=&#34;#（2）&#34; class=&#34;headerlink&#34; title=&#34;（2）&#34;&gt;&lt;/a&gt;（2）&lt;/h3&gt;&lt;h2 id=&#34;10-：&#34;&gt;&lt;a href=&#34;#10-：&#34; class=&#34;headerlink&#34; title=&#34;&amp;lt;3&amp;gt;10+：&#34;&gt;&lt;/a&gt;&amp;lt;3&amp;gt;10+：&lt;/h2&gt;&lt;h3 id=&#34;（1）Cyaegha（绿魔王）：&#34;&gt;&lt;a href=&#34;#（1）Cyaegha（绿魔王）：&#34; class=&#34;headerlink&#34; title=&#34;（1）Cyaegha（绿魔王）：&#34;&gt;&lt;/a&gt;（1）Cyaegha（绿魔王）：&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://gitee.com/gou-dengyue/images/raw/master/IMG_1127.PNG&#34; alt=&#34;IMG_1127&#34;&gt;&lt;/p&gt;
+&lt;p&gt;​		神谱。前面双押海虽然很让人脑裂，但是，只要习惯外加背谱来打的话，就会发现，并没有那么难了，并且这谱后面爽到极致，尾杀部分难度甚至感觉不如某些10.0，纯纯的爽谱，在爽谱中排名前列。&lt;/p&gt;
+ ]]></description>
+        </item>
         <item>
             <guid isPermalink="true">http://blog.g01den.top/posts/27a95d1a.html</guid>
             <title>hexo部署服务器</title>
