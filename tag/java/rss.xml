@@ -7,14 +7,14 @@
         <language>zh-CN</language>
         <pubDate>Wed, 29 May 2024 22:16:55 +0800</pubDate>
         <lastBuildDate>Wed, 29 May 2024 22:16:55 +0800</lastBuildDate>
-        <category>CVE</category>
-        <category>Web</category>
         <category>Game</category>
         <category>Daily life</category>
-        <category>Pwn</category>
         <category>Java</category>
-        <category>408</category>
+        <category>CVE</category>
+        <category>Web</category>
         <category>Misc</category>
+        <category>408</category>
+        <category>Pwn</category>
         <item>
             <guid isPermalink="true">http://blog.g01den.top/posts/20a3be2d.html</guid>
             <title>JavaWeb基础(一)-IO操作</title>
