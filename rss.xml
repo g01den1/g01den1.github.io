@@ -5,16 +5,121 @@
         <link>http://blog.g01den.top</link>
         <description>golden的部落阁</description>
         <language>zh-CN</language>
-        <pubDate>Fri, 09 Aug 2024 02:55:43 +0800</pubDate>
-        <lastBuildDate>Fri, 09 Aug 2024 02:55:43 +0800</lastBuildDate>
+        <pubDate>Sat, 14 Sep 2024 16:55:17 +0800</pubDate>
+        <lastBuildDate>Sat, 14 Sep 2024 16:55:17 +0800</lastBuildDate>
         <category>CVE</category>
         <category>Web</category>
         <category>Game</category>
-        <category>408</category>
         <category>Daily life</category>
-        <category>Misc</category>
         <category>Pwn</category>
         <category>Java</category>
+        <category>408</category>
+        <category>Misc</category>
+        <item>
+            <guid isPermalink="true">http://blog.g01den.top/posts/97a7dff3.html</guid>
+            <title>ctfshow-信息搜集</title>
+            <link>http://blog.g01den.top/posts/97a7dff3.html</link>
+            <category>Web</category>
+            <pubDate>Sat, 14 Sep 2024 16:55:17 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;web1&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web1&#34;&gt;#&lt;/a&gt; Web1：&lt;/h1&gt;
+&lt;p&gt;​		题目描述：开发注释未及时删除 。&lt;/p&gt;
+&lt;p&gt;​		打开题目后提示 web1:where is flag?&lt;/p&gt;
+&lt;p&gt;​		ctrl+u 读取源码。&lt;/p&gt;
+&lt;h1 id=&#34;web2&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web2&#34;&gt;#&lt;/a&gt; Web2：&lt;/h1&gt;
+&lt;p&gt;​		题目描述：js 前台拦截 === 无效操作&lt;/p&gt;
+&lt;p&gt;​		打开题目后显示：无法查看源代码&lt;/p&gt;
+&lt;p&gt;​		右键无法用，但是 ctrl+u 可以用。&lt;/p&gt;
+&lt;h1 id=&#34;web3&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web3&#34;&gt;#&lt;/a&gt; Web3：&lt;/h1&gt;
+&lt;p&gt;​		提示要抓包，那就抓包，发送到 repeater，响应头里发现 flag。&lt;/p&gt;
+&lt;h1 id=&#34;web4&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web4&#34;&gt;#&lt;/a&gt; Web4：&lt;/h1&gt;
+&lt;p&gt;​		题目描述：总有人把后台地址写入 robots，帮黑阔大佬们引路。&lt;/p&gt;
+&lt;p&gt;​		基础知识：Robots 协议（也称&lt;a href=&#34;https://so.csdn.net/so/search?q=%E7%88%AC%E8%99%AB&amp;amp;spm=1001.2101.3001.7020&#34;&gt;爬虫&lt;/a&gt;协议，机器人协议等）的全称是 “网络爬虫排除协议”，网站通过 Robots 协议告诉搜索引擎哪些页面可以抓取，哪些页面不能抓取。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Robots 参数：&lt;/p&gt;
+&lt;p&gt;User-agent：&lt;/p&gt;
+&lt;p&gt;作用：用于描述搜索引擎蜘蛛的名字；&lt;/p&gt;
+&lt;p&gt;技巧：&lt;/p&gt;
+&lt;p&gt;1，当 robots.txt 不为空的时候，必须至少有一条 user-agent 的记录；&lt;/p&gt;
+&lt;p&gt;2，相同名字，只能有一条，但是不同的蜘蛛，可以有多条记录；&lt;/p&gt;
+&lt;p&gt;Disallow：&lt;/p&gt;
+&lt;p&gt;作用：用于描述不允许搜索引擎蜘蛛爬行和抓取的 url；&lt;/p&gt;
+&lt;p&gt;使用技巧：&lt;/p&gt;
+&lt;p&gt;在 robots.txt 中至少要有一条 disallow；&lt;br&gt;
+Disallow 记录为空，则表示网站所有页面都允许被抓取；&lt;br&gt;
+使用 disallow，每个页面必须单独分开声明；&lt;br&gt;
+注意 disallow：/abc/ 和 disallow：/abc 的区别；&lt;/p&gt;
+&lt;p&gt;Allow：&lt;/p&gt;
+&lt;p&gt;作用：用于描述搜索引擎蜘蛛爬行和抓取的 url；&lt;/p&gt;
+&lt;p&gt;使用技巧：搜索引擎默认所有的 url 是 Allow；&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;​		访问 robots.txt 文件发现如下：&lt;/p&gt;
+&lt;figure class=&#34;highlight tex&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;User-agent: *&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;Disallow: /flagishere.txt&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;​		访问这个文件后得到 flag。&lt;/p&gt;
+&lt;h1 id=&#34;web5&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web5&#34;&gt;#&lt;/a&gt; Web5：&lt;/h1&gt;
+&lt;p&gt;​		题目描述：phps 源码泄露有时候能帮上忙&lt;/p&gt;
+&lt;p&gt;​		前置知识：&lt;strong&gt;phps 文件&lt;/strong&gt;就是 php 的源代码文件，通常用于提供给用户（访问者）直接通过 Web 浏览器查看 php 代码的内容。&lt;/p&gt;
+&lt;p&gt;​		访问 index.phps 文件下载后打开即可得到 flag。&lt;/p&gt;
+&lt;h1 id=&#34;web6&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web6&#34;&gt;#&lt;/a&gt; Web6：&lt;/h1&gt;
+&lt;p&gt;​		题目描述：解压源码到当前目录，测试正常，收工&lt;/p&gt;
+&lt;figure class=&#34;highlight tex&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;  常见的网站源码备份文件后缀：&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;tar&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;tar.gz&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;zip&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;rar&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  常见的网站源码备份文件名：&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;web&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;website&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;backup&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;back&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;www&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;wwwroot&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;temp&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;​		访问 www.zip 获得源码，里面有 flag。&lt;/p&gt;
+&lt;h1 id=&#34;web7&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web7&#34;&gt;#&lt;/a&gt; Web7：&lt;/h1&gt;
+&lt;p&gt;​		题目描述：版本控制很重要，但不要部署到生产环境更重要。&lt;/p&gt;
+&lt;p&gt;​		git 泄露，直接访问 /.git/ 即可，或者 Githack 一把梭。&lt;/p&gt;
+&lt;h1 id=&#34;web8&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web8&#34;&gt;#&lt;/a&gt; Web8：&lt;/h1&gt;
+&lt;p&gt;​		题目描述：版本控制很重要，但不要部署到生产环境更重要。&lt;/p&gt;
+&lt;p&gt;​		.svn 泄露，直接访问。&lt;/p&gt;
+&lt;h1 id=&#34;web9&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web9&#34;&gt;#&lt;/a&gt; Web9：&lt;/h1&gt;
+&lt;p&gt;​		题目描述：发现网页有个错别字？赶紧在生产环境 vim 改下，不好，死机了&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;	vim泄露：当vim异常退出时，都会生成一个用于备份缓冲区内容的swp临时文件，来记录了用户在非正常关闭vim编辑器之前未能及时保存的修改，用于文件恢复。假如原文件名为index.php
+
+第一次产生的交换文件名为.index.php.swp
+第二次产生的交换文件名为.index.php.swo
+第三次产生的交换文件名为.index.php.swn
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;​		访问这个文件 &lt;code&gt;index.php.swp&lt;/code&gt; ，然后记事本打开拿到 flag。&lt;/p&gt;
+&lt;h1 id=&#34;web10&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web10&#34;&gt;#&lt;/a&gt; Web10：&lt;/h1&gt;
+&lt;p&gt;​		题目描述：cookie 只是一块饼干，不能存放任何隐私数据。&lt;/p&gt;
+&lt;p&gt;​		抓包，在 cookie 处发现 flag。&lt;/p&gt;
+&lt;h1 id=&#34;web11&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web11&#34;&gt;#&lt;/a&gt; Web11：&lt;/h1&gt;
+&lt;p&gt;​		题目描述：域名其实也可以隐藏信息，&lt;a href=&#34;http://xn--flag-f96g315g.ctfshow.com&#34;&gt;比如 flag.ctfshow.com&lt;/a&gt; 就隐藏了一条信息&lt;/p&gt;
+&lt;p&gt;​		&lt;a href=&#34;https://boce.aliyun.com/home%E9%87%8C%E9%9D%A2%E6%9F%A5%E4%BF%A1%E6%81%AF%EF%BC%8C%E4%BD%86%E6%98%AF%E6%88%91%E4%B8%8D%E7%9F%A5%E9%81%93%E4%B8%BA%E5%95%A5%E6%9F%A5%E4%B8%8D%E5%88%B0%EF%BC%8C%E4%B8%8D%E7%AE%A1%E4%BA%86%E3%80%82&#34;&gt;https://boce.aliyun.com/home 里面查信息，但是我不知道为啥查不到，不管了。&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;web12&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web12&#34;&gt;#&lt;/a&gt; Web12：&lt;/h1&gt;
+&lt;p&gt;​		题目描述：有时候网站上的公开信息，就是管理员常用密码&lt;/p&gt;
+&lt;p&gt;​		访问 robots.txt 获取一些信息，就是 /admin/ 目录，访问后弹出来了个登陆框，密码一般是 admin，密码在 index 页面最下面：&lt;/p&gt;
+&lt;figure class=&#34;highlight tex&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;Help Line Number : 372619038&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h1 id=&#34;web13&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web13&#34;&gt;#&lt;/a&gt; Web13：&lt;/h1&gt;
+&lt;p&gt;​		题目描述：技术文档里面不要出现敏感信息，部署到生产环境后及时修改默认密码&lt;/p&gt;
+&lt;p&gt;​		读源码，发现 document.pdf 文件，打开发现了账号密码和一个页面，进入这个文件后登陆发现 flag。&lt;/p&gt;
+&lt;h1 id=&#34;web14&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web14&#34;&gt;#&lt;/a&gt; Web14：&lt;/h1&gt;
+&lt;p&gt;​		题目描述：有时候源码里面就能不经意间泄露重要 (editor) 的信息，默认配置害死人&lt;/p&gt;
+&lt;p&gt;​		直接访问 /editor/ 目录，点插入文件，找到 flag 文件的大致文件结构，相对路径访问即可得到 flag。&lt;/p&gt;
+&lt;h1 id=&#34;web15&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web15&#34;&gt;#&lt;/a&gt; Web15：&lt;/h1&gt;
+&lt;p&gt;​		题目描述；公开的信息比如邮箱，可能造成信息泄露，产生严重后果&lt;/p&gt;
+&lt;p&gt;​		社工题，对真正技术没啥太大的关系。&lt;/p&gt;
+&lt;p&gt;​		直接拉到最下边，电话号码和邮箱都有，url 直接访问 admin，进入登陆后台，之后就是忘记密码，提示：我的所在地是哪个城市？根据 qq 邮箱的 qq 号发现属地，通过这个修改密码即可。&lt;/p&gt;
+&lt;h1 id=&#34;web16&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web16&#34;&gt;#&lt;/a&gt; Web16：&lt;/h1&gt;
+&lt;p&gt;​		题目描述：对于测试用的探针，使用完毕后要及时删除，可能会造成信息泄露&lt;/p&gt;
+&lt;p&gt;​		有大佬用 Wappalyzer 检测到了 PHP，但是访问 tz.php 的原因是啥不是很清楚。打开 tz.php 之后找到 PHP 相关参数，打开 PHPIINFO 然后搜索 ctfshow 即可发现 flag。&lt;/p&gt;
+&lt;h1 id=&#34;web17&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web17&#34;&gt;#&lt;/a&gt; Web17：&lt;/h1&gt;
+&lt;p&gt;​		题目描述：备份的 sql 文件会泄露敏感信息&lt;/p&gt;
+&lt;p&gt;​		sql 文件的备份一般为 backup.sql，所以访问下载这个文件，记事本打开之后找到了如下语句：&lt;/p&gt;
+&lt;figure class=&#34;highlight sql&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;INSERT&lt;/span&gt; &lt;span class=&#34;keyword&#34;&gt;INTO&lt;/span&gt; `ctfshow_secret` &lt;span class=&#34;keyword&#34;&gt;VALUES&lt;/span&gt; (&lt;span class=&#34;string&#34;&gt;&amp;#x27;ctfshow&amp;#123;40b3ed5b-2454-49c7-a6ad-77e5cc738e2f&amp;#125;&amp;#x27;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h1 id=&#34;web18&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web18&#34;&gt;#&lt;/a&gt; Web18：&lt;/h1&gt;
+&lt;p&gt;​		题目描述：不要着急，休息，休息一会儿，玩 101 分给你 flag&lt;/p&gt;
+&lt;p&gt;​		读 js 源码，找到以下逻辑：&lt;/p&gt;
+&lt;figure class=&#34;highlight javascript&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;if&lt;/span&gt;(score&amp;gt;&lt;span class=&#34;number&#34;&gt;100&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;var&lt;/span&gt; result=&lt;span class=&#34;variable language_&#34;&gt;window&lt;/span&gt;.&lt;span class=&#34;title function_&#34;&gt;confirm&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;&amp;quot;\u4f60\u8d62\u4e86\uff0c\u53bb\u5e7a\u5e7a\u96f6\u70b9\u76ae\u7231\u5403\u76ae\u770b\u770b&amp;quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;​		unicode 解码是：你赢了，去幺幺零点皮爱吃皮看看，提示读取 110.php，读取后获得 flag。&lt;/p&gt;
+&lt;h1 id=&#34;web19&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web19&#34;&gt;#&lt;/a&gt; Web19：&lt;/h1&gt;
+&lt;p&gt;​		题目描述：密钥什么的，就不要放在前端了&lt;/p&gt;
+&lt;p&gt;​		读源码，找到了被注释的 php 代码：&lt;/p&gt;
+&lt;figure class=&#34;highlight php&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;    &amp;lt;!--&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;title function_ invoke__&#34;&gt;error_reporting&lt;/span&gt;(&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;variable&#34;&gt;$flag&lt;/span&gt;=&lt;span class=&#34;string&#34;&gt;&amp;quot;fakeflag&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;variable&#34;&gt;$u&lt;/span&gt; = &lt;span class=&#34;variable&#34;&gt;$_POST&lt;/span&gt;[&lt;span class=&#34;string&#34;&gt;&amp;#x27;username&amp;#x27;&lt;/span&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;variable&#34;&gt;$p&lt;/span&gt; = &lt;span class=&#34;variable&#34;&gt;$_POST&lt;/span&gt;[&lt;span class=&#34;string&#34;&gt;&amp;#x27;pazzword&amp;#x27;&lt;/span&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;keyword&#34;&gt;if&lt;/span&gt;(&lt;span class=&#34;keyword&#34;&gt;isset&lt;/span&gt;(&lt;span class=&#34;variable&#34;&gt;$u&lt;/span&gt;) &amp;amp;&amp;amp; &lt;span class=&#34;keyword&#34;&gt;isset&lt;/span&gt;(&lt;span class=&#34;variable&#34;&gt;$p&lt;/span&gt;))&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;keyword&#34;&gt;if&lt;/span&gt;(&lt;span class=&#34;variable&#34;&gt;$u&lt;/span&gt;===&lt;span class=&#34;string&#34;&gt;&amp;#x27;admin&amp;#x27;&lt;/span&gt; &amp;amp;&amp;amp; &lt;span class=&#34;variable&#34;&gt;$p&lt;/span&gt; ===&lt;span class=&#34;string&#34;&gt;&amp;#x27;a599ac85a73384ee3219fa684296eaa62667238d608efa81837030bd1ce1bf04&amp;#x27;&lt;/span&gt;)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &lt;span class=&#34;keyword&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;variable&#34;&gt;$flag&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    --&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;​		账号密码都有了，后端抓包改包发送即可获得 flag。&lt;/p&gt;
+&lt;h1 id=&#34;web20&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web20&#34;&gt;#&lt;/a&gt; Web20：&lt;/h1&gt;
+&lt;p&gt;​		题目描述：mdb 文件是早期 asp+access 构架的数据库文件，文件泄露相当于数据库被脱裤了。&lt;/p&gt;
+&lt;p&gt;​		扫后台发现了 db 文件，下载即可，之后用数据库管理工具打开即可得到 flag。&lt;/p&gt;
+ ]]></description>
+        </item>
         <item>
             <guid isPermalink="true">http://blog.g01den.top/posts/c8624158.html</guid>
             <title>pwn学习笔记（9）-中级ROP--ret2csu</title>
@@ -1851,48 +1956,6 @@ return cookies
 &lt;figure class=&#34;highlight plaintext&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;4865792049207468 696e6b2077652063  Hey I th ink we c&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;616e207772697465 20736166656c7920  an write  safely &lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;696e207468697320 66696c6520776974  in this  file wit&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;686f757420616e79 6f6e652073656569  hout any one seei&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6e672069742e2041 6e797761792c2074  ng it. A nyway, t&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6865207365637265 74206b6579206973  he secre t key is&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3a2073743367305f 7361757275735f77  : st3g0_ saurus_w&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7233636b73000000 0000000000000000  r3cks... ........&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;pre&gt;&lt;code&gt;	flag    :        flag&amp;#123;st3g0_saurus_wr3cks&amp;#125;
 &lt;/code&gt;&lt;/pre&gt;
- ]]></description>
-        </item>
-        <item>
-            <guid isPermalink="true">http://blog.g01den.top/posts/7232a36b.html</guid>
-            <title>小小的总结（日常发癫）</title>
-            <link>http://blog.g01den.top/posts/7232a36b.html</link>
-            <category>Daily life</category>
-            <pubDate>Tue, 21 May 2024 21:23:52 +0800</pubDate>
-            <description><![CDATA[ &lt;h1 id=&#34;总地看看这个学期&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#总地看看这个学期&#34;&gt;#&lt;/a&gt; 总地看看这个学期：&lt;/h1&gt;
-&lt;p&gt;​		眨眼之间，我等的一个游戏快要公测了，原来是到了五月了。时间过得真快，这个学期感觉啥都没学就快要结束了。&lt;/p&gt;
-&lt;p&gt;​		想了想这个学期刚开校那会儿，一个月下来才只学了个无列名注入，总感觉没啥动力，很颓废，直到现在也是一样，除了摸鱼就是摸鱼，感觉不仅迷茫，还没啥动力。最后想了想，可能是因为我不知道学些啥了吧。并不是因为我掌握了，而是因为学不懂，才不知道咋学，陷入了一种死循环，接触了 Pwn 以后更是如此，但是，我又没有啥办法，Web 到了现在感觉有点抽象了，做题基本上都没啥思路，大部分都是靠 wp 才能成功复现出来，甚至一些很基础的考点我都想不到，感觉到了一个怎么学都上不去的境地。&lt;/p&gt;
-&lt;p&gt;​		越感觉学不懂，就越没动力，学得越少，然后越学不懂，死循环下去了。好在，我最近突然意识到，去打打比赛，与队友交流交流对我好像有不小的帮助，在各种方面都给了我不小的乐趣，自从队里同年级的人多起来之后，感觉越来越有学的动力了，相互之间调侃，相互之间交流，使原本枯燥乏味的学习过程变得稍微有了点乐趣，感觉累了的时候稍微休息休息，跟群里的某个男童鞋来一句 “兄弟，你好香。” 虽说没有很明显的轻松了的感觉，至少当他们回复了我的话的话，还是会挺开心的，虽说整个群里的人感觉基本上都拿我开刀，都欺负我，呜呜呜。&lt;/p&gt;
-&lt;p&gt;​		自从上学期开始接触 pwn 到现在，感觉之后的路线越来越懵逼，这玩意儿这么难 tnnd 那些大佬到底是咋学进去的？从最开始的 ELF 文件结构就开始懵逼，一直到现在的 heap 利用，想什么 UAF，什么 Double Free，Hook 劫持什么的，基本上都看不懂，啊！！！前程一片黑暗啊。&lt;/p&gt;
-&lt;p&gt;​		不过，在寒假那会把 ret2libc 学完了之后，这学期还没啥进步，当然，这也是因为我两个方向的原因吧，Web 现如今也开始一边补之前的遗漏的知识以及学习基础漏洞，一边开始 java 开发，但是 javaWeb 相较而言对我太过抽象了，有点逆天。不过也没有啥好办法，暑假慢慢卷吧，不对，慢慢玩儿，不能卷，嘿嘿。&lt;/p&gt;
-&lt;h1 id=&#34;之后该干些啥&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#之后该干些啥&#34;&gt;#&lt;/a&gt; 之后该干些啥？&lt;/h1&gt;
-&lt;p&gt;​		我想了想，还是需要给自己做个大致的路线规划：&lt;/p&gt;
-&lt;p&gt;Web 方向：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;还是得先把 JavaWeb 开发给学好，这是第一目标。&lt;/li&gt;
-&lt;li&gt;复现复现之前的某些题目，尤其是国赛之类的难度有点高的题，根据那些难度有点高的题目开始，差哪些知识学哪些。&lt;/li&gt;
-&lt;li&gt;不要忘了之前的基础漏洞，该复习了，像是 ssrf，xxe，xss，csrf，ssti（尤其是内存马），还有例如 flask 框架的某个漏洞，大概是运维赛那会儿的那个题目，一个 flask 的历史漏洞吧。&lt;/li&gt;
-&lt;li&gt;不要忘了基础语言，某些语言还得学些进阶的内容，不然根本打不了，审计 flask 什么的我基本上看到了直接废，不是很能理解，只能懂个大概。&lt;/li&gt;
-&lt;li&gt;最后是一些框架，像是 thinkPHP，CMS，等等。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Pwn 方向：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;对于栈溢出的保护以及一些进阶 ROP 和花式栈溢出，我还得学一手，这个太重要了。&lt;/li&gt;
-&lt;li&gt;ret2csu 不太熟悉，ret2dl 什么的也不大会，BROP 可以搞一手。&lt;/li&gt;
-&lt;li&gt;伪随机数绕过我还没遇到过，需要找找相关的文章和题目。&lt;/li&gt;
-&lt;li&gt;整数溢出，不大会用，如果牵扯到了这个点可能考虑不到，得搞一手。&lt;/li&gt;
-&lt;li&gt;格式化字符串，当时没学多少的感觉，得再复习一手。&lt;/li&gt;
-&lt;li&gt;栈迁移和沙箱，HN 给我打了个措手不及，一手栈迁移当场不会了。&lt;/li&gt;
-&lt;li&gt;沙箱的 orw 和 srop，感觉下学期校赛出题可能会用到这个点，需要搞一手。&lt;/li&gt;
-&lt;li&gt;之后就是重量级的堆了，如今我才刚入门堆，甚至只能说是，与堆打了个擦边球，完全不会堆，堆的点需要注意：
-&lt;ul&gt;
-&lt;li&gt;UAF , Double Free ,Off By One ,tcache attack ,unlink , unsorted bin attack , hook 劫持，house 系列。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&#34;结语&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#结语&#34;&gt;#&lt;/a&gt; 结语：&lt;/h1&gt;
-&lt;p&gt;​		感觉快期末了，之后可能中心会在期末上，把这个私人博客搭建起来之后，就会花大量时间到期末上了，还有四级，二战四级，呜呜呜！！！&lt;/p&gt;
-&lt;p&gt;​		总得来说，我对我这个学期的感觉不是很满意，基本上都在摆烂、摸鱼，暑假我得补回来，不然会跟不上 V&amp;amp;N 的那堆大神。&lt;/p&gt;
  ]]></description>
         </item>
     </channel>
