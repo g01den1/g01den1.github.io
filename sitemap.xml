@@ -362,6 +362,13 @@
 
   
   <url>
+    <loc>http://blog.g01den.top/tags/Daily-life/</loc>
+    <lastmod>2024-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://blog.g01den.top/tags/CVE/</loc>
     <lastmod>2024-09-16</lastmod>
     <changefreq>weekly</changefreq>
@@ -376,13 +383,6 @@
   </url>
   
   <url>
-    <loc>http://blog.g01den.top/tags/Daily-life/</loc>
-    <lastmod>2024-09-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://blog.g01den.top/tags/Game/</loc>
     <lastmod>2024-09-16</lastmod>
     <changefreq>weekly</changefreq>
@@ -390,14 +390,14 @@
   </url>
   
   <url>
-    <loc>http://blog.g01den.top/tags/Java/</loc>
+    <loc>http://blog.g01den.top/tags/408/</loc>
     <lastmod>2024-09-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://blog.g01den.top/tags/408/</loc>
+    <loc>http://blog.g01den.top/tags/Java/</loc>
     <lastmod>2024-09-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -420,13 +420,6 @@
 
   
   <url>
-    <loc>http://blog.g01den.top/categories/CVE/</loc>
-    <lastmod>2024-09-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://blog.g01den.top/categories/Daily/</loc>
     <lastmod>2024-09-16</lastmod>
     <changefreq>weekly</changefreq>
@@ -434,7 +427,7 @@
   </url>
   
   <url>
-    <loc>http://blog.g01den.top/categories/CVE/Web/</loc>
+    <loc>http://blog.g01den.top/categories/CVE/</loc>
     <lastmod>2024-09-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -448,7 +441,7 @@
   </url>
   
   <url>
-    <loc>http://blog.g01den.top/categories/Java/</loc>
+    <loc>http://blog.g01den.top/categories/CVE/Web/</loc>
     <lastmod>2024-09-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -456,6 +449,13 @@
   
   <url>
     <loc>http://blog.g01den.top/categories/Major/</loc>
+    <lastmod>2024-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.g01den.top/categories/Java/</loc>
     <lastmod>2024-09-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -476,14 +476,14 @@
   </url>
   
   <url>
-    <loc>http://blog.g01den.top/categories/Pwn/</loc>
+    <loc>http://blog.g01den.top/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
     <lastmod>2024-09-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://blog.g01den.top/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
+    <loc>http://blog.g01den.top/categories/Pwn/</loc>
     <lastmod>2024-09-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
