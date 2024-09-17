@@ -7,14 +7,14 @@
         <language>zh-CN</language>
         <pubDate>Mon, 16 Sep 2024 21:04:45 +0800</pubDate>
         <lastBuildDate>Mon, 16 Sep 2024 21:04:45 +0800</lastBuildDate>
-        <category>Daily life</category>
         <category>Game</category>
-        <category>Java</category>
-        <category>Pwn</category>
         <category>CVE</category>
         <category>Web</category>
+        <category>Daily life</category>
+        <category>Java</category>
         <category>408</category>
         <category>Misc</category>
+        <category>Pwn</category>
         <item>
             <guid isPermalink="true">http://blog.g01den.top/posts/53e2b2e1.html</guid>
             <title>ctfshow-命令执行</title>
