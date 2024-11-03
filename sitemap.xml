@@ -398,13 +398,6 @@
 
   
   <url>
-    <loc>http://blog.g01den.top/tags/Daily-life/</loc>
-    <lastmod>2024-11-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://blog.g01den.top/tags/CVE/</loc>
     <lastmod>2024-11-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -413,6 +406,20 @@
   
   <url>
     <loc>http://blog.g01den.top/tags/Web/</loc>
+    <lastmod>2024-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.g01den.top/tags/Daily-life/</loc>
+    <lastmod>2024-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.g01den.top/tags/Game/</loc>
     <lastmod>2024-11-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -433,7 +440,7 @@
   </url>
   
   <url>
-    <loc>http://blog.g01den.top/tags/Game/</loc>
+    <loc>http://blog.g01den.top/tags/Pwn/</loc>
     <lastmod>2024-11-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -446,14 +453,14 @@
     <priority>0.2</priority>
   </url>
   
+
+  
   <url>
-    <loc>http://blog.g01den.top/tags/Pwn/</loc>
+    <loc>http://blog.g01den.top/categories/CVE/</loc>
     <lastmod>2024-11-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
-  
-
   
   <url>
     <loc>http://blog.g01den.top/categories/Daily/</loc>
@@ -463,7 +470,14 @@
   </url>
   
   <url>
-    <loc>http://blog.g01den.top/categories/CVE/</loc>
+    <loc>http://blog.g01den.top/categories/CVE/Web/</loc>
+    <lastmod>2024-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.g01den.top/categories/Game/</loc>
     <lastmod>2024-11-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -484,14 +498,7 @@
   </url>
   
   <url>
-    <loc>http://blog.g01den.top/categories/CVE/Web/</loc>
-    <lastmod>2024-11-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.g01den.top/categories/Game/</loc>
+    <loc>http://blog.g01den.top/categories/Pwn/</loc>
     <lastmod>2024-11-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -513,13 +520,6 @@
   
   <url>
     <loc>http://blog.g01den.top/categories/Web/</loc>
-    <lastmod>2024-11-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.g01den.top/categories/Pwn/</loc>
     <lastmod>2024-11-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
