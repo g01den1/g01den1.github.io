@@ -7,14 +7,14 @@
         <language>zh-CN</language>
         <pubDate>Sun, 24 Nov 2024 21:38:01 +0800</pubDate>
         <lastBuildDate>Sun, 24 Nov 2024 21:38:01 +0800</lastBuildDate>
-        <category>Daily life</category>
         <category>CVE</category>
         <category>Web</category>
-        <category>Java</category>
         <category>Game</category>
+        <category>Java</category>
+        <category>Daily life</category>
         <category>408</category>
-        <category>Pwn</category>
         <category>Misc</category>
+        <category>Pwn</category>
         <item>
             <guid isPermalink="true">http://blog.g01den.top/posts/ad175165.html</guid>
             <title>ctfshow-文件包含</title>
