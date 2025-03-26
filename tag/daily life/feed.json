@@ -5,6 +5,16 @@
     "home_page_url": "http://blog.g01den.top",
     "items": [
         {
+            "id": "http://blog.g01den.top/posts/cf99ed43.html",
+            "url": "http://blog.g01den.top/posts/cf99ed43.html",
+            "title": "从NSSCTF开始的复建之路",
+            "date_published": "2025-03-26T14:52:27.000Z",
+            "content_html": "<h1 id=\"从NSSCTF开始的复建之路\"><a href=\"#从NSSCTF开始的复建之路\" class=\"headerlink\" title=\"从NSSCTF开始的复建之路\"></a>从NSSCTF开始的复建之路</h1><h2 id=\"前言：\"><a href=\"#前言：\" class=\"headerlink\" title=\"前言：\"></a>前言：</h2><p>​\t\t摆烂了有段时间了，感觉不应该再继续这样了，开个新坑，让我慢慢回忆一些忘记的内容，我知道不应该摆烂，但心理问题导致我感觉一切都失去了意义，还好，maimai让我至少有活下去的想法，在写这段话的时候，我正在听 The Last Page – ARForest，一切的不如意都有最后一页，而现在，我希望我的低谷期已经来到了 The Last Page ，期待接下来的每一步都会像 The Last Page 一般，充满希望，充满美好。\t\t\t–发癫完毕</p>\n<h2 id=\"Re：\"><a href=\"#Re：\" class=\"headerlink\" title=\"Re：\"></a>Re：</h2><h3 id=\"SWPUCTF-2022-新生赛-base64\"><a href=\"#SWPUCTF-2022-新生赛-base64\" class=\"headerlink\" title=\"[SWPUCTF 2022 新生赛]base64\"></a>[SWPUCTF 2022 新生赛]base64</h3><p>​\t\tIDA打开后，shift+f12找到了base64编码的编码表，表没有经过修改，同时找到加密后的数据：</p>\n<figure class=\"highlight tex\"><table><tr><td class=\"gutter\"><pre><span class=\"line\">1</span><br></pre></td><td class=\"code\"><pre><span class=\"line\">TlNTQ1RGe2Jhc2VfNjRfTlRXUTRaR0ROQzdOfQ==</span><br></pre></td></tr></table></figure>\n\n<p>​\t\t经过base64解码之后得到flag：</p>\n<figure class=\"highlight tex\"><table><tr><td class=\"gutter\"><pre><span class=\"line\">1</span><br></pre></td><td class=\"code\"><pre><span class=\"line\">NSSCTF&#123;base<span class=\"built_in\">_</span>64<span class=\"built_in\">_</span>NTWQ4ZGDNC7N&#125;</span><br></pre></td></tr></table></figure>\n\n",
+            "tags": [
+                "Daily life"
+            ]
+        },
+        {
             "id": "http://blog.g01den.top/posts/ef2fddc9.html",
             "url": "http://blog.g01den.top/posts/ef2fddc9.html",
             "title": "arcaea闲谈",

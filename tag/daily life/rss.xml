@@ -5,16 +5,31 @@
         <link>http://blog.g01den.top</link>
         <description>golden的部落阁</description>
         <language>zh-CN</language>
-        <pubDate>Thu, 27 Jun 2024 17:36:38 +0800</pubDate>
-        <lastBuildDate>Thu, 27 Jun 2024 17:36:38 +0800</lastBuildDate>
+        <pubDate>Wed, 26 Mar 2025 22:52:27 +0800</pubDate>
+        <lastBuildDate>Wed, 26 Mar 2025 22:52:27 +0800</lastBuildDate>
+        <category>Game</category>
         <category>CVE</category>
         <category>Web</category>
         <category>Java</category>
-        <category>408</category>
-        <category>Game</category>
         <category>Daily life</category>
+        <category>408</category>
         <category>Misc</category>
         <category>Pwn</category>
+        <item>
+            <guid isPermalink="true">http://blog.g01den.top/posts/cf99ed43.html</guid>
+            <title>从NSSCTF开始的复建之路</title>
+            <link>http://blog.g01den.top/posts/cf99ed43.html</link>
+            <category>Daily life</category>
+            <pubDate>Wed, 26 Mar 2025 22:52:27 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;从NSSCTF开始的复建之路&#34;&gt;&lt;a href=&#34;#从NSSCTF开始的复建之路&#34; class=&#34;headerlink&#34; title=&#34;从NSSCTF开始的复建之路&#34;&gt;&lt;/a&gt;从NSSCTF开始的复建之路&lt;/h1&gt;&lt;h2 id=&#34;前言：&#34;&gt;&lt;a href=&#34;#前言：&#34; class=&#34;headerlink&#34; title=&#34;前言：&#34;&gt;&lt;/a&gt;前言：&lt;/h2&gt;&lt;p&gt;​		摆烂了有段时间了，感觉不应该再继续这样了，开个新坑，让我慢慢回忆一些忘记的内容，我知道不应该摆烂，但心理问题导致我感觉一切都失去了意义，还好，maimai让我至少有活下去的想法，在写这段话的时候，我正在听 The Last Page – ARForest，一切的不如意都有最后一页，而现在，我希望我的低谷期已经来到了 The Last Page ，期待接下来的每一步都会像 The Last Page 一般，充满希望，充满美好。			–发癫完毕&lt;/p&gt;
+&lt;h2 id=&#34;Re：&#34;&gt;&lt;a href=&#34;#Re：&#34; class=&#34;headerlink&#34; title=&#34;Re：&#34;&gt;&lt;/a&gt;Re：&lt;/h2&gt;&lt;h3 id=&#34;SWPUCTF-2022-新生赛-base64&#34;&gt;&lt;a href=&#34;#SWPUCTF-2022-新生赛-base64&#34; class=&#34;headerlink&#34; title=&#34;[SWPUCTF 2022 新生赛]base64&#34;&gt;&lt;/a&gt;[SWPUCTF 2022 新生赛]base64&lt;/h3&gt;&lt;p&gt;​		IDA打开后，shift+f12找到了base64编码的编码表，表没有经过修改，同时找到加密后的数据：&lt;/p&gt;
+&lt;figure class=&#34;highlight tex&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;TlNTQ1RGe2Jhc2VfNjRfTlRXUTRaR0ROQzdOfQ==&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;​		经过base64解码之后得到flag：&lt;/p&gt;
+&lt;figure class=&#34;highlight tex&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;NSSCTF&amp;#123;base&lt;span class=&#34;built_in&#34;&gt;_&lt;/span&gt;64&lt;span class=&#34;built_in&#34;&gt;_&lt;/span&gt;NTWQ4ZGDNC7N&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+ ]]></description>
+        </item>
         <item>
             <guid isPermalink="true">http://blog.g01den.top/posts/ef2fddc9.html</guid>
             <title>arcaea闲谈</title>
