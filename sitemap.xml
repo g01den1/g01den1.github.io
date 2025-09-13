@@ -470,6 +470,13 @@
 
   
   <url>
+    <loc>http://blog.g01den.top/tags/Daily-life/</loc>
+    <lastmod>2025-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://blog.g01den.top/tags/CVE/</loc>
     <lastmod>2025-09-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -491,7 +498,7 @@
   </url>
   
   <url>
-    <loc>http://blog.g01den.top/tags/Daily-life/</loc>
+    <loc>http://blog.g01den.top/tags/408/</loc>
     <lastmod>2025-09-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -518,14 +525,14 @@
     <priority>0.2</priority>
   </url>
   
+
+  
   <url>
-    <loc>http://blog.g01den.top/tags/408/</loc>
+    <loc>http://blog.g01den.top/categories/Daily/</loc>
     <lastmod>2025-09-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
-  
-
   
   <url>
     <loc>http://blog.g01den.top/categories/CVE/</loc>
@@ -549,7 +556,14 @@
   </url>
   
   <url>
-    <loc>http://blog.g01den.top/categories/Daily/</loc>
+    <loc>http://blog.g01den.top/categories/Major/</loc>
+    <lastmod>2025-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.g01den.top/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
     <lastmod>2025-09-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -570,13 +584,6 @@
   </url>
   
   <url>
-    <loc>http://blog.g01den.top/categories/Pwn/</loc>
-    <lastmod>2025-09-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://blog.g01den.top/categories/Web/</loc>
     <lastmod>2025-09-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -584,14 +591,7 @@
   </url>
   
   <url>
-    <loc>http://blog.g01den.top/categories/Major/</loc>
-    <lastmod>2025-09-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.g01den.top/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
+    <loc>http://blog.g01den.top/categories/Pwn/</loc>
     <lastmod>2025-09-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
