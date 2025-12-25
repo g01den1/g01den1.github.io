@@ -1,0 +1,584 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="referrer" content="no-referrer"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://blog.g01den.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://blog.g01den.top/atom.xml" />
+<link rel="alternate" type="application/json" title="golden的部落阁" href="http://blog.g01den.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="Pwn" />
+
+
+<link rel="canonical" href="http://blog.g01den.top/posts/f1497b96.html">
+
+
+
+  <title>
+pwn学习笔记（11）--off_by_one - Pwn手的自我修养 |
+golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
+<meta name="generator" content="Hexo 7.2.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">pwn学习笔记（11）--off_by_one
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2024-11-09 21:31:09">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2024-11-09T21:31:09+08:00">2024-11-09</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">golden的部落阁</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+          <img src="https://s2.loli.net/2024/11/09/1aRlLprxOQt8CoE.jpg">
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/Pwn/" itemprop="item" rel="index" title="分类于 Pwn手的自我修养"><span itemprop="name">Pwn手的自我修养</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://blog.g01den.top/posts/f1497b96.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="g01den">
+    <meta itemprop="description" content="subtitle写得真好, golden的部落阁">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="golden的部落阁">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="pwn学习笔记11off_by_one"><a class="markdownIt-Anchor" href="#pwn学习笔记11off_by_one">#</a> pwn 学习笔记（11）–off_by_one</h1>
+<p>​		在处理 for 循环或者 while 循环的时候，有的可能会遇到如下情况：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">char</span> buf[<span class="number">0x10</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span> ; i &lt;= <span class="number">0x10</span> ; i ++)&#123;</span><br><span class="line">        buf[i] = getchar();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">puts</span>(buf);</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​		多次输入几个 a 之后，发现了最后输出的时候输出了 17 个 a，我的目的仅仅只是需要 16 个 a，结果输出了 17 个 a，像这种，在写入字符串的时候多写入了一个字节的情况，就是 off by one。</p>
+<p>​		在堆中，这种问题尤为严重，可能会导致输入的字符覆盖了 heap info 的 prev_in_use 或者其他的数据：</p>
+<blockquote>
+<ol>
+<li>溢出字节为可控制任意字节：通过修改大小造成块结构之间出现重叠，从而泄露其他块数据，或是覆盖其他块数据。也可使用 NULL 字节溢出的方法</li>
+<li>溢出字节为 NULL 字节：在 size 为 0x100 的时候，溢出 NULL 字节可以使得  <code>prev_in_use</code>  位被清，这样前块会被认为是 free 块。（1） 这时可以选择使用 unlink 方法（见 unlink 部分）进行处理。（2） 另外，这时  <code>prev_size</code>  域就会启用，就可以伪造  <code>prev_size</code>  ，从而造成块之间发生重叠。此方法的关键在于 unlink 的时候没有检查按照  <code>prev_size</code>  找到的块的大小与 <code>prev_size</code>  是否一致。</li>
+</ol>
+</blockquote>
+<p>​		最新版本代码中，已加入针对 2 中后一种方法的 check ，但是在 2.28 及之前版本并没有该 check 。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* consolidate backward */</span></span><br><span class="line">    <span class="keyword">if</span> (!prev_inuse(p)) &#123;</span><br><span class="line">      prevsize = prev_size (p);</span><br><span class="line">      size += prevsize;</span><br><span class="line">      p = chunk_at_offset(p, -((<span class="type">long</span>) prevsize));</span><br><span class="line">      <span class="comment">/* 后两行代码在最新版本中加入，则 2 的第二种方法无法使用，但是 2.28 及之前都没有问题 */</span></span><br><span class="line">      <span class="keyword">if</span> (__glibc_unlikely (chunksize(p) != prevsize))</span><br><span class="line">        malloc_printerr (<span class="string">&quot;corrupted size vs. prev_size while consolidating&quot;</span>);</span><br><span class="line">      unlink_chunk (av, p);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>​		还有种情况：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">char</span> bss[<span class="number">0x20</span>] = <span class="string">&quot;aaaaaaaaaaaaaaaa&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">char</span> buf[<span class="number">0x10</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">strlen</span>(bss) == <span class="number">0x10</span>)&#123;</span><br><span class="line">        <span class="built_in">strcpy</span>(buf,bss);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">puts</span>(buf);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​		这种情况，乍看上去没啥问题，但是，strlen 不会计算结尾的 \x00，而 strcpy 在拷贝的时候又会多拷贝一个 \x00 进去，造成多写入了一个字节。</p>
+<p>​		上一个题：</p>
+<h2 id="asis-ctf-2016-b00ks只看前面off-by-one的部分"><a class="markdownIt-Anchor" href="#asis-ctf-2016-b00ks只看前面off-by-one的部分">#</a> Asis CTF 2016 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2N0Zi13aWtpL2N0Zi1jaGFsbGVuZ2VzL3RyZWUvbWFzdGVyL3B3bi9oZWFwL29mZl9ieV9vbmUvQXNpc18yMDE2X2IwMGtz">b00ks</span>（只看前面 off by one 的部分）</h2>
+<p>​		checksec 一下看看：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">g01den@MSI:/mnt/c/Users/20820/Downloads$ checksec pwn</span><br><span class="line">[*] &#x27;/mnt/c/Users/20820/Downloads/pwn&#x27;</span><br><span class="line">    Arch:     amd64-64-little</span><br><span class="line">    RELRO:    Full RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      PIE enabled</span><br></pre></td></tr></table></figure>
+<p>​		激活了 PIE，以及题目附件被 strip 过，抱歉，我一个菜鸡误入了大佬的世界，啥都看不懂，反编译之后看到那么抽象突然想放弃了，不过还是得做。</p>
+<p>​		题目是一个寻常的图书管理，有创建书，删除书，编辑描述内容，输出书籍信息，修改最近访问的作者名，退出。</p>
+<p>​		先不看别的，main 没啥用，先看 add：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">__int64 <span class="title function_">sub_F55</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> v1; <span class="comment">// [rsp+0h] [rbp-20h] BYREF</span></span><br><span class="line">  <span class="type">int</span> v2; <span class="comment">// [rsp+4h] [rbp-1Ch]</span></span><br><span class="line">  <span class="type">void</span> *v3; <span class="comment">// [rsp+8h] [rbp-18h]</span></span><br><span class="line">  <span class="type">void</span> *ptr; <span class="comment">// [rsp+10h] [rbp-10h]</span></span><br><span class="line">  <span class="type">void</span> *v5; <span class="comment">// [rsp+18h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v1 = <span class="number">0</span>;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;\nEnter book name size: &quot;</span>);</span><br><span class="line">  __isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v1);</span><br><span class="line">  <span class="keyword">if</span> ( v1 &lt; <span class="number">0</span> )</span><br><span class="line">    <span class="keyword">goto</span> LABEL_2;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Enter book name (Max 32 chars): &quot;</span>);</span><br><span class="line">  ptr = <span class="built_in">malloc</span>(v1);</span><br><span class="line">  <span class="keyword">if</span> ( !ptr )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;unable to allocate enough space&quot;</span>);</span><br><span class="line">    <span class="keyword">goto</span> LABEL_17;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> ( (<span class="type">unsigned</span> <span class="type">int</span>)readName(ptr, v1 - <span class="number">1</span>) )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;fail to read name&quot;</span>);</span><br><span class="line">    <span class="keyword">goto</span> LABEL_17;</span><br><span class="line">  &#125;</span><br><span class="line">  v1 = <span class="number">0</span>;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;\nEnter book description size: &quot;</span>);</span><br><span class="line">  __isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v1);</span><br><span class="line">  <span class="keyword">if</span> ( v1 &lt; <span class="number">0</span> )</span><br><span class="line">  &#123;</span><br><span class="line">LABEL_2:</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Malformed size&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    v5 = <span class="built_in">malloc</span>(v1);</span><br><span class="line">    <span class="keyword">if</span> ( v5 )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;Enter book description: &quot;</span>);</span><br><span class="line">      <span class="keyword">if</span> ( (<span class="type">unsigned</span> <span class="type">int</span>)readName(v5, v1 - <span class="number">1</span>) )</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Unable to read description&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">      &#123;</span><br><span class="line">        v2 = sub_B24();</span><br><span class="line">        <span class="keyword">if</span> ( v2 == <span class="number">-1</span> )</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="built_in">printf</span>(<span class="string">&quot;Library is full&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">          v3 = <span class="built_in">malloc</span>(<span class="number">0x20</span>uLL);</span><br><span class="line">          <span class="keyword">if</span> ( v3 )</span><br><span class="line">          &#123;</span><br><span class="line">            *((_DWORD *)v3 + <span class="number">6</span>) = v1;</span><br><span class="line">            *((_QWORD *)off_202010 + v2) = v3;</span><br><span class="line">            *((_QWORD *)v3 + <span class="number">2</span>) = v5;</span><br><span class="line">            *((_QWORD *)v3 + <span class="number">1</span>) = ptr;</span><br><span class="line">            *(_DWORD *)v3 = ++unk_202024;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="built_in">printf</span>(<span class="string">&quot;Unable to allocate book struct&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;Fail to allocate memory&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">LABEL_17:</span><br><span class="line">  <span class="keyword">if</span> ( ptr )</span><br><span class="line">    <span class="built_in">free</span>(ptr);</span><br><span class="line">  <span class="keyword">if</span> ( v5 )</span><br><span class="line">    <span class="built_in">free</span>(v5);</span><br><span class="line">  <span class="keyword">if</span> ( v3 )</span><br><span class="line">    <span class="built_in">free</span>(v3);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1LL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​		分析一波，有一些需要记住作用的阿变量名，比如 v1：</p>
+<blockquote>
+<ul>
+<li>
+<p>v1 可以很明显看出来，v1 是存放的是 book 的 name 的大小，ptr 就是 name 存放的地址：</p>
+</li>
+<li>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre>v1 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="2"></td><td><pre>  <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"\nEnter book name size: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="3"></td><td><pre>  <span class="token function">__isoc99_scanf</span><span class="token punctuation">(</span><span class="token string">"%d"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>v1<span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="4"></td><td><pre>  <span class="token keyword">if</span> <span class="token punctuation">(</span> v1 <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token punctuation">)</span></pre></td></tr><tr><td data-num="5"></td><td><pre>    <span class="token keyword">goto</span> LABEL_2<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="6"></td><td><pre>  <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Enter book name (Max 32 chars): "</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="7"></td><td><pre>  ptr <span class="token operator">=</span> <span class="token function">malloc</span><span class="token punctuation">(</span>v1<span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="8"></td><td><pre><span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span>code￼<span class="token number">5</span><span class="token operator">--</span><span class="token operator">></span></pre></td></tr></table></figure></li>
+<li>
+<p>之后开了个 v3，存放了 book 的所有信息：</p>
+</li>
+<li>
+<figure class="highlight c"><figcaption data-lang="c"></figcaption><table><tr><td data-num="1"></td><td><pre>v3 <span class="token operator">=</span> <span class="token function">malloc</span><span class="token punctuation">(</span><span class="token number">0x20uLL</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="2"></td><td><pre>          <span class="token keyword">if</span> <span class="token punctuation">(</span> v3 <span class="token punctuation">)</span></pre></td></tr><tr><td data-num="3"></td><td><pre>          <span class="token punctuation">&#123;</span></pre></td></tr><tr><td data-num="4"></td><td><pre>            <span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">(</span>_DWORD <span class="token operator">*</span><span class="token punctuation">)</span>v3 <span class="token operator">+</span> <span class="token number">6</span><span class="token punctuation">)</span> <span class="token operator">=</span> v1<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="5"></td><td><pre>            <span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">(</span>_QWORD <span class="token operator">*</span><span class="token punctuation">)</span>off_202010 <span class="token operator">+</span> v2<span class="token punctuation">)</span> <span class="token operator">=</span> v3<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="6"></td><td><pre>            <span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">(</span>_QWORD <span class="token operator">*</span><span class="token punctuation">)</span>v3 <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">=</span> v5<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="7"></td><td><pre>            <span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">(</span>_QWORD <span class="token operator">*</span><span class="token punctuation">)</span>v3 <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">=</span> ptr<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="8"></td><td><pre>            <span class="token operator">*</span><span class="token punctuation">(</span>_DWORD <span class="token operator">*</span><span class="token punctuation">)</span>v3 <span class="token operator">=</span> <span class="token operator">++</span>unk_202024<span class="token punctuation">;</span></pre></td></tr><tr><td data-num="9"></td><td><pre>            <span class="token keyword">return</span> <span class="token number">0LL</span><span class="token punctuation">;</span></pre></td></tr><tr><td data-num="10"></td><td><pre>          <span class="token punctuation">&#125;</span></pre></td></tr><tr><td data-num="11"></td><td><pre><span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span>code￼<span class="token number">6</span><span class="token operator">--</span><span class="token operator">></span></pre></td></tr></table></figure></li>
+</ul>
+</blockquote>
+<p>​		分配两次，代码类似这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">add(<span class="number">0x20</span>,<span class="string">&quot;book1_name&quot;</span>,<span class="number">200</span>,<span class="string">&quot;book1_destruct&quot;</span>)</span><br><span class="line">add(<span class="number">0x21000</span>,<span class="string">&quot;book1_name&quot;</span>,<span class="number">0x21000</span>,<span class="string">&quot;book1_destruct&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>​		这个函数存在一些问题，a1 是我们想要写入的字符串的起始地址，a2 是判定边缘，但是，从 0 开始，一直到 a2 为止，很显然多进行了一次读入，因为这里的逻辑是先读入，再判断 i 与 a2 是否相等，所以这里就多循环了一次，造成了 offbyone，结束循环之后，又将后一位的内存修改成了 \x00，因此发生了溢出，例如一个数组是 32 字节，这个程序调用这个函数的时候，一直都是用的 size-1，所以传入的是 31，这个程序就刚好做到了让整个数组刚好可以写满，也就是写道 buf [31]，这里刚好写满，但是，有个关键的问题，最后一个还操作了一下，让 * a1=0，这也就导致了 buf [32]=0 的发生，溢出了一个字节，也就造成了 offbyone，或者说 off by null。</p>
+<p>​		上 gdb 看看，先输入 32 个 a 作为名字之后，那段内存变成了这样：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">search aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span></span><br><span class="line">Searching for value: &#x27;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&#x27;</span><br><span class="line">pwn             0x555555602040 0x6161616161616161 (&#x27;aaaaaaaa&#x27;)</span><br><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">x/30gx 0x555555602040</span></span><br><span class="line">0x555555602040: 0x6161616161616161      0x6161616161616161</span><br><span class="line">0x555555602050: 0x6161616161616161      0x6161616161616161</span><br><span class="line">0x555555602060: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555602070: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555602080: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555602090: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556020a0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556020b0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556020c0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556020d0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556020e0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556020f0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555602100: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555602110: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555602120: 0x0000000000000000      0x0000000000000000</span><br></pre></td></tr></table></figure>
+<p>​		这里我想着直接通过 IDA 反编译的来确定这俩 BSS 段数据的地址的，结果 IDA 里莫名其妙的，有点怪怪的，这里就直接 GDB 调算偏移然后算真实地址之类的吧。首先，刚刚那里确定了作者 name 的那个地址为：0x555555602040，gdb 里调的时候查到 elf 的基地址为：0x555555400000（手动计算出来的），然后算出 bss 里作者 name 的偏移为：0x202040，加起来之后和 0x555555602040 这个地址一样，所以，可以断定，这个地址就是存放作者名字的地方，之后，经过两次申请内存之后，再看看 0x555555602040 地址的内存（根据结构体指针数组在 bss 段上，然后暴力经过两次 malloc 之后查询 bss 段内容有无变化发现了一些少量变化，由此定位结构体指针数组的地址）：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">x/30gx 0x555555602040</span></span><br><span class="line">0x555555602040: 0x6161616161616161      0x6161616161616161</span><br><span class="line">0x555555602050: 0x6161616161616161      0x6161616161616161</span><br><span class="line">0x555555602060: 0x00005555556037a0      0x00005555556037d0</span><br><span class="line">0x555555602070: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555602080: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555602090: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556020a0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556020b0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556020c0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556020d0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556020e0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556020f0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555602100: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555602110: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555602120: 0x0000000000000000      0x0000000000000000</span><br></pre></td></tr></table></figure>
+<p>​		发现 0x555555602060 这个地址的内容变了，并且，还是某个书的结构体的数据域的地址：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">x/30gx 0x00005555556037a0</span></span><br><span class="line">0x5555556037a0: 0x0000000000000001      0x00005555556036b0</span><br><span class="line">0x5555556037b0: 0x00005555556036d0      0x00000000000000c8</span><br><span class="line">0x5555556037c0: 0x0000000000000000      0x0000000000000031</span><br><span class="line">0x5555556037d0: 0x0000000000000002      0x00007ffff7d66010</span><br><span class="line">0x5555556037e0: 0x00007ffff7d44010      0x0000000000021000</span><br><span class="line">0x5555556037f0: 0x0000000000000000      0x0000000000020811</span><br><span class="line">0x555555603800: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603810: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603820: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603830: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603840: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603850: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603860: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603870: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603880: 0x0000000000000000      0x0000000000000000</span><br></pre></td></tr></table></figure>
+<p>​		刚好整个程序存在一个修改作者名字的功能，可以修改作者名字，进行第二次 off by null，修改 0x00005555556036f0 为 0x0000555555603600：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">x/30gx 0x555555602040</span></span><br><span class="line">0x555555602040: 0x6262626262626262      0x6262626262626262</span><br><span class="line">0x555555602050: 0x6262626262626262      0x6262626262626262</span><br><span class="line">0x555555602060: 0x0000555555603700      0x00005555556037d0</span><br><span class="line">0x555555602070: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555602080: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555602090: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556020a0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556020b0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556020c0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556020d0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556020e0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556020f0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555602100: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555602110: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555602120: 0x0000000000000000      0x0000000000000000</span><br></pre></td></tr></table></figure>
+<p>​		那么，0x0000555555603600 这个地址指向的地方是哪里呢？用 heap 指令看看：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">heap</span></span><br><span class="line">Allocated chunk | PREV_INUSE</span><br><span class="line">Addr: 0x555555603000</span><br><span class="line">Size: 0x290 (with flag bits: 0x291)</span><br><span class="line"></span><br><span class="line">Allocated chunk | PREV_INUSE</span><br><span class="line">Addr: 0x555555603290</span><br><span class="line">Size: 0x410 (with flag bits: 0x411)</span><br><span class="line"></span><br><span class="line">Allocated chunk | PREV_INUSE</span><br><span class="line">Addr: 0x5555556036a0</span><br><span class="line">Size: 0x20 (with flag bits: 0x21)</span><br><span class="line"></span><br><span class="line">Allocated chunk | PREV_INUSE</span><br><span class="line">Addr: 0x5555556036c0</span><br><span class="line">Size: 0xd0 (with flag bits: 0xd1)</span><br><span class="line"></span><br><span class="line">Allocated chunk | PREV_INUSE</span><br><span class="line">Addr: 0x555555603790</span><br><span class="line">Size: 0x30 (with flag bits: 0x31)</span><br><span class="line"></span><br><span class="line">Allocated chunk | PREV_INUSE</span><br><span class="line">Addr: 0x5555556037c0</span><br><span class="line">Size: 0x30 (with flag bits: 0x31)</span><br><span class="line"></span><br><span class="line">Top chunk | PREV_INUSE</span><br><span class="line">Addr: 0x5555556037f0</span><br><span class="line">Size: 0x20810 (with flag bits: 0x20811)</span><br></pre></td></tr></table></figure>
+<p>​		发现这个地址是在 book1_desc 的中间：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">x/50gx 0x5555556036c0</span></span><br><span class="line">0x5555556036c0: 0x0000000000000000      0x00000000000000d1</span><br><span class="line">0x5555556036d0: 0x65645f316b6f6f62      0x0000000000006373</span><br><span class="line">0x5555556036e0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555556036f0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603700: 0x0000000000000000      0x0000000000000000			&lt;-------------------</span><br><span class="line">0x555555603710: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603720: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603730: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603740: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603750: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603760: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603770: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603780: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603790: 0x0000000000000000      0x0000000000000031</span><br><span class="line">0x5555556037a0: 0x0000000000000001      0x00005555556036b0</span><br><span class="line">0x5555556037b0: 0x00005555556036d0      0x00000000000000c8</span><br><span class="line">0x5555556037c0: 0x0000000000000000      0x0000000000000031</span><br><span class="line">0x5555556037d0: 0x0000000000000002      0x00007ffff7d66010</span><br><span class="line">0x5555556037e0: 0x00007ffff7d44010      0x0000000000021000</span><br><span class="line">0x5555556037f0: 0x0000000000000000      0x0000000000020811</span><br><span class="line">0x555555603800: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603810: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603820: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603830: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x555555603840: 0x0000000000000000      0x0000000000000000</span><br></pre></td></tr></table></figure>
+<p>​		内存布局大概有了，这里借用某位大佬的图（hollk）：</p>
+<p><img data-src="https://i-blog.csdnimg.cn/direct/5946f3207d5348e39aa969baf50b0db3.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​		修改了 book1 的结构体指针地址之后，因为 book1_name 这里是可控的，所以可以在指向的那个地址伪造一个 fake_chunk，</p>
+<p>​		因为后面确实对我而言有点逆天，所以之后就简述了吧，之后就是伪造 chunk 泄露 libc 地址，然后继续伪造 fakechunk 修改 <code>__free_hook</code>  为 one_gadget，即可拿到 shell。</p>
+
+      <div class="tags">
+          <a href="/tags/Pwn/" rel="tag"><i class="ic i-tag"></i> Pwn</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2024-11-09 21:39:59" itemprop="dateModified" datetime="2024-11-09T21:39:59+08:00">2024-11-09</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wechatpay.png" alt="g01den 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/alipay.png" alt="g01den 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/paypal.png" alt="g01den 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>g01den <i class="ic i-at"><em>@</em></i>golden的部落阁
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.g01den.top/posts/f1497b96.html" title="pwn学习笔记（11）--off_by_one">http://blog.g01den.top/posts/f1497b96.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/posts/540e5c20.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;s2.loli.net&#x2F;2024&#x2F;11&#x2F;05&#x2F;hQ5dotLSvj7m96u.jpg" title="Pwn学习笔记（10）--UAF">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Pwn手的自我修养</span>
+  <h3>Pwn学习笔记（10）--UAF</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/posts/d1a08bca.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;s2.loli.net&#x2F;2024&#x2F;11&#x2F;11&#x2F;Jh79NkdRlY2wZuS.jpg" title="pwn学习笔记（12）--Chunk Extend and Overlapping">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Pwn手的自我修养</span>
+  <h3>pwn学习笔记（12）--Chunk Extend and Overlapping</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B011off_by_one"><span class="toc-number">1.</span> <span class="toc-text"> pwn 学习笔记（11）–off_by_one</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#asis-ctf-2016-b00ks%E5%8F%AA%E7%9C%8B%E5%89%8D%E9%9D%A2off-by-one%E7%9A%84%E9%83%A8%E5%88%86"><span class="toc-number">1.1.</span> <span class="toc-text"> Asis CTF 2016 b00ks（只看前面 off by one 的部分）</span></a></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/posts/c06afb6e.html" rel="bookmark" title="Pwn学习笔记（1）--前置知识">Pwn学习笔记（1）--前置知识</a></li><li><a href="/posts/c3c1bd42.html" rel="bookmark" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></li><li><a href="/posts/e20e7502.html" rel="bookmark" title="pwn学习笔记（3）ret2syscall">pwn学习笔记（3）ret2syscall</a></li><li><a href="/posts/52965aaa.html" rel="bookmark" title="pwn学习笔记（4）ret2libc">pwn学习笔记（4）ret2libc</a></li><li><a href="/posts/a698ff8.html" rel="bookmark" title="pwn学习笔记（5）--格式化字符串漏洞（未完全完成）">pwn学习笔记（5）--格式化字符串漏洞（未完全完成）</a></li><li><a href="/posts/cbafa55d.html" rel="bookmark" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></li><li><a href="/posts/efb4c08.html" rel="bookmark" title="pwn学习笔记（7）--堆相关源码">pwn学习笔记（7）--堆相关源码</a></li><li><a href="/posts/d7e2e20f.html" rel="bookmark" title="pwn学习笔记（0）-事后补充">pwn学习笔记（0）-事后补充</a></li><li><a href="/posts/9b0d93f7.html" rel="bookmark" title="Pwn刷题记录（不停更新）">Pwn刷题记录（不停更新）</a></li><li><a href="/posts/2c0210e1.html" rel="bookmark" title="how2heap_zh">how2heap_zh</a></li><li><a href="/posts/9d5b1ce4.html" rel="bookmark" title="pwn学习笔记（8）-初识沙箱">pwn学习笔记（8）-初识沙箱</a></li><li><a href="/posts/c8624158.html" rel="bookmark" title="pwn学习笔记（9）-中级ROP--ret2csu">pwn学习笔记（9）-中级ROP--ret2csu</a></li><li><a href="/posts/540e5c20.html" rel="bookmark" title="Pwn学习笔记（10）--UAF">Pwn学习笔记（10）--UAF</a></li><li class="active"><a href="/posts/f1497b96.html" rel="bookmark" title="pwn学习笔记（11）--off_by_one">pwn学习笔记（11）--off_by_one</a></li><li><a href="/posts/d1a08bca.html" rel="bookmark" title="pwn学习笔记（12）--Chunk Extend and Overlapping">pwn学习笔记（12）--Chunk Extend and Overlapping</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="g01den"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">g01den</p>
+  <div class="description" itemprop="description">golden的部落阁</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">49</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">10</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">8</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL2cwMWRlbjE=" title="https:&#x2F;&#x2F;github.com&#x2F;g01den1"><i class="ic i-github"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+        
+  <li class="item dropdown">
+      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
+    <ul class="submenu">
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/links/" rel="section"><i class="ic i-magic"></i>links</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/posts/540e5c20.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/posts/d1a08bca.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/CVE/" title="分类于 CVE复现">CVE复现</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/CVE/Web/" title="分类于 Web">Web</a>
+</div>
+
+    <span><a href="/posts/2bb7953f.html" title="部分CVE复现Web（1）">部分CVE复现Web（1）</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/efb4c08.html" title="pwn学习笔记（7）--堆相关源码">pwn学习笔记（7）--堆相关源码</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/955175a5.html" title="【2024】H&amp;NCTF">【2024】H&NCTF</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/2d792864.html" title="Python栈帧逃逸">Python栈帧逃逸</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/posts/3d5d6561.html" title="三、Servlet基础">三、Servlet基础</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/cbafa55d.html" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/posts/20a3be2d.html" title="JavaWeb基础(一)-IO操作">JavaWeb基础(一)-IO操作</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/posts/e3418ca3.html" title="随机二次元图api相关">随机二次元图api相关</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/posts/4a17b156.html" title="Hello World">Hello World</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Major/" title="分类于 考研专业课">考研专业课</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
+</div>
+
+    <span><a href="/posts/2c763aa6.html" title="数据结构-3、栈、队列和数组">数据结构-3、栈、队列和数组</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">g01den @ golden的部落阁</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+     <p><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn">蜀ICP备2024083302号</a><!--|<a target="_blank" rel="noopener" href="https://beian.mps.gov.cn/#/query/webSearch">公网安备XXXXXXXX号</a> -->
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'posts/f1497b96.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//fastly.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

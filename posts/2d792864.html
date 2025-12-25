@@ -1,0 +1,575 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="referrer" content="no-referrer"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://blog.g01den.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://blog.g01den.top/atom.xml" />
+<link rel="alternate" type="application/json" title="golden的部落阁" href="http://blog.g01den.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="Web" />
+
+
+<link rel="canonical" href="http://blog.g01den.top/posts/2d792864.html">
+
+
+
+  <title>
+Python栈帧逃逸 - Web狗的自我安慰 |
+golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
+<meta name="generator" content="Hexo 7.2.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Python栈帧逃逸
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2025-09-13 22:05:07">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2025-09-13T22:05:07+08:00">2025-09-13</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">golden的部落阁</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+          <img src="https://s2.loli.net/2025/09/13/hLAZVGrtXDvxJIN.png">
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/Web/" itemprop="item" rel="index" title="分类于 Web狗的自我安慰"><span itemprop="name">Web狗的自我安慰</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://blog.g01den.top/posts/2d792864.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="g01den">
+    <meta itemprop="description" content="subtitle写得真好, golden的部落阁">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="golden的部落阁">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="python栈帧逃逸"><a class="markdownIt-Anchor" href="#python栈帧逃逸">#</a> Python 栈帧逃逸：</h1>
+<h2 id="1-yield-语与生成器函数"><a class="markdownIt-Anchor" href="#1-yield-语与生成器函数">#</a> 1、yield 语与生成器函数：</h2>
+<p>​		python 中的 yield 语句用于定义生成器函数，它能让函数在运行过程中暂停并保存当前状态，后续再恢复执行。</p>
+<p>​		生成器 是  Pythonn 中一种特殊的迭代器，它可以在迭代过程中动态生成值，而不需要一次性将所有值存 0 储在内存中。</p>
+<p>​		举个生成器的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;生成器函数第一次执行&quot;</span>)</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;生成器函数第二次执行&quot;</span>)</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">2</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;生成器函数第三次执行&quot;</span>)</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">gen = func()</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(gen))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(gen))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(gen))</span><br><span class="line"><span class="comment"># frame = [x for x in gen]</span></span><br><span class="line"><span class="comment"># print(frame)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#执行结果</span></span><br><span class="line"><span class="comment">#生成器函数第一次执行</span></span><br><span class="line"><span class="comment">#1</span></span><br><span class="line"><span class="comment">#生成器函数第二次执行</span></span><br><span class="line"><span class="comment">#2</span></span><br><span class="line"><span class="comment">#生成器函数第三次执行</span></span><br><span class="line"><span class="comment">#3</span></span><br></pre></td></tr></table></figure>
+<p>​	或者：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>():</span><br><span class="line">    a = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">yield</span> a</span><br><span class="line">        a += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">f = f()</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(f))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(f))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#执行结果</span></span><br><span class="line"><span class="comment">#1</span></span><br><span class="line"><span class="comment">#2</span></span><br></pre></td></tr></table></figure>
+<p>​			也可以 遍历获取所有的自增值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>():</span><br><span class="line">    a = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">20</span>):</span><br><span class="line">        <span class="keyword">yield</span> a</span><br><span class="line">        a += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">f = f()</span><br><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> f:</span><br><span class="line">    <span class="built_in">print</span>(value)</span><br><span class="line">    </span><br><span class="line">  </span><br><span class="line"><span class="comment">#会正常输出1到19</span></span><br></pre></td></tr></table></figure>
+<h2 id="2-生成器表达式"><a class="markdownIt-Anchor" href="#2-生成器表达式">#</a> 2、生成器表达式：</h2>
+<p>​		生成器表达式是一种在 Python 中创建生成器的紧凑形式。类似于列表推导式，生成器表达式允许你使用简洁的语法来定义生成器，而不必显示地编写一个函数。生成器表达式的 语法与列表推导式类似，但是使用圆括号而不是方括号。生成器表达式会 逐个生成值，而不是一次性生成 整个序列。。这有利于 提高内存的额 利用率：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">f = (i+<span class="number">1</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#可以用next一步步 获取值</span></span><br><span class="line"><span class="comment"># print(next(f))</span></span><br><span class="line"><span class="comment">#也可以遍历获取所有值</span></span><br><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> f:</span><br><span class="line">    <span class="built_in">print</span>(value)</span><br></pre></td></tr></table></figure>
+<h2 id="3-生成器属性"><a class="markdownIt-Anchor" href="#3-生成器属性">#</a> 3、生成器属性：</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gi_code:生成器对应的code对象。</span><br><span class="line">gi_frame:生成器对应的frame(栈帧)对象</span><br><span class="line">gi_running:生成器函数是否在执行。生成器函数在<span class="keyword">yield</span>以后、执行<span class="keyword">yield</span>的下一行代码前处于frozen状态，此时这个属性为<span class="number">0.</span></span><br><span class="line">gi_yeildfrom:如果生成器正在从另一个生成器中<span class="keyword">yield</span>值，则为该生成器对象的引；否则为<span class="literal">None</span></span><br><span class="line">gi_frame.f_locals:一个字典，，包含生成器当前栈的本地变量</span><br></pre></td></tr></table></figure>
+<h2 id="4-gi_frame的使用"><a class="markdownIt-Anchor" href="#4-gi_frame的使用">#</a> 4、gi_frame 的使用：</h2>
+<p>​		gi_frame 是一个与生成器和协程相关的属性。它指向生成器或协程当前 执行的帧对象，如果这个生成器或协程正在执行的话。帧对象 表示代码 执行的当前上下文，包含了局部变量、执行的字节码指令等信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>():</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">2</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line">f = f()</span><br><span class="line">frame = f.gi_frame</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;局部变量(Local Variables):&quot;</span>,frame.f_locals)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;全局变量(Gloobal Variables):&quot;</span>,frame.f_globals)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Code对象:&quot;</span>,frame.f_code)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Insstruction Pointer:&quot;</span>,frame.f_lasti)</span><br></pre></td></tr></table></figure>
+<p>​			获取代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">my_generator</span>():</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">2</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line">gen = my_generator()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取生成器的当前代码信息</span></span><br><span class="line">code = gen.gi_code</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出生成器的当前代码信息</span></span><br><span class="line"><span class="built_in">print</span>( code.co_name)</span><br><span class="line"><span class="built_in">print</span>(code.co_code)</span><br><span class="line"><span class="built_in">print</span>( code.co_consts)</span><br><span class="line"><span class="built_in">print</span>(code.co_filename)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># my_generator</span></span><br><span class="line"><span class="comment"># b&#x27;K\x00\x01\x00\x97\x00d\x01V\x00\x97\x01\x01\x00d\x02V\x00\x97\x01\x01\x00d\x03V\x00\x97\x01\x01\x00d\x00S\x00&#x27;</span></span><br><span class="line"><span class="comment"># (None, 1, 2, 3)</span></span><br><span class="line"><span class="comment"># C:\Users\20820\PycharmProjects\shizhan\bb.py</span></span><br></pre></td></tr></table></figure>
+<h2 id="5-栈帧-frame介绍"><a class="markdownIt-Anchor" href="#5-栈帧-frame介绍">#</a> 5、栈帧 (Frame) 介绍：</h2>
+<p>​		在 Python 中，栈帧（stack frame），也称为帧（frame），是用于执行代码的数据结构。每当 Python 解释器执行一个函数或方法时，都会创建一个新的栈帧，用于存储该函数或方法的局部变量、参数、返回地址以及其他执行相关的信息。这些栈帧会按照调用顺序被组织成一个栈，称为调用栈。</p>
+<p>​		栈帧包含了以下几个重要的属性：f_locals: 一个字典，包含了函数或方法的局部变量。键是变量名。f_globals: 一个字典，包含了函数或方法所在模块的全局变量。f_code: 一个代码对象（code object），包含了函数或方法的字节码指令、常量、变量名等信息。f_lasti: 整数，表示最后执行的字节码指令的索引。f_back: 指向上一级调用栈帧的引用，用于构建调用栈。</p>
+<p>​		栈帧包含了以下几个重要的属性：</p>
+<blockquote>
+<p><code>f_locals</code> : 一个字典，包含了函数或方法的局部变量。键是变量名，值是变量的值。<br>
+ <code>f_globals</code> : 一个字典，包含了函数或方法所在模块的全局变量。键是全局变量名，值是变量的值。<br>
+ <code>f_code</code> : 一个代码对象（code object），包含了函数或方法的字节码指令、常量、变量名等信息。<br>
+ <code>f_lasti</code> : 整数，表示最后执行的字节码指令的索引。<br>
+ <code>f_back</code> : 指向上一级调用栈帧的引用，用于构建调用栈。</p>
+</blockquote>
+<h2 id="6-栈帧逃逸"><a class="markdownIt-Anchor" href="#6-栈帧逃逸">#</a> 6、栈帧逃逸：</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">s3cret=<span class="string">&quot;this is flag：flag&#123;hello_World_hello_Python&#125;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">waff</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">f</span>():</span><br><span class="line">        <span class="keyword">yield</span> g.gi_frame.f_back</span><br><span class="line"></span><br><span class="line">    g = f()  <span class="comment">#生成器</span></span><br><span class="line">    frame = <span class="built_in">next</span>(g) <span class="comment">#获取到生成器的栈帧对象</span></span><br><span class="line">    b = frame.f_globals[<span class="string">&#x27;s3cret&#x27;</span>] <span class="comment">#返回并获取前一级栈帧的globals</span></span><br><span class="line">    <span class="comment"># b = frame.f_back.f_globals[&#x27;s3cret&#x27;]  # 返回并获取前一级栈帧的globals</span></span><br><span class="line">    <span class="built_in">print</span>(b)</span><br><span class="line">b=waff()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#this is flag：flag&#123;hello_World_hello_Python&#125;</span></span><br></pre></td></tr></table></figure>
+<p>​		在看看上面的 <code>f_globals</code> : 一个字典，包含了函数或方法所在模块的全局变量。键是全局变量名，值是变量的值。</p>
+<p>不难看出这里函数和模块本就同在一个全局，所以都有属性 s3cret，怎么看到没到全局？直接看 file 就能看出。</p>
+<p>​		在给个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">s3cret=<span class="string">&quot;this is flag&quot;</span></span><br><span class="line"></span><br><span class="line">codes=<span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">def waff():</span></span><br><span class="line"><span class="string">    def f():</span></span><br><span class="line"><span class="string">        yield g.gi_frame.f_back</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    g = f()  #生成器</span></span><br><span class="line"><span class="string">    frame = next(g) #获取到生成器的栈帧对象</span></span><br><span class="line"><span class="string">    print(frame)</span></span><br><span class="line"><span class="string">    print(frame.f_back)</span></span><br><span class="line"><span class="string">    print(frame.f_back.f_back)</span></span><br><span class="line"><span class="string">    b = frame.f_back.f_back.f_globals[&#x27;s3cret&#x27;] #返回并获取前一级栈帧的globals</span></span><br><span class="line"><span class="string">    return b</span></span><br><span class="line"><span class="string">b=waff()</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="built_in">locals</span>=&#123;&#125;</span><br><span class="line">code = <span class="built_in">compile</span>(codes, <span class="string">&quot;test&quot;</span>, <span class="string">&quot;exec&quot;</span>)</span><br><span class="line"><span class="built_in">exec</span>(code,<span class="built_in">locals</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">locals</span>[<span class="string">&quot;b&quot;</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># &lt;frame at 0x0000017C309E7C40, file &#x27;test&#x27;, line 8, code waff&gt;</span></span><br><span class="line"><span class="comment"># &lt;frame at 0x0000017C520AF560, file &#x27;test&#x27;, line 13, code &lt;module&gt;&gt;</span></span><br><span class="line"><span class="comment"># &lt;frame at 0x0000017C521A0040, file &#x27;C:\\Users\\20820\\PycharmProjects\\shizhan\\bb.py&#x27;, line 19, code &lt;module&gt;&gt;</span></span><br><span class="line"><span class="comment"># this is flag</span></span><br></pre></td></tr></table></figure>
+<p>​		首先，生成器的栈帧是 g ，经过一次回溯 之后到了 waff 的栈帧，再回溯一次之后到了 exec 的栈帧，这个时候访问 <code>f_globals</code>  就到了 exec 再上一层 的作用域，也就是全局变量 。</p>
+<p>​		另一种情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">s3cret=<span class="string">&quot;this is flag&quot;</span></span><br><span class="line"></span><br><span class="line">codes=<span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">def waff():</span></span><br><span class="line"><span class="string">    def f():</span></span><br><span class="line"><span class="string">        yield g.gi_frame.f_back</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    q = (q.gi_frame.f_back.f_back.f_back.f_globals for _ in [1])</span></span><br><span class="line"><span class="string">    b = [*q][0][&quot;s3cret&quot;]</span></span><br><span class="line"><span class="string">    return b</span></span><br><span class="line"><span class="string">b=waff()</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="built_in">locals</span>=&#123;&#125;</span><br><span class="line">code = <span class="built_in">compile</span>(codes, <span class="string">&quot;test&quot;</span>, <span class="string">&quot;exec&quot;</span>)</span><br><span class="line"><span class="built_in">exec</span>(code,<span class="built_in">locals</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">locals</span>[<span class="string">&quot;b&quot;</span>])</span><br></pre></td></tr></table></figure>
+<p>​		这样也能输出 flag，和上面的相比，是进行了三次回溯，先来一个回溯结构示意：</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">主程序全局帧 (包含 s3cret)</span><br><span class="line">  ↑</span><br><span class="line">exec 执行环境帧</span><br><span class="line">  ↑</span><br><span class="line">waff() 函数调用帧</span><br><span class="line">  ↑</span><br><span class="line">列表推导式帧 ([*q] 迭代触发)</span><br><span class="line">  ↑</span><br><span class="line">生成器 q 的帧 (q.gi<span class="built_in">_</span>frame)</span><br></pre></td></tr></table></figure>
+<p>​		首先，是生成器 q 的帧，回溯一次之后是 <code>[*q]</code>  这一行 的帧，之后才是 waff 和 exec 的帧到了 exec 的帧之后获取 globals 就可以获得到 flag 了。</p>
+<p>​		为什么用 <code>[*q]</code>  运行生成器，却不用 <code>next(q)</code> ？主要是因为，大部分的沙箱题目中， <code>builtins</code>  基本上都被杨了，不能使用 next 来进行获取，所以只能使用这种办法。</p>
+<h2 id="来个例题ciscn2024-mossfern"><a class="markdownIt-Anchor" href="#来个例题ciscn2024-mossfern">#</a> 来个例题 (CISCN2024 mossfern)：</h2>
+<p>​		main.py 的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request, jsonify</span><br><span class="line"><span class="keyword">from</span> uuid <span class="keyword">import</span> uuid1</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">runner = <span class="built_in">open</span>(<span class="string">&quot;/app/runner.py&quot;</span>, <span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;UTF-8&quot;</span>).read()</span><br><span class="line">flag = <span class="built_in">open</span>(<span class="string">&quot;/flag&quot;</span>, <span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;UTF-8&quot;</span>).readline().strip()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/run&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run</span>():</span><br><span class="line">    <span class="built_in">id</span> = <span class="built_in">str</span>(uuid1())</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        data = request.json</span><br><span class="line">        <span class="built_in">open</span>(<span class="string">f&quot;/app/uploads/<span class="subst">&#123;<span class="built_in">id</span>&#125;</span>.py&quot;</span>, <span class="string">&quot;w&quot;</span>, encoding=<span class="string">&quot;UTF-8&quot;</span>).write(</span><br><span class="line">            runner.replace(<span class="string">&quot;THIS_IS_SEED&quot;</span>, flag).replace(<span class="string">&quot;THIS_IS_TASK_RANDOM_ID&quot;</span>, <span class="built_in">id</span>))</span><br><span class="line">        <span class="built_in">open</span>(<span class="string">f&quot;/app/uploads/<span class="subst">&#123;<span class="built_in">id</span>&#125;</span>.txt&quot;</span>, <span class="string">&quot;w&quot;</span>, encoding=<span class="string">&quot;UTF-8&quot;</span>).write(data.get(<span class="string">&quot;code&quot;</span>, <span class="string">&quot;&quot;</span>))</span><br><span class="line">        run = subprocess.run(</span><br><span class="line">            [<span class="string">&#x27;python&#x27;</span>, <span class="string">f&quot;/app/uploads/<span class="subst">&#123;<span class="built_in">id</span>&#125;</span>.py&quot;</span>],</span><br><span class="line">            stdout=subprocess.PIPE,</span><br><span class="line">            stderr=subprocess.PIPE,</span><br><span class="line">            timeout=<span class="number">3</span></span><br><span class="line">        )</span><br><span class="line">        result = run.stdout.decode(<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">        error = run.stderr.decode(<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(result, error)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> os.path.exists(<span class="string">f&quot;/app/uploads/<span class="subst">&#123;<span class="built_in">id</span>&#125;</span>.py&quot;</span>):</span><br><span class="line">            os.remove(<span class="string">f&quot;/app/uploads/<span class="subst">&#123;<span class="built_in">id</span>&#125;</span>.py&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> os.path.exists(<span class="string">f&quot;/app/uploads/<span class="subst">&#123;<span class="built_in">id</span>&#125;</span>.txt&quot;</span>):</span><br><span class="line">            os.remove(<span class="string">f&quot;/app/uploads/<span class="subst">&#123;<span class="built_in">id</span>&#125;</span>.txt&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> jsonify(&#123;</span><br><span class="line">            <span class="string">&quot;result&quot;</span>: <span class="string">f&quot;<span class="subst">&#123;result&#125;</span>\n<span class="subst">&#123;error&#125;</span>&quot;</span></span><br><span class="line">        &#125;)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">if</span> os.path.exists(<span class="string">f&quot;/app/uploads/<span class="subst">&#123;<span class="built_in">id</span>&#125;</span>.py&quot;</span>):</span><br><span class="line">            os.remove(<span class="string">f&quot;/app/uploads/<span class="subst">&#123;<span class="built_in">id</span>&#125;</span>.py&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> os.path.exists(<span class="string">f&quot;/app/uploads/<span class="subst">&#123;<span class="built_in">id</span>&#125;</span>.txt&quot;</span>):</span><br><span class="line">            os.remove(<span class="string">f&quot;/app/uploads/<span class="subst">&#123;<span class="built_in">id</span>&#125;</span>.txt&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> jsonify(&#123;</span><br><span class="line">            <span class="string">&quot;result&quot;</span>: <span class="string">&quot;None&quot;</span></span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(<span class="string">&quot;0.0.0.0&quot;</span>, <span class="number">5000</span>)</span><br></pre></td></tr></table></figure>
+<p>​		没啥太大得到用处，大概就是每一次访问 <code>/run</code> <span class="exturl" data-url="aHR0cDovL3huLS11dWlkLWs4NGZ1aXQxMWd0eGt1eTViZGZheDAwei5weQ=="> 路由就生成一个 uuid.py</span>，将 flag 替换进文件占位符，之后，再生成一个 uuid.txt 文件，将用户上传的代码写入，之后运行代码，并结果返回。</p>
+<p>​		<span class="exturl" data-url="aHR0cDovL3huLS1ydW5uZXItOTE3aWs3MGJpbTNmYS5weQ==">之后看看 runner.py</span>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">source_simple_check</span>(<span class="params">source</span>):</span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Check the source with pure string in string, prevent dangerous strings</span></span><br><span class="line"><span class="string">    :param source: source code</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">from</span> sys <span class="keyword">import</span> exit</span><br><span class="line">    <span class="keyword">from</span> builtins <span class="keyword">import</span> <span class="built_in">print</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        source.encode(<span class="string">&quot;ascii&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> UnicodeEncodeError:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;non-ascii is not permitted&quot;</span>)</span><br><span class="line">        exit()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> [<span class="string">&quot;__&quot;</span>, <span class="string">&quot;getattr&quot;</span>, <span class="string">&quot;exit&quot;</span>]:</span><br><span class="line">        <span class="keyword">if</span> i <span class="keyword">in</span> source.lower():</span><br><span class="line">            <span class="built_in">print</span>(i)</span><br><span class="line">            exit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">block_wrapper</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Check the run process with sys.audithook, no dangerous operations should be conduct</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">audit</span>(<span class="params">event, args</span>):</span><br><span class="line"></span><br><span class="line">        <span class="keyword">from</span> builtins <span class="keyword">import</span> <span class="built_in">str</span>, <span class="built_in">print</span></span><br><span class="line">        <span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> [<span class="string">&quot;marshal&quot;</span>, <span class="string">&quot;__new__&quot;</span>, <span class="string">&quot;process&quot;</span>, <span class="string">&quot;os&quot;</span>, <span class="string">&quot;sys&quot;</span>, <span class="string">&quot;interpreter&quot;</span>, <span class="string">&quot;cpython&quot;</span>, <span class="string">&quot;open&quot;</span>, <span class="string">&quot;compile&quot;</span>, <span class="string">&quot;gc&quot;</span>]:</span><br><span class="line">            <span class="keyword">if</span> i <span class="keyword">in</span> (event + <span class="string">&quot;&quot;</span>.join(<span class="built_in">str</span>(s) <span class="keyword">for</span> s <span class="keyword">in</span> args)).lower():</span><br><span class="line">                <span class="built_in">print</span>(i)</span><br><span class="line">                os._exit(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> audit</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">source_opcode_checker</span>(<span class="params">code</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Check the source in the bytecode aspect, no methods and globals should be load</span></span><br><span class="line"><span class="string">    :param code: source code</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">from</span> dis <span class="keyword">import</span> dis</span><br><span class="line">    <span class="keyword">from</span> builtins <span class="keyword">import</span> <span class="built_in">str</span></span><br><span class="line">    <span class="keyword">from</span> io <span class="keyword">import</span> StringIO</span><br><span class="line">    <span class="keyword">from</span> sys <span class="keyword">import</span> exit</span><br><span class="line"></span><br><span class="line">    opcodeIO = StringIO()</span><br><span class="line">    dis(code, file=opcodeIO)</span><br><span class="line">    opcode = opcodeIO.getvalue().split(<span class="string">&quot;\n&quot;</span>)</span><br><span class="line">    opcodeIO.close()</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> opcode:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">any</span>(x <span class="keyword">in</span> <span class="built_in">str</span>(line) <span class="keyword">for</span> x <span class="keyword">in</span> [<span class="string">&quot;LOAD_GLOBAL&quot;</span>, <span class="string">&quot;IMPORT_NAME&quot;</span>, <span class="string">&quot;LOAD_METHOD&quot;</span>]):</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">any</span>(x <span class="keyword">in</span> <span class="built_in">str</span>(line) <span class="keyword">for</span> x <span class="keyword">in</span> [<span class="string">&quot;randint&quot;</span>, <span class="string">&quot;randrange&quot;</span>, <span class="string">&quot;print&quot;</span>, <span class="string">&quot;seed&quot;</span>]):</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;&quot;</span>.join([x <span class="keyword">for</span> x <span class="keyword">in</span> [<span class="string">&quot;LOAD_GLOBAL&quot;</span>, <span class="string">&quot;IMPORT_NAME&quot;</span>, <span class="string">&quot;LOAD_METHOD&quot;</span>] <span class="keyword">if</span> x <span class="keyword">in</span> <span class="built_in">str</span>(line)]))</span><br><span class="line">            exit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line"></span><br><span class="line">    <span class="keyword">from</span> builtins <span class="keyword">import</span> <span class="built_in">open</span></span><br><span class="line">    <span class="keyword">from</span> sys <span class="keyword">import</span> addaudithook</span><br><span class="line">    <span class="keyword">from</span> contextlib <span class="keyword">import</span> redirect_stdout</span><br><span class="line">    <span class="keyword">from</span> random <span class="keyword">import</span> randint, randrange, seed</span><br><span class="line">    <span class="keyword">from</span> io <span class="keyword">import</span> StringIO</span><br><span class="line">    <span class="keyword">from</span> random <span class="keyword">import</span> seed</span><br><span class="line">    <span class="keyword">from</span> time <span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">    source = <span class="built_in">open</span>(<span class="string">f&quot;/app/uploads/THIS_IS_TASK_RANDOM_ID.txt&quot;</span>, <span class="string">&quot;r&quot;</span>).read()</span><br><span class="line">    source_simple_check(source)</span><br><span class="line">    source_opcode_checker(source)</span><br><span class="line">    code = <span class="built_in">compile</span>(source, <span class="string">&quot;&lt;sandbox&gt;&quot;</span>, <span class="string">&quot;exec&quot;</span>)</span><br><span class="line">    addaudithook(block_wrapper())</span><br><span class="line">    outputIO = StringIO()</span><br><span class="line">    <span class="keyword">with</span> redirect_stdout(outputIO):</span><br><span class="line">        seed(<span class="built_in">str</span>(time()) + <span class="string">&quot;THIS_IS_SEED&quot;</span> + <span class="built_in">str</span>(time()))</span><br><span class="line">        <span class="built_in">exec</span>(code, &#123;</span><br><span class="line">            <span class="string">&quot;__builtins__&quot;</span>: <span class="literal">None</span>,</span><br><span class="line">            <span class="string">&quot;randint&quot;</span>: randint,</span><br><span class="line">            <span class="string">&quot;randrange&quot;</span>: randrange,</span><br><span class="line">            <span class="string">&quot;seed&quot;</span>: seed,</span><br><span class="line">            <span class="string">&quot;print&quot;</span>: <span class="built_in">print</span></span><br><span class="line">        &#125;, <span class="literal">None</span>)</span><br><span class="line">    output = outputIO.getvalue()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;THIS_IS_SEED&quot;</span> <span class="keyword">in</span> output:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;这 runtime 你就嘎嘎写吧， 一写一个不吱声啊，点儿都没拦住！&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;bad code-operation why still happened ah?&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(output)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>​		首先是 <code>source_simple_check()</code>  函数，这个函数简单来说就是给 所有全角字符都 ban 了，无法使用，以及三个关键字，也给 ban 了。</p>
+<p>​		之后是 <code>block_wrapper()</code> ，检测代码执行过程中事件和参数是否含有那些关键字 。</p>
+<p>​		之后是 <code>source_opcode_checker()</code> ，目的为检测用户程序的操作码中是否含有访问全局变量、导入模块以及方法。</p>
+
+      <div class="tags">
+          <a href="/tags/Web/" rel="tag"><i class="ic i-tag"></i> Web</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2025-09-13 22:13:33" itemprop="dateModified" datetime="2025-09-13T22:13:33+08:00">2025-09-13</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wechatpay.png" alt="g01den 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/alipay.png" alt="g01den 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/paypal.png" alt="g01den 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>g01den <i class="ic i-at"><em>@</em></i>golden的部落阁
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.g01den.top/posts/2d792864.html" title="Python栈帧逃逸">http://blog.g01den.top/posts/2d792864.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/posts/4826d2ce.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;s2.loli.net&#x2F;2025&#x2F;05&#x2F;03&#x2F;WC6qReAr3aKo287.jpg" title="ctfshow-SSTI">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Web狗的自我安慰</span>
+  <h3>ctfshow-SSTI</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/posts/b3ad4123.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;s2.loli.net&#x2F;2025&#x2F;10&#x2F;27&#x2F;Td7yFM3qE6VvKeL.jpg" title="有小考点的Web题">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Web狗的自我安慰</span>
+  <h3>有小考点的Web题</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#python%E6%A0%88%E5%B8%A7%E9%80%83%E9%80%B8"><span class="toc-number">1.</span> <span class="toc-text"> Python 栈帧逃逸：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-yield-%E8%AF%AD%E4%B8%8E%E7%94%9F%E6%88%90%E5%99%A8%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.</span> <span class="toc-text"> 1、yield 语与生成器函数：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%94%9F%E6%88%90%E5%99%A8%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text"> 2、生成器表达式：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%94%9F%E6%88%90%E5%99%A8%E5%B1%9E%E6%80%A7"><span class="toc-number">1.3.</span> <span class="toc-text"> 3、生成器属性：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-gi_frame%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">1.4.</span> <span class="toc-text"> 4、gi_frame 的使用：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%A0%88%E5%B8%A7-frame%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.5.</span> <span class="toc-text"> 5、栈帧 (Frame) 介绍：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%A0%88%E5%B8%A7%E9%80%83%E9%80%B8"><span class="toc-number">1.6.</span> <span class="toc-text"> 6、栈帧逃逸：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%A5%E4%B8%AA%E4%BE%8B%E9%A2%98ciscn2024-mossfern"><span class="toc-number">1.7.</span> <span class="toc-text"> 来个例题 (CISCN2024 mossfern)：</span></a></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/posts/384200ef.html" rel="bookmark" title="SQL无列名注入">SQL无列名注入</a></li><li><a href="/posts/88915f6f.html" rel="bookmark" title="无参数RCE的一些奇技淫巧">无参数RCE的一些奇技淫巧</a></li><li><a href="/posts/2f610211.html" rel="bookmark" title="反弹shell">反弹shell</a></li><li><a href="/posts/ff5b88d5.html" rel="bookmark" title="python原型链污染">python原型链污染</a></li><li><a href="/posts/97a7dff3.html" rel="bookmark" title="ctfshow-信息搜集">ctfshow-信息搜集</a></li><li><a href="/posts/53e2b2e1.html" rel="bookmark" title="ctfshow-命令执行">ctfshow-命令执行</a></li><li><a href="/posts/4fb535d6.html" rel="bookmark" title="ctfshow-反序列化">ctfshow-反序列化</a></li><li><a href="/posts/b856856d.html" rel="bookmark" title="ctfshow-ssrf">ctfshow-ssrf</a></li><li><a href="/posts/ad175165.html" rel="bookmark" title="ctfshow-文件包含">ctfshow-文件包含</a></li><li><a href="/posts/4826d2ce.html" rel="bookmark" title="ctfshow-SSTI">ctfshow-SSTI</a></li><li class="active"><a href="/posts/2d792864.html" rel="bookmark" title="Python栈帧逃逸">Python栈帧逃逸</a></li><li><a href="/posts/b3ad4123.html" rel="bookmark" title="有小考点的Web题">有小考点的Web题</a></li><li><a href="/posts/a4378bd0.html" rel="bookmark" title="【2025】LitCTF">【2025】LitCTF</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="g01den"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">g01den</p>
+  <div class="description" itemprop="description">golden的部落阁</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">49</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">10</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">8</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL2cwMWRlbjE=" title="https:&#x2F;&#x2F;github.com&#x2F;g01den1"><i class="ic i-github"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+        
+  <li class="item dropdown">
+      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
+    <ul class="submenu">
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/links/" rel="section"><i class="ic i-magic"></i>links</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/posts/4826d2ce.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/posts/b3ad4123.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/a698ff8.html" title="pwn学习笔记（5）--格式化字符串漏洞（未完全完成）">pwn学习笔记（5）--格式化字符串漏洞（未完全完成）</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/posts/3d5d6561.html" title="三、Servlet基础">三、Servlet基础</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/a4378bd0.html" title="【2025】LitCTF">【2025】LitCTF</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/b856856d.html" title="ctfshow-ssrf">ctfshow-ssrf</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/posts/ef2fddc9.html" title="arcaea闲谈">arcaea闲谈</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/posts/4a17b156.html" title="Hello World">Hello World</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/384200ef.html" title="SQL无列名注入">SQL无列名注入</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/9d5b1ce4.html" title="pwn学习笔记（8）-初识沙箱">pwn学习笔记（8）-初识沙箱</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/posts/cf99ed43.html" title="从NSSCTF开始的复建之路">从NSSCTF开始的复建之路</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/posts/20a3be2d.html" title="JavaWeb基础(一)-IO操作">JavaWeb基础(一)-IO操作</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">g01den @ golden的部落阁</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+     <p><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn">蜀ICP备2024083302号</a><!--|<a target="_blank" rel="noopener" href="https://beian.mps.gov.cn/#/query/webSearch">公网安备XXXXXXXX号</a> -->
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'posts/2d792864.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//fastly.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

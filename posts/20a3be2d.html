@@ -1,0 +1,606 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="referrer" content="no-referrer"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://blog.g01den.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://blog.g01den.top/atom.xml" />
+<link rel="alternate" type="application/json" title="golden的部落阁" href="http://blog.g01den.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="Java" />
+
+
+<link rel="canonical" href="http://blog.g01den.top/posts/20a3be2d.html">
+
+
+
+  <title>
+JavaWeb基础(一)-IO操作 - Java从入门到入狱 |
+golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
+<meta name="generator" content="Hexo 7.2.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">JavaWeb基础(一)-IO操作
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2024-05-29 22:16:55">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2024-05-29T22:16:55+08:00">2024-05-29</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">golden的部落阁</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+          <img src="https://gitee.com/gou-dengyue/images/raw/master/picture20.png">
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/Java/" itemprop="item" rel="index" title="分类于 Java从入门到入狱"><span itemprop="name">Java从入门到入狱</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://blog.g01den.top/posts/20a3be2d.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="g01den">
+    <meta itemprop="description" content="subtitle写得真好, golden的部落阁">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="golden的部落阁">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="java-io工作机制"><a class="markdownIt-Anchor" href="#java-io工作机制">#</a> Java I/O 工作机制：</h1>
+<p><strong>注：简要笔记，示例代码可能较少，甚至没有。</strong></p>
+<h2 id="1-java-的-io-类库的基本架构"><a class="markdownIt-Anchor" href="#1-java-的-io-类库的基本架构">#</a> 1、Java 的 I/O 类库的基本架构。</h2>
+<pre><code>	Java 的 I/O 操作类在包 java.io 下，大概有将近80个类，这些类大概可以分为如下四组。
+</code></pre>
+<ul>
+<li>基于字节操作的 I/O 接口：InputStream 和 OutputStream 。</li>
+<li>基于字符操作的 I/O 接口：Writer 和 Reader 。</li>
+<li>基于磁盘操作的 I/O 接口：File。</li>
+<li>基于网络操作的 I/O 接口：Socket。</li>
+</ul>
+<h3 id="11-基于字节的-io-操作接口"><a class="markdownIt-Anchor" href="#11-基于字节的-io-操作接口">#</a> 1.1、基于字节的 I/O 操作接口</h3>
+<pre><code>	基于字节的 I/O 操作接口输入和输出分别是：InputStream 和 OutputStream 。InputStream 的类层次如下：
+</code></pre>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/93c3c26c8f0c429d9c12af10d397733a.png#pic_center" alt="在这里插入图片描述"></p>
+<pre><code>	输入流根据数据类型和操作方式又被划分为若干个子类，每个子类分别处理不同操作类型。OutputStream  的类层次结构也类似，如下图：
+</code></pre>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/00775864970f46c398a03144a73f5731.png#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="12-基于字符的-io-操作接口"><a class="markdownIt-Anchor" href="#12-基于字符的-io-操作接口">#</a> 1.2、基于字符的 I/O 操作接口</h3>
+<pre><code>	下图是写字符的 I/O 操作接口涉及的类，Writer 类提供了一个抽象方法 write(char cbuf[],int off,int len)。
+</code></pre>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/c64a10bb54654d2582c6ab90569e86af.png#pic_center" alt="在这里插入图片描述"></p>
+<pre><code>	读字符的操作接口也有类似的结构，如下图：
+</code></pre>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/f5005cbcaaff4263931e50ded600ba04.png#pic_center" alt="在这里插入图片描述"></p>
+<pre><code>	读字符的操作接口是 int read(char cbuf[],int off,int len)，。返回读到的n个字节数，不管是 Writer 还是 Reader 类，它们都只定义了读取或写入的数据字符的方式，也就是怎么写或读。
+</code></pre>
+<h3 id="13-字节与字符的转化接口"><a class="markdownIt-Anchor" href="#13-字节与字符的转化接口">#</a> 1.3、字节与字符的转化接口</h3>
+<pre><code>	字符到字节需要转化，其中，读的转化过程如下：
+</code></pre>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/0430cb0a57574ced8bd3c3a5d50eb254.png#pic_center" alt="在这里插入图片描述"></p>
+<pre><code>	InputStreamReader 类是字节到字符的转化桥梁，InputSream 到 Reader 的过程要指定编码字符集，否则将采用操作系统默认字符集，很可能会出现乱码问题。SteamDecoder 正是完成字节到字符的解码的实现类。类似如下代码读到一个文件时：
+</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">StringBuffer</span> <span class="variable">str</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuffer</span>();</span><br><span class="line">            <span class="type">char</span>[] buf = <span class="keyword">new</span> <span class="title class_">char</span>[<span class="number">1024</span>];</span><br><span class="line">            <span class="type">FileReader</span> <span class="variable">f</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileReader</span>(<span class="string">&quot;file&quot;</span>);</span><br><span class="line">            <span class="keyword">while</span> (f.read(buf) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                str.append(buf);</span><br><span class="line">            &#125;</span><br><span class="line">            str.toString();</span><br><span class="line">        &#125;<span class="keyword">catch</span> (IOException e)&#123;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<pre><code>	FileReader 类就是按照上面的工作方式读取文件的，FileReader 继承了 InputStramReader 类，实际上时读取文件流，然后通过 StreamDecoder 解码成 char ，只不过这里的编码字符集时默认字符集。
+
+	写入也是类似的过程：
+</code></pre>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/8b8af04f03ea4ba9851c5648efe58d48.png#pic_center" alt="在这里插入图片描述"></p>
+<pre><code>	通过 OutputStreamWriter 类完成字符到字节的编码过程，由 StreamEncoder 完成编码过程。
+</code></pre>
+<h2 id="2-磁盘-io-工作机制"><a class="markdownIt-Anchor" href="#2-磁盘-io-工作机制">#</a> 2、磁盘 I/O 工作机制：</h2>
+<h3 id="21-几种访问文件的方式"><a class="markdownIt-Anchor" href="#21-几种访问文件的方式">#</a> 2.1、几种访问文件的方式</h3>
+<ol>
+<li>标准访问文件方式。</li>
+<li>直接 I/O 方式。</li>
+<li>同步访问文件方式。</li>
+<li>异步访问文件方式。</li>
+<li>内存映射方式。</li>
+</ol>
+<h3 id="22-java-访问磁盘文件"><a class="markdownIt-Anchor" href="#22-java-访问磁盘文件">#</a> 2.2、Java 访问磁盘文件</h3>
+<pre><code>	当传入一个文件路径时，将会根据这个路径创建一个 File 对象来表示这个文件，然后根据这个 File 对象创建真正读取文件的操作对象，这时将会真正创建一个关联真实存在的磁盘文件的文件描述符 FileDescriptor，通过这个对象可以直接控制这个磁盘文件，。
+</code></pre>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/d55db7d024654510987ff7e1cbce21c1.png#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="23-java-序列化技术"><a class="markdownIt-Anchor" href="#23-java-序列化技术">#</a> 2.3、Java 序列化技术</h3>
+<pre><code>	Java 序列化就是将一个对象转化为一串二进制表示的字节数组，通过保存或转移这些字节数据来达到持久化的目的。需要持久化，对象必须继承 java.io.Serializable 接口。反序列化则是相反的过程，将这个字节数组再重新构造成对象。我们知道反序列化时，必须有原始类作为模板，才能将这个对象还原，从这个过程我们可以猜测，序列化的数据并不像 class 文件那样保存类的完整的结构信息。下面是一个简单的序列化的代码：
+</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Serialize</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">serialVersionUID</span> <span class="operator">=</span> - <span class="number">6849794470754660011L</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="variable">num</span> <span class="operator">=</span> <span class="number">1390</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">FileOutputStream</span> <span class="variable">fos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;d:/serialize.dat&quot;</span>);</span><br><span class="line">            <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(fos);</span><br><span class="line">            <span class="type">Serialize</span> <span class="variable">serialize</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Serialize</span>();</span><br><span class="line">            oos.writeObject(serialize);</span><br><span class="line">            oos.flush();</span><br><span class="line">            oos.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>	序列化的文件二进制字节数据如下：
+</code></pre>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/6544ad53b377490c9f7a60d5ad99cb04.png#pic_center" alt="在这里插入图片描述"></p>
+<ol>
+<li>
+<p>第一部分是反序列化文件头。</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/ab3ed5c157264bbc833860233f8b314a.png#pic_center" alt="在这里插入图片描述"></p>
+</li>
+<li>
+<p>第二部分是要反序列化的类的描述，在这里是 Serialize 类。</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/7f9959f931e741a4bee64dbd23c56c97.png#pic_center" alt="在这里插入图片描述"></p>
+</li>
+<li>
+<p>第三部分是对象中各个属性项的描述</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/4e058285c2b246fa9cfc8c911e61ecfd.png#pic_center" alt="在这里插入图片描述"></p>
+</li>
+<li>
+<p>第四部分输出该对象的父类信息描述，这里没有父类，如果有，数据格式与第二部分一样。</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/67a0a799eefe4e809e27094075061210.png#pic_center" alt="在这里插入图片描述"></p>
+</li>
+<li>
+<p>第五部分输出对象的属性项的实际值，如果属性项是一个对象，那么这里还将序列化这个对象，规则和第二部分一样。</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/e6306bc60426477eb218df3426486b27.png#pic_center" alt="在这里插入图片描述"></p>
+</li>
+</ol>
+
+      <div class="tags">
+          <a href="/tags/Java/" rel="tag"><i class="ic i-tag"></i> Java</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2024-06-20 21:42:23" itemprop="dateModified" datetime="2024-06-20T21:42:23+08:00">2024-06-20</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wechatpay.png" alt="g01den 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/alipay.png" alt="g01den 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/paypal.png" alt="g01den 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>g01den <i class="ic i-at"><em>@</em></i>golden的部落阁
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.g01den.top/posts/20a3be2d.html" title="JavaWeb基础(一)-IO操作">http://blog.g01den.top/posts/20a3be2d.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/posts/3d5d6561.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture120.jpeg" title="三、Servlet基础">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Java从入门到入狱</span>
+  <h3>三、Servlet基础</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/posts/a929fb97.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture84.jpg" title="【2023】LitCTF">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> CTFer的比赛之路</span>
+  <h3>【2023】LitCTF</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#java-io%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6"><span class="toc-number">1.</span> <span class="toc-text"> Java I&#x2F;O 工作机制：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-java-%E7%9A%84-io-%E7%B1%BB%E5%BA%93%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84"><span class="toc-number">1.1.</span> <span class="toc-text"> 1、Java 的 I&#x2F;O 类库的基本架构。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E5%9F%BA%E4%BA%8E%E5%AD%97%E8%8A%82%E7%9A%84-io-%E6%93%8D%E4%BD%9C%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 1.1、基于字节的 I&#x2F;O 操作接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-%E5%9F%BA%E4%BA%8E%E5%AD%97%E7%AC%A6%E7%9A%84-io-%E6%93%8D%E4%BD%9C%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 1.2、基于字符的 I&#x2F;O 操作接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-%E5%AD%97%E8%8A%82%E4%B8%8E%E5%AD%97%E7%AC%A6%E7%9A%84%E8%BD%AC%E5%8C%96%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 1.3、字节与字符的转化接口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%A3%81%E7%9B%98-io-%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6"><span class="toc-number">1.2.</span> <span class="toc-text"> 2、磁盘 I&#x2F;O 工作机制：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#21-%E5%87%A0%E7%A7%8D%E8%AE%BF%E9%97%AE%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 2.1、几种访问文件的方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#22-java-%E8%AE%BF%E9%97%AE%E7%A3%81%E7%9B%98%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 2.2、Java 访问磁盘文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#23-java-%E5%BA%8F%E5%88%97%E5%8C%96%E6%8A%80%E6%9C%AF"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 2.3、Java 序列化技术</span></a></li></ol></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/posts/3fe30769.html" rel="bookmark" title="一、Servlet和JSP技术概述">一、Servlet和JSP技术概述</a></li><li><a href="/posts/3d5d6561.html" rel="bookmark" title="三、Servlet基础">三、Servlet基础</a></li><li class="active"><a href="/posts/20a3be2d.html" rel="bookmark" title="JavaWeb基础(一)-IO操作">JavaWeb基础(一)-IO操作</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="g01den"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">g01den</p>
+  <div class="description" itemprop="description">golden的部落阁</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">49</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">10</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">8</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL2cwMWRlbjE=" title="https:&#x2F;&#x2F;github.com&#x2F;g01den1"><i class="ic i-github"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+        
+  <li class="item dropdown">
+      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
+    <ul class="submenu">
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/links/" rel="section"><i class="ic i-magic"></i>links</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/posts/3d5d6561.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/posts/a929fb97.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/4bf5e0ee.html" title="【2024】LitCTF">【2024】LitCTF</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/posts/20a3be2d.html" title="JavaWeb基础(一)-IO操作">JavaWeb基础(一)-IO操作</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/posts/3d5d6561.html" title="三、Servlet基础">三、Servlet基础</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/efb4c08.html" title="pwn学习笔记（7）--堆相关源码">pwn学习笔记（7）--堆相关源码</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/b3ad4123.html" title="有小考点的Web题">有小考点的Web题</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/c06afb6e.html" title="Pwn学习笔记（1）--前置知识">Pwn学习笔记（1）--前置知识</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/97a7dff3.html" title="ctfshow-信息搜集">ctfshow-信息搜集</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/a929fb97.html" title="【2023】LitCTF">【2023】LitCTF</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/4fb535d6.html" title="ctfshow-反序列化">ctfshow-反序列化</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/c8624158.html" title="pwn学习笔记（9）-中级ROP--ret2csu">pwn学习笔记（9）-中级ROP--ret2csu</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">g01den @ golden的部落阁</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+     <p><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn">蜀ICP备2024083302号</a><!--|<a target="_blank" rel="noopener" href="https://beian.mps.gov.cn/#/query/webSearch">公网安备XXXXXXXX号</a> -->
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'posts/20a3be2d.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//fastly.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

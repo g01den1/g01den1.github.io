@@ -1,0 +1,633 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="referrer" content="no-referrer"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://blog.g01den.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://blog.g01den.top/atom.xml" />
+<link rel="alternate" type="application/json" title="golden的部落阁" href="http://blog.g01den.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="Java" />
+
+
+<link rel="canonical" href="http://blog.g01den.top/posts/3d5d6561.html">
+
+
+
+  <title>
+三、Servlet基础 - Java从入门到入狱 |
+golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
+<meta name="generator" content="Hexo 7.2.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">三、Servlet基础
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2024-05-27 12:07:54">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2024-05-27T12:07:54+08:00">2024-05-27</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">golden的部落阁</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+          <img src="https://gitee.com/gou-dengyue/images/raw/master/picture120.jpeg">
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/Java/" itemprop="item" rel="index" title="分类于 Java从入门到入狱"><span itemprop="name">Java从入门到入狱</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://blog.g01den.top/posts/3d5d6561.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="g01den">
+    <meta itemprop="description" content="subtitle写得真好, golden的部落阁">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="golden的部落阁">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <p><strong>注：因为我并不完全是为了从 0 开始 Java 开发，因此，我这里先暂时跳过第二章服务器环境相关的内容，直接开始第三章的内容。</strong></p>
+<h1 id="31-servlet-的基本结构"><a class="markdownIt-Anchor" href="#31-servlet-的基本结构">#</a> 3.1、Servlet 的基本结构：</h1>
+<p>​	下面的代码给出了一个基本的 Servlet ，它处理 GET 请求。GET 请求是浏览器请求的常见类型，用来请求 Web 页面。用户在地址栏中输入 URL 、点击 Web 页面内的连接、或提交没有指定 METHOD 或 METHOD=“GET” 的 HTML 表单时，浏览器都会生成这个请求。 Servlet 还可以容易地处理 POST 请求（提交 METHOD=“POST” 的 HTML 表单时，会生成 POST 请求）。HTML 表单的使用细节以及 GET 和 POST 之间的区别。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.firstweb.study01;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.http.HttpServlet;</span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.PrintWriter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ServletTemplate</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//Use &quot;request&quot; to read incoming HTTP headers</span></span><br><span class="line">        <span class="comment">//(e.g.,Cookies) and query data from HTML forms .</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//Use &quot;response&quot; to specify the HTTP response status</span></span><br><span class="line">        <span class="comment">//code and headers (e.g.,the content type ,cookies)</span></span><br><span class="line">        </span><br><span class="line">        <span class="type">PrintWriter</span> <span class="variable">out</span> <span class="operator">=</span> resp.getWriter();</span><br><span class="line">        <span class="comment">//Use &quot;out&quot; to send content to browser</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​	Servlet 一般扩展 HttpServlet ，并依数据发送方式的不同（GET 或 POST），覆盖 doGet 或 doPost 方法。如果希望 Servlet 对 GET 和 POST 请求采用同样的行动，只需要让 doGet 调用 doPost ，反之，依然。</p>
+<p>​	doGet 和 doPost 都接受两个参数：HttpServletRequest 和 HttpServletResponse 。通过 HttpServletRequest，可以得到所有的输入数据；这个类提供相应的方法，通过这些方法可以找出诸如表单（查询）数据、HTTP 请求报头和客户的主机名等信息。通过 HttpServletResponse 可以制定输出信息，比如 HTTP 状态代码（200，404 等）和响应报头（Content-Type，Set-Cookie 等）。最重要的是，通过 HttpServletResponse 可以获得 PrintWriter ，用它可以将文档内容发送给客户。对于简单的 Servlet ，大部分工作都花在用 println 语句生成期望的页面上。</p>
+<p>​	由于 doGet 和 doPost  抛出两种异常（ServletException 和 IOException），所以在方法声明中包括他们。最后，还必须导入 <span class="exturl" data-url="aHR0cDovL2phdmEuaW8=">java.io</span>（PrintWrite 等）、javax.servlet（HttpServlet 等）和 javax.servlet.http（HttpServletResponse 和 HttpServletRequest）中的类。</p>
+<h1 id="32-生成纯文本的-servlet"><a class="markdownIt-Anchor" href="#32-生成纯文本的-servlet">#</a> 3.2、生成纯文本的 Servlet ：</h1>
+<p>​	代码 3.2 列出了一个输出纯文本的简单 Servlet，图 3.2 是它的输出。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//代码 3.2 </span></span><br><span class="line"><span class="keyword">package</span> com.firstweb.study01;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.annotation.WebServlet;</span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.http.HttpServlet;</span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.PrintWriter;</span><br><span class="line"></span><br><span class="line"><span class="meta">@WebServlet(&quot;/hello&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloWorld</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        <span class="type">PrintWriter</span> <span class="variable">out</span> <span class="operator">=</span> resp.getWriter();</span><br><span class="line">        out.println(<span class="string">&quot;Hello World&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​	图 3.2：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/5c0bf5adcfa84c18800d9ca4c37c61c3.png#pic_center" alt="在这里插入图片描述"></p>
+<h1 id="33-生成-html-的-servlet"><a class="markdownIt-Anchor" href="#33-生成-html-的-servlet">#</a> 3.3、生成 HTML 的 Servlet：</h1>
+<p>​	大多数的 Servlet 生成 HTML ，而非前述例子中的纯文本。要生成 HTML ，需要在刚才介绍的过程中加入如下三步：</p>
+<ol>
+<li>
+<p>告知浏览器，即将向它发送  HTML 。</p>
+</li>
+<li>
+<p>修改 println 语句，构建合法的 Web 页面。</p>
+</li>
+<li>
+<p>用形式语法检验其（format syntax validator）检查生成的 HTML。</p>
+<p>第一步通过将 HTTP Content-Type 响应报头设为 text/html 来完成。一般而言，报头使用 HttpServletResponse 的 setHeader 方法来设置，但由于设置内容的类型是一项十分常见的任务，因而，HttpServletResponse 提供特殊的 setContentType 方法，专门用于这种目的。指明 HTML 的方式是使用 text/html 类型，因此，代码应该如下：</p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">resp.setContentType(<span class="string">&quot;text/html&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>​	尽管 HTML 是 Servlet 创建的最常见的文档类型，但是，Servlet 创建其他类型文档的情况也很常见。例如，使用 Servlet 生成的 Excel 表格（内容类型是 application/vnd.ms-excel）、JPEG 图像（内容类型是 image/jpeg ）和 XML 文档（内容类型是 text/xml）的情况也是十分常见。同时，一般很少使用 Servlet 生成格式相对固定的 HTML 页面（即每次请求，页面的布局改动很小）；这种情况下 JSP 常常更为方便。</p>
+<p>​	需要注意的是：需要在 PrintWriter 实际返回任何内容之前，设置响应报头。这是由于 HTTP 响应由状态行、一个或多个报头、一个空行和实际的文档一次次序构成。包头的出现次序并不重要，Servlet 会缓冲报头数据，将他们一次法案送到客户端，因此，即使在设定报头之后，依旧可以设置状态代码（属于返回内容的第一行）。但是，Servlet 不是一定要缓冲文档本身，因为对于篇幅较长的页面，用户或许只希望看到部分结果。Servlet 引擎可以缓冲部分输出，但并未规定缓冲区的大小。可以使用 HttpServletResponse 和 getBufferSize 方法确定这个大小，或使用 setBufferSize 指定这个大小。也可以在缓冲区填满，要发往客户时，对报头进行设置。如果不确定缓冲区是否已经发送出去，可以使用 isCommitted 方法来检查。及时如此，最佳的方案还是将 setContentType 行放在任何 PrintWrite 的行之前。</p>
+<p>​	<strong>警告：必须在传送实际的文档之前设定内容的类型。</strong></p>
+<p>​	在编写构建 HTML 文档的 Servlet 时，第二步时用 println 语句输出 HTML（不再是纯文本）。代码 303 列出了 HelloServlet.java ，结果如图 3.3 所示，浏览器按照 HTML 来格式化得到的结果，而非按照纯文本：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//代码 3.3</span></span><br><span class="line"><span class="keyword">package</span> com.firstweb.study01;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.annotation.WebServlet;</span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.http.HttpServlet;</span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.PrintWriter;</span><br><span class="line"></span><br><span class="line"><span class="meta">@WebServlet(&quot;/hello&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        resp.setContentType(<span class="string">&quot;text/html&quot;</span>);</span><br><span class="line">        <span class="type">PrintWriter</span> <span class="variable">out</span> <span class="operator">=</span> resp.getWriter();</span><br><span class="line">        <span class="type">String</span> <span class="variable">docType</span> <span class="operator">=</span></span><br><span class="line">                <span class="string">&quot;&lt;!DOCTYPE HTML PUBLIC \&quot;-//W3C//DTD HTML 4.0&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;Transitional//EN\&quot;&gt;\n&quot;</span>;</span><br><span class="line">        out.println(docType +</span><br><span class="line">                <span class="string">&quot;&lt;HTML&gt;\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;&lt;HEAD&gt;&lt;TITLE&gt;Hello&lt;/TITLE&gt;&lt;HEAD&gt;\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;&lt;BODY BGCOLOR=\&quot;#FDF5E6\&quot;&gt;\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;&lt;H1&gt;Hello&lt;/H1&gt;\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;&lt;/BODY&gt;&lt;/HTML&gt;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​	图 3.3 ：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/2ff45d069c9f4963b377e8952ef0ca66.png#pic_center" alt="在这里插入图片描述"></p>
+<p>​	最后一步时合适生成的 HTML 中，不存在有可能会在不同的浏览器上引起不可预期结果的语法错误。参考 3.5 节中有关 HTML 验证其的论述。</p>
+<h1 id="34-servlet-的打包"><a class="markdownIt-Anchor" href="#34-servlet-的打包">#</a> 3.4、Servlet 的打包：</h1>
+<p>​	在产品开发过程中，多个程序员可能为同一服务器开发 Servlet。因此，将所有的 Servlet 放到同一目录中将会生成数目庞大且难以管理的类，如果两个开发人员为 Servlet 或使用工具类名时，不经意间选择了相同的名称，还会导致命名冲突。现在，通过 Web 应用，可以将内容划分到多个单独的目录中，每个目录都有自己的一套 Servlet、实用工具类、JSP 页面和 HTML 文件，避免了这个问题。然而，由于单个 Web 应用也可能比较庞大，因此，我们依旧需要采用 Java 中用以避免命名冲突的标准解决方案：包。</p>
+<p>​	在将 Servlet 放到包中，需要执行下面两个额外的步骤。</p>
+<ol>
+<li>将文件放到与预定的包名匹配的子目录中。</li>
+<li>在类文件中插入包语句。</li>
+</ol>
+<h1 id="35-简单的-html-构建工具"><a class="markdownIt-Anchor" href="#35-简单的-html-构建工具">#</a> 3.5、简单的 HTML 构建工具：</h1>
+<p>​	由于 HTML 文档的结构如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE ...&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">HTML</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">HEAD</span>&gt;</span><span class="tag">&lt;<span class="name">TITLE</span>&gt;</span>...<span class="tag">&lt;/<span class="name">TITLE</span>&gt;</span>...<span class="tag">&lt;/<span class="name">HEAD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">BODY</span> <span class="attr">...</span>&gt;</span>...<span class="tag">&lt;/<span class="name">BODY</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">HTML</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>​	在使用 Servlet 构建 HTML 时，可能会略去这个结构的某个部分，尤其是 DOCTYPE 行，因为虽然 HTML 规范需要它，但几乎所有主流的浏览器都忽略它。我们极不赞成这种做法。DOCTYPE 行的长处是，它告诉 HTML 验证器您使用的是 HTML 的哪个版本，从而验证器知道应该按照哪种规范对文档进行检查。这些验证器对调试很有价值，能够帮助您捕获那些您的路 i 兰奇可以推测出来，但其他浏览器在显示时可能会有困难的 HTML 语法错误。</p>
+<p>​	毫无疑问，使用 println 语句生成 HTML 有些笨重，尤其是那些冗长乏味的行，如 DOCTYPE 声明。有些人编写很长的 HTML 生成使用工具程序，然后，在编写 Servlet 时使用这些实用工具程序，，以此来解决这个问题。我们对这类扩展库的有效性持怀疑态度。首先且最重要的是，变成生成 HTML 的不便是 JSP 解决的主要问题之一。其次，用来生成 HTML 的例程可能十分笨重，一般并不支持所有的 HTML 属性。</p>
+<p>​	标准 Servlet 中，Web 页面中的两部分内容（DOCTYPE 和 HEAD）一般不会发生变化，因而可以归结到一个简单的使用工具文件中。代码 3.5 就是这样一个文件，代码 3.6 列出 HelloServlet 类的又一个变体，它使用这个实用工具类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//代码 3.5</span></span><br><span class="line"><span class="keyword">package</span> com.firstweb.study01;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ServletUtilities</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">DOCTYPE</span> <span class="operator">=</span></span><br><span class="line">            <span class="string">&quot;&lt;!DOCTYPE HTML PUBLIC \&quot;-//W3C//DTD HTML 4.0 &quot;</span> + <span class="string">&quot;\n&quot;</span> +</span><br><span class="line">                    <span class="string">&quot;Transitional//EN\&quot;&gt;&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">headWithTitle</span><span class="params">(String title)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (DOCTYPE + <span class="string">&quot;\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;&lt;HTML&gt;\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;&lt;HEAD&gt;&lt;TITLE&gt;&quot;</span> + title + <span class="string">&quot;&lt;/TITLE&gt;&lt;HEAD&gt;\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//代码 3.6</span></span><br><span class="line"><span class="keyword">package</span> com.firstweb.study01;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.annotation.WebServlet;</span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.http.HttpServlet;</span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> jakarta.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.PrintWriter;</span><br><span class="line"></span><br><span class="line"><span class="meta">@WebServlet(&quot;/hello&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloServlet3</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        resp.setContentType(<span class="string">&quot;text/html&quot;</span>);</span><br><span class="line">        <span class="type">PrintWriter</span> <span class="variable">out</span> <span class="operator">=</span> resp.getWriter();</span><br><span class="line">        <span class="type">String</span> <span class="variable">title</span> <span class="operator">=</span> <span class="string">&quot;hello3&quot;</span>;</span><br><span class="line">        out.println(ServletUtilities.headWithTitle(title) +</span><br><span class="line">                <span class="string">&quot;&lt;BODY BGCOLOR=\&quot;#FDF5E6\&quot;&gt;\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;&lt;H1&gt;&quot;</span> + title + <span class="string">&quot;&lt;/H1&gt;\n&quot;</span> +</span><br><span class="line">                <span class="string">&quot;&lt;/BODY&gt;&lt;/HTML&gt;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​	编译完 HelloServlet3.java 之后（会导致自动编译 ServletUtilities.java），需要将这两个类文件移动到服务器默认部署位置（…/WEB-INF/classes）中，的相应的包中。最后结果如下图所示：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/direct/8eb34a2c73134aec92788cccbfd1c2d0.png#pic_center" alt="在这里插入图片描述"></p>
+<h1 id="36-servlet-的生命周期"><a class="markdownIt-Anchor" href="#36-servlet-的生命周期">#</a> 3.6、Servlet 的生命周期：</h1>
+<p>​	服务器只创建每个  Servlet 的单一实例，每个用户请求都会引发新的线程 —— 将用户请求交付给相应的 doGet 或 doPost 进行处理。</p>
+<p>​	首次创建 Servlet 时，它的 init 方法会得到调用，因此，init 是放置一次性设置代码的地方。在这之后，针对每个用户请求，都会创造一个线程，该线程调用前面创建的实例的 Servlet 方法。多个并发请求一般会导致多个线程同时调用 service。之后由 service 方法依据接收到的 HTTP 请求的类型，调用 doGet，doPost，或其他 doXxx 方法。最后，如果服务器决定卸载某个 Servlet ，它会首先调用 Servlet 的 destroy 方法。</p>
+<h2 id="361-service-方法"><a class="markdownIt-Anchor" href="#361-service-方法">#</a> 3.6.1、service 方法：</h2>
+<p>​	服务器每次接收到对 Servlet 的请求，都会产生一个新的线程，调用 service 方法。service 方法检查 HTTP 请求的类型（GET，POST，PUT，DELETE 等）并相应地调用 doGet，doPost，doPut，doDelete 等方法。</p>
+<p>​	如果需要在 Servlet 中等同地处理 POST 和 GET 请求，只需要让 doPost 调用 doGet 或者反过来即可，尽量别直接覆盖 service 方法。</p>
+<p>​	虽然这种方法要多出几行代码，但相对于直接覆盖 service ，它有几个有点。首先，之后还可以加入 doPut，doTrace 等，支持其他的 HTTP 请求方法。直接覆盖 service 则排除了这种可能性。其次，还可以通过添加 getLastModified 方法，加入对修改日期的支持，由于 getLastModified 由默认的 service 方法调用，所以覆盖 service 方法也就失去了这个选项。最后，service 提供对 HEAD，OPTION 和 TRACE 请求的自动支持。</p>
+<h2 id="362-dogetdopost-和-doxxx-方法"><a class="markdownIt-Anchor" href="#362-dogetdopost-和-doxxx-方法">#</a> 3.6.2、doGet，doPost 和 doXxx 方法：</h2>
+<p>​	这些部分才是 Servlet 的主体。因此，可以覆盖 doGet 和 doPost。如果愿意，也可以覆盖 DELETE 请求的 doDelete、PUT 请求的 doPut 、OPTIONS 请求的 doOptions 以及 TRACE 请求的 doTrace。然而，要记住已经拥有对 OPTION 和 TRACE 的自动支持。</p>
+<p>​	一般情况下，不需要实现 doHead 以处理 HEAD 请求（HEAD 请求规定，服务器应该只返回正常的 HTTP 报头，不含与之相关联的文档）。由于系统会自动调用 doGet ，并用生成的状态行和报头设定来应答 HEAD 请求，故而，一般不需要实现 doHead 。有时，为了能够更快地生成对 HEAD 请求的响应，会实现 doHead 方法。</p>
+<h2 id="363-init-方法"><a class="markdownIt-Anchor" href="#363-init-方法">#</a> 3.6.3、init 方法：</h2>
+<p>​	大多数时候，Servlet 只需处理单个请求的数据，doGet 或 doPost 是生命周期中唯一需要的方法。然而，有时候希望在 Servlet 首次载入时，执行复杂的初始化任务，但并不想每个请求都重复这些任务。init 方法就是专门针对这种情况设计；它在 Servlet 初次创建时被调用，之后处理每个用户的请求时，则不再调用这个方法。因此，它主要用于一次性的初始化，和 applet 的 init 方法相同。Servlet 一般在用户首次调用对应的 Servlet 的 URL 时创建，但也可以指定 Servlet 在服务器启动后载入。</p>
+<p>​	init 方法执行两种类型的初始化：常规初始化，以及由初始化参数控制的初始化。</p>
+<ol>
+<li>
+<p><strong>常规初始化：</strong></p>
+<p>init 只是创建或载入在 Servlet 声明周期内用到的一些数据，或者执行某些一次性的计算。</p>
+</li>
+<li>
+<p><strong>由初始化参数控制的初始化：</strong></p>
+</li>
+</ol>
+<h2 id="364-destroy-方法"><a class="markdownIt-Anchor" href="#364-destroy-方法">#</a> 3.6.4、destroy 方法：</h2>
+<p>​	服务器可能会决定移除之前载入的 Servlet 实例，或许因为服务器的管理员要求它这样做。但是，在服务器移除 Servlet 的实例之前，它会调用 Servlet 的 destroy 方法，从而使得 Servlet 有机会关闭数据库连接、停止后台的线程、将 Cookie 列表和点击计数写入到磁盘、并执行其他清理活动。但是，要意识到 Web 服务器有可能崩溃。因此，不要将 destroy 机制作为向磁盘上保存状态的唯一机制。如果服务器执行诸如点击计数，或对 Cookie 值的列表进行累加等活动，应该主动地定期将数据写到磁盘上。</p>
+<h1 id="37-singlethreadmodel-接口"><a class="markdownIt-Anchor" href="#37-singlethreadmodel-接口">#</a> 3.7、SingleThreadModel 接口：</h1>
+<p>​	<strong>注：由于我缺少前置知识，所以这部分内容先临时跳过，借鉴我的博客内容学习的师傅可以去支持下这本书。</strong></p>
+<h1 id="38-servlet-的调试"><a class="markdownIt-Anchor" href="#38-servlet-的调试">#</a> 3.8、Servlet 的调试：</h1>
+<p>​	如下，书中列出了一部分的调试技巧：</p>
+<ol>
+<li>使用打印语句。</li>
+<li>使用集成在 IDE 中的调试器。</li>
+<li>使用日志文件。</li>
+<li>使用 Apache Log4J。</li>
+<li>编写独立类。</li>
+<li>预先做好数据缺失或异常的准备。</li>
+<li>检查 HTML 源代码。</li>
+<li>单独检查请求数据。</li>
+<li>单独检查响应数据。</li>
+<li>停止和重启服务器。<br>
+<strong>注：由于我缺少前置知识，所以这部分内容先临时跳过，借鉴我的博客内容学习的师傅可以去支持下这本书。</strong></li>
+</ol>
+<h1 id="38-servlet-的调试-2"><a class="markdownIt-Anchor" href="#38-servlet-的调试-2">#</a> 3.8、Servlet 的调试：</h1>
+<p>​	如下，书中列出了一部分的调试技巧：</p>
+<ol>
+<li>使用打印语句。</li>
+<li>使用集成在 IDE 中的调试器。</li>
+<li>使用日志文件。</li>
+<li>使用 Apache Log4J。</li>
+<li>编写独立类。</li>
+<li>预先做好数据缺失或异常的准备。</li>
+<li>检查 HTML 源代码。</li>
+<li>单独检查请求数据。</li>
+<li>单独检查响应数据。</li>
+<li>停止和重启服务器。</li>
+</ol>
+
+      <div class="tags">
+          <a href="/tags/Java/" rel="tag"><i class="ic i-tag"></i> Java</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2024-06-20 22:48:55" itemprop="dateModified" datetime="2024-06-20T22:48:55+08:00">2024-06-20</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wechatpay.png" alt="g01den 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/alipay.png" alt="g01den 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/paypal.png" alt="g01den 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>g01den <i class="ic i-at"><em>@</em></i>golden的部落阁
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.g01den.top/posts/3d5d6561.html" title="三、Servlet基础">http://blog.g01den.top/posts/3d5d6561.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/posts/3fe30769.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;s2.loli.net&#x2F;2024&#x2F;05&#x2F;21&#x2F;tMpRqGTwXr1U3md.jpg" title="一、Servlet和JSP技术概述">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Java从入门到入狱</span>
+  <h3>一、Servlet和JSP技术概述</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/posts/20a3be2d.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture20.png" title="JavaWeb基础(一)-IO操作">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Java从入门到入狱</span>
+  <h3>JavaWeb基础(一)-IO操作</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#31-servlet-%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text"> 3.1、Servlet 的基本结构：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#32-%E7%94%9F%E6%88%90%E7%BA%AF%E6%96%87%E6%9C%AC%E7%9A%84-servlet"><span class="toc-number">2.</span> <span class="toc-text"> 3.2、生成纯文本的 Servlet ：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#33-%E7%94%9F%E6%88%90-html-%E7%9A%84-servlet"><span class="toc-number">3.</span> <span class="toc-text"> 3.3、生成 HTML 的 Servlet：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#34-servlet-%E7%9A%84%E6%89%93%E5%8C%85"><span class="toc-number">4.</span> <span class="toc-text"> 3.4、Servlet 的打包：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#35-%E7%AE%80%E5%8D%95%E7%9A%84-html-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7"><span class="toc-number">5.</span> <span class="toc-text"> 3.5、简单的 HTML 构建工具：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#36-servlet-%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">6.</span> <span class="toc-text"> 3.6、Servlet 的生命周期：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#361-service-%E6%96%B9%E6%B3%95"><span class="toc-number">6.1.</span> <span class="toc-text"> 3.6.1、service 方法：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#362-dogetdopost-%E5%92%8C-doxxx-%E6%96%B9%E6%B3%95"><span class="toc-number">6.2.</span> <span class="toc-text"> 3.6.2、doGet，doPost 和 doXxx 方法：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#363-init-%E6%96%B9%E6%B3%95"><span class="toc-number">6.3.</span> <span class="toc-text"> 3.6.3、init 方法：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#364-destroy-%E6%96%B9%E6%B3%95"><span class="toc-number">6.4.</span> <span class="toc-text"> 3.6.4、destroy 方法：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#37-singlethreadmodel-%E6%8E%A5%E5%8F%A3"><span class="toc-number">7.</span> <span class="toc-text"> 3.7、SingleThreadModel 接口：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#38-servlet-%E7%9A%84%E8%B0%83%E8%AF%95"><span class="toc-number">8.</span> <span class="toc-text"> 3.8、Servlet 的调试：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#38-servlet-%E7%9A%84%E8%B0%83%E8%AF%95-2"><span class="toc-number">9.</span> <span class="toc-text"> 3.8、Servlet 的调试：</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/posts/3fe30769.html" rel="bookmark" title="一、Servlet和JSP技术概述">一、Servlet和JSP技术概述</a></li><li class="active"><a href="/posts/3d5d6561.html" rel="bookmark" title="三、Servlet基础">三、Servlet基础</a></li><li><a href="/posts/20a3be2d.html" rel="bookmark" title="JavaWeb基础(一)-IO操作">JavaWeb基础(一)-IO操作</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="g01den"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">g01den</p>
+  <div class="description" itemprop="description">golden的部落阁</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">49</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">10</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">8</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL2cwMWRlbjE=" title="https:&#x2F;&#x2F;github.com&#x2F;g01den1"><i class="ic i-github"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+        
+  <li class="item dropdown">
+      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
+    <ul class="submenu">
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/links/" rel="section"><i class="ic i-magic"></i>links</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/posts/3fe30769.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/posts/20a3be2d.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/e20e7502.html" title="pwn学习笔记（3）ret2syscall">pwn学习笔记（3）ret2syscall</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/posts/4a17b156.html" title="Hello World">Hello World</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Misc/" title="分类于 杂七杂八的知识点">杂七杂八的知识点</a>
+</div>
+
+    <span><a href="/posts/d63a55bd.html" title="BUUCTF-Misc-第一页(1-16)">BUUCTF-Misc-第一页(1-16)</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/955175a5.html" title="【2024】H&amp;NCTF">【2024】H&NCTF</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Major/" title="分类于 考研专业课">考研专业课</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
+</div>
+
+    <span><a href="/posts/95e7063c.html" title="数据结构笔记-2、线性表">数据结构笔记-2、线性表</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Major/" title="分类于 考研专业课">考研专业课</a>
+<i class="ic i-angle-right"></i>
+<a href="/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
+</div>
+
+    <span><a href="/posts/2c763aa6.html" title="数据结构-3、栈、队列和数组">数据结构-3、栈、队列和数组</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/posts/27a95d1a.html" title="hexo部署服务器">hexo部署服务器</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/a4378bd0.html" title="【2025】LitCTF">【2025】LitCTF</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/9dd9bec.html" title="Ciscn2024">Ciscn2024</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/ff5b88d5.html" title="python原型链污染">python原型链污染</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">g01den @ golden的部落阁</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+     <p><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn">蜀ICP备2024083302号</a><!--|<a target="_blank" rel="noopener" href="https://beian.mps.gov.cn/#/query/webSearch">公网安备XXXXXXXX号</a> -->
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'posts/3d5d6561.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//fastly.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

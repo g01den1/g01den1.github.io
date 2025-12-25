@@ -1,0 +1,703 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="referrer" content="no-referrer"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://blog.g01den.top/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://blog.g01den.top/atom.xml" />
+<link rel="alternate" type="application/json" title="golden的部落阁" href="http://blog.g01den.top/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+  <meta name="keywords" content="Pwn" />
+
+
+<link rel="canonical" href="http://blog.g01den.top/posts/a698ff8.html">
+
+
+
+  <title>
+pwn学习笔记（5）--格式化字符串漏洞（未完全完成） - Pwn手的自我修养 |
+golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
+<meta name="generator" content="Hexo 7.2.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">pwn学习笔记（5）--格式化字符串漏洞（未完全完成）
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2024-03-05 19:10:34">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2024-03-05T19:10:34+08:00">2024-03-05</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">golden的部落阁</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+          <img src="https://gitee.com/gou-dengyue/images/raw/master/picture281.jpg">
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span><i class="ic i-angle-right"></i>
+<span  class="current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/categories/Pwn/" itemprop="item" rel="index" title="分类于 Pwn手的自我修养"><span itemprop="name">Pwn手的自我修养</span></a>
+<meta itemprop="position" content="1" /></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://blog.g01den.top/posts/a698ff8.html">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="g01den">
+    <meta itemprop="description" content="subtitle写得真好, golden的部落阁">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="golden的部落阁">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="pwn学习笔记5格式化字符串漏洞"><a class="markdownIt-Anchor" href="#pwn学习笔记5格式化字符串漏洞">#</a> pwn 学习笔记（5）–格式化字符串漏洞</h1>
+<p>​	<strong>前言：由于条件有限，因此对于该漏洞的学习不算很多，</strong></p>
+<h2 id="格式化字符串漏洞基础"><a class="markdownIt-Anchor" href="#格式化字符串漏洞基础">#</a> 格式化字符串漏洞基础：</h2>
+<h3 id="格式化字符串介绍"><a class="markdownIt-Anchor" href="#格式化字符串介绍">#</a> 格式化字符串介绍：</h3>
+<p>​	格式化字符串函数可以接收可变数量的参数，并将<strong>第一个参数作为格式化字符串，根据其来解析之后的参数</strong>，格式化字符串的利用一般分为三个部分：</p>
+<blockquote>
+<ul>
+<li>格式化字符串函数</li>
+<li>格式化字符串</li>
+<li>[后续参数]</li>
+</ul>
+</blockquote>
+<h3 id="格式化字符串函数"><a class="markdownIt-Anchor" href="#格式化字符串函数">#</a> 格式化字符串函数：</h3>
+<p>​	常见的格式化字符串有：</p>
+<blockquote>
+<p>输入：</p>
+<ul>
+<li>scanf()</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>输出：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">函数</th>
+<th style="text-align:center">基本介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">printf</td>
+<td style="text-align:center">输出到 stdout</td>
+</tr>
+<tr>
+<td style="text-align:center">fprintf</td>
+<td style="text-align:center">输出到指定 FILE 流</td>
+</tr>
+<tr>
+<td style="text-align:center">vprintf</td>
+<td style="text-align:center">根据参数列表格式化输出到 stdout</td>
+</tr>
+<tr>
+<td style="text-align:center">vfprintf</td>
+<td style="text-align:center">根据参数列表格式化输出到指定 FILE 流</td>
+</tr>
+<tr>
+<td style="text-align:center">sprintf</td>
+<td style="text-align:center">输出到字符串</td>
+</tr>
+<tr>
+<td style="text-align:center">snprintf</td>
+<td style="text-align:center">输出指定字节数到字符串</td>
+</tr>
+<tr>
+<td style="text-align:center">vsprintf</td>
+<td style="text-align:center">根据参数列表格式化输出到字符串</td>
+</tr>
+<tr>
+<td style="text-align:center">vsnprintf</td>
+<td style="text-align:center">根据参数列表格式化输出指定字节到字符串</td>
+</tr>
+<tr>
+<td style="text-align:center">setproctitle</td>
+<td style="text-align:center">设置 argv</td>
+</tr>
+<tr>
+<td style="text-align:center">syslog</td>
+<td style="text-align:center">输出日志</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<h3 id="格式化字符串的格式"><a class="markdownIt-Anchor" href="#格式化字符串的格式">#</a> 格式化字符串的格式：</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%[parameter][flags][field width][.precision][length]type</span><br></pre></td></tr></table></figure>
+<p>​	其中，需要注意的有 parameter 参数，以及 type 参数：</p>
+<blockquote>
+<p>parameter：</p>
+<pre><code>  n$，获取格式化字符串中的指定参数
+</code></pre>
+</blockquote>
+<blockquote>
+<p>type：</p>
+<ul>
+<li>d/i，有符号整数</li>
+<li>u，无符号整数</li>
+<li>x/X，16 进制 unsigned int 。x 使用小写字母；X 使用大写字母。如果指定了精度，则输出的数字不足时在左侧补 0。默认精度为 1。精度为 0 且值为 0，则输出为空。</li>
+<li>o，8 进制 unsigned int 。如果指定了精度，则输出的数字不足时在左侧补 0。默认精度为 1。精度为 0 且值为 0，则输出为空。</li>
+<li>s，如果没有用 l 标志，输出 null 结尾字符串直到精度规定的上限；如果没有指定精度，则输出所有字节。如果用了 l 标志，则对应函数参数指向 wchar_t 型的数组，输出时把每个宽字符转化为多字节字符，相当于调用 wcrtomb 函数。</li>
+<li>c，如果没有用 l 标志，把 int 参数转为 unsigned char 型输出；如果用了 l 标志，把 wint_t 参数转为包含两个元素的 wchart_t 数组，其中第一个元素包含要输出的字符，第二个元素为 null 宽字符。</li>
+<li>p， void * 型，输出对应变量的值。printf (&quot;% p&quot;,a) 用地址的格式打印变量 a 的值，printf (&quot;% p&quot;, &amp;a) 打印变量 a 所在的地址。</li>
+<li>n，不输出字符，但是把已经成功输出的字符个数写入对应的整型指针参数所指的变量。</li>
+<li>%， ' <code>%</code> ' 字面值，不接受任何 flags, width。</li>
+</ul>
+</blockquote>
+<p>​	下面使用几个案例来说明下几个需要注意的参数：</p>
+<blockquote>
+<p>parameter：</p>
+<pre><code>  n$ 表示获取后面参数列表中的第几个参数。
+</code></pre>
+</blockquote>
+<p>​	比如如下代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%2$d\n&quot;</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​	通过编译运行之后得到的值却是</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@g01den-virtual-machine:/home/g01den/Temp<span class="comment"># ./a</span></span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+<p>​	好了，我们稍微修改下刚刚的代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d%d%d\n&quot;</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​	然后编译为 32 位之后，查看下汇编代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">0000119d &lt;main&gt;:</span><br><span class="line">    119d:       8d 4c 24 04             lea    0x4(%esp),%ecx</span><br><span class="line">    11a1:       83 e4 f0                and    $0xfffffff0,%esp</span><br><span class="line">    11a4:       ff 71 fc                push   -0x4(%ecx)</span><br><span class="line">    11a7:       55                      push   %ebp</span><br><span class="line">    11a8:       89 e5                   mov    %esp,%ebp</span><br><span class="line">    11aa:       53                      push   %ebx</span><br><span class="line">    11ab:       51                      push   %ecx</span><br><span class="line">    11ac:       e8 2b 00 00 00          call   11dc &lt;__x86.get_pc_thunk.ax&gt;</span><br><span class="line">    11b1:       05 27 2e 00 00          add    $0x2e27,%eax</span><br><span class="line">    11b6:       6a 03                   push   $0x3      &lt;-------------------------------</span><br><span class="line">    11b8:       6a 02                   push   $0x2      &lt;-------------------------------</span><br><span class="line">    11ba:       6a 01                   push   $0x1      &lt;-------------------------------</span><br><span class="line">    11bc:       8d 90 30 e0 ff ff       lea    -0x1fd0(%eax),%edx</span><br><span class="line">    11c2:       52                      push   %edx</span><br><span class="line">    11c3:       89 c3                   mov    %eax,%ebx</span><br><span class="line">    11c5:       e8 86 fe ff ff          call   1050 &lt;printf@plt&gt;</span><br><span class="line">    11ca:       83 c4 10                add    $0x10,%esp</span><br><span class="line">    11cd:       b8 00 00 00 00          mov    $0x0,%eax</span><br><span class="line">    11d2:       8d 65 f8                lea    -0x8(%ebp),%esp</span><br><span class="line">    11d5:       59                      pop    %ecx</span><br><span class="line">    11d6:       5b                      pop    %ebx</span><br><span class="line">    11d7:       5d                      pop    %ebp</span><br><span class="line">    11d8:       8d 61 fc                lea    -0x4(%ecx),%esp</span><br><span class="line">    11db:       c3                      ret</span><br></pre></td></tr></table></figure>
+<p>​	能够发现在我指的那三行，在调用 printf 函数之前是先将参数从右向左压入栈中，之后通过读取栈的参数与格式化字符串一起打印出来。</p>
+<h2 id="格式化字符串漏洞"><a class="markdownIt-Anchor" href="#格式化字符串漏洞">#</a> 格式化字符串漏洞：</h2>
+<p>​	有了前面的那些储备知识，这个时候就可以来看看格式化字符串的漏洞了。</p>
+<h3 id="初探"><a class="markdownIt-Anchor" href="#初探">#</a> 初探：</h3>
+<p>​	首先，写一个程序，如下内容：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%x  %x  %x  %x  \n&quot;</span>,<span class="number">0x1</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​	那么，直接进行动态调试，观看<strong> main</strong> 的栈帧中相关的信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">00:0000│ esp 0xffffd500 —▸ 0x56557008 ◂— &#x27;%x  %x  %x  %x  \n&#x27;</span><br><span class="line">01:0004│-014 0xffffd504 ◂— 0x1                                            &lt;--------------------</span><br><span class="line">02:0008│-010 0xffffd508 —▸ 0xf7fbeb20 —▸ 0xf7c1acc6 ◂— &#x27;GLIBC_PRIVATE&#x27;    &lt;--------------------</span><br><span class="line">03:000c│-00c 0xffffd50c —▸ 0x565561b1 (main+20) ◂— add eax, 0x2e27        &lt;--------------------</span><br><span class="line">04:0010│-008 0xffffd510 —▸ 0xffffd530 ◂— 0x1        					  &lt;--------------------</span><br><span class="line">05:0014│-004 0xffffd514 —▸ 0xf7e2a000 (_GLOBAL_OFFSET_TABLE_) ◂— 0x229dac</span><br><span class="line">06:0018│ ebp 0xffffd518 —▸ 0xf7ffd020 (_rtld_global) —▸ 0xf7ffda40 —▸ 0x56555000 ◂— 0x464c457f</span><br></pre></td></tr></table></figure>
+<p>​	然后，运行到 printf 函数之后，再看看输出的值是多少：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">n</span></span><br><span class="line">1  f7fbeb20  565561b1  ffffd530</span><br></pre></td></tr></table></figure>
+<p>​	发现输出的值和箭头指出来的值一样。因此，黑客则可以利用此漏洞配合 **% n$d** 来进行内存的读取了。</p>
+<p>​</p>
+<h3 id="一次简单的漏洞的实例"><a class="markdownIt-Anchor" href="#一次简单的漏洞的实例">#</a> 一次简单的漏洞的实例：</h3>
+<p>​	实际上，格式化字符串的漏洞很多时候都是由于程序员们偷懒，才会导致一些漏洞的产生，比如下面的程序，如果写成这个样子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="type">char</span> str[<span class="number">100</span>];</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%s\n&quot;</span>,str);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>,str);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​	如果是这样的话，程序运行就不会出现太大的问题，但是，当程序员偷懒，使用下面的写法，就会出现问题：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="type">char</span> str[<span class="number">100</span>];</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,str);</span><br><span class="line">        <span class="built_in">printf</span>(str);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​	运行的话就会出现如下的结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@g01den-virtual-machine:/home/g01den/Temp# ./a</span><br><span class="line">aaa.%x</span><br><span class="line">aaa.fff53a28</span><br></pre></td></tr></table></figure>
+<p>​	根据 gdb 调试，就会发现，它输出了比 esp 地址高 4 字节的那一地址的数据。</p>
+<h3 id="泄露内存"><a class="markdownIt-Anchor" href="#泄露内存">#</a> 泄露内存：</h3>
+<p>​	还是刚才那个程序，其实可以在这个时候多输入几个 % x 来进行父函数栈帧的 esp 高 4 字节的地址开始的多个字节的内存，或者通过 n$ 来进行任意内存的读取：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">aaa.fff53a28root@g01den-virtual-machine:/home/g01den/Temp# ./a</span><br><span class="line"><span class="meta prompt_">%</span><span class="language-bash">x.%x.%x.%x.%x.%x.%x</span></span><br><span class="line">ff8631d8.0.565a31d4.0.0.252e7825.78252e78</span><br><span class="line"></span><br><span class="line">root@g01den-virtual-machine:/home/g01den/Temp# ./a</span><br><span class="line"><span class="meta prompt_">%</span><span class="language-bash">3<span class="variable">$x</span></span></span><br><span class="line">565cf1d4</span><br></pre></td></tr></table></figure>
+<h3 id="泄露任意地址的内存"><a class="markdownIt-Anchor" href="#泄露任意地址的内存">#</a> 泄露任意地址的内存：</h3>
+<p>​	上一个方法只是泄露了栈上的数据，其实，格式化字符串可以对任意内存地址的数据进行泄露。、</p>
+<p>​	攻击者可以使用类似于 &quot;% s&quot; 的格式规范做到泄露栈中存放的值对应的地址的字符串的内容，这里引用下 dalao 的对于 % s 的讲解：</p>
+<blockquote>
+<p><strong>程序会将 % s 指向的地址作为一个 ASCII 字符串处理，直到遇到一个空字符。所以，如果攻击者能够操纵这个参数的值，那就可以泄露任意地址的内容。</strong></p>
+<p>或者说</p>
+<p><strong>% s 是把地址指向的内存内容给打印出来，可以把 函数的地址给打印出来。</strong></p>
+</blockquote>
+<p>​	也就是说，想要做到任意地址的内存泄露，就需要想办法对栈上的某个地址的值进行修改为想要获得的那个字符串的地址。</p>
+<h3 id="覆盖栈内存"><a class="markdownIt-Anchor" href="#覆盖栈内存">#</a> 覆盖栈内存：</h3>
+<p>​	% n 不能够输出字符，但是，它能把已经成功输出的字符个数写入<strong>对应的整形指针参数所致的变量</strong>，只要变量对应的地址可写，就可以利用格式化字符串来改变其对应的值。</p>
+<blockquote>
+<p>一般来说，这种方法利用的步骤为：</p>
+<ul>
+<li>确定覆盖地址</li>
+<li>确定相对位移</li>
+<li>进行覆盖</li>
+</ul>
+</blockquote>
+<p>​	<strong>注：以下为我个人的见解，如有问题，请指正。</strong></p>
+<p>​	首先，之前说过了 % n 这个格式化字符串的作用是啥：</p>
+<blockquote>
+<p><strong>% n, 不输出字符，但是把已经成功输出的字符个数写入对应的整型指针参数所指的变量。</strong></p>
+</blockquote>
+<p>​	之后，用一个程序作为示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> a = <span class="number">123</span>, b = <span class="number">456</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="type">int</span> c = <span class="number">789</span>;</span><br><span class="line">  <span class="type">char</span> s[<span class="number">100</span>];</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;%p\n&quot;</span>, &amp;c);</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, s);</span><br><span class="line">  <span class="built_in">printf</span>(s);</span><br><span class="line">  <span class="keyword">if</span> (c == <span class="number">16</span>) &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;modified c.&quot;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a == <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;modified a for a small number.&quot;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (b == <span class="number">0x12345678</span>) &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;modified b for a big number!&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​	这个程序的格式化字符串漏洞的函数很容易就能找到，那就是 printf (s)，因此，假设对变量 c 进行修改，就需要用到 % n 对 C 进行修改，所以，格式如下：</p>
+<blockquote>
+<p>c 的地址 + 12 个任意的字符 + 对应格式化字符串的参数的偏移</p>
+</blockquote>
+<p>​	好了，实际试试看吧：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">AAAA,<span class="variable">$p</span>,<span class="variable">$p</span>,<span class="variable">$p</span>,<span class="variable">$p</span>,<span class="variable">$p</span>,<span class="variable">$p</span>,<span class="variable">$p</span>,<span class="variable">$p</span>,<span class="variable">$proot</span>@g01den-virtual-machine:/home/g01den/Temp<span class="comment"># ./a</span></span><br><span class="line">0xff8d3ad4</span><br><span class="line">AAA,%p,%p,%p,%p,%p,%p,%p,%p,%p,%p,%p</span><br><span class="line">AAA,0xff8d3ad8,(nil),0x565d51e4,(nil),0x315,0x2c414141,0x252c7025,0x70252c70,0x2c70252c,0x252c7025,0x70252c70</span><br></pre></td></tr></table></figure>
+<p>​	由此可知，传入的格式化字符串 AAA，所对应的参数是第六位，因此，对应格式化字符串对应的偏移为 6，也就是说，值为 %6$n，好的，之后就是 c 的地址，<strong>我在学到这里的时候出现了理解不能的问题，最后大致是整明白了，就是不知道对不对。</strong></p>
+<p>​	对于 C 的地址，我认为是，正是因为构造的格式化字符串的前四个字节是 c 的地址，因此，% n 这个格式化字符串在写的时候对应的就是第六个参数，而第六个参数的前四个字节就是 c 的地址，因此就成功修改了 c 这个变量的值；** 那么问题就来了，为啥不能直接指定第五个参数进行修改呢？** 我个人的理解是这样的：<strong>因为第五个参数存放的并不是 c 这个变量的地址，是 789，因此，% n 就试图把 16 写入 789 这个地址里去，但是，这个地址要么不存在，要么就是无法访问，则会出现 segment fault，导致程序出现了错误。</strong></p>
+<h3 id="覆盖小数字"><a class="markdownIt-Anchor" href="#覆盖小数字">#</a> 覆盖小数字：</h3>
+<p>​	那么，问题又出现了，因为如果让变量的地址作为开始的字符，就会导致 % n 写入的最小的值也是 4，那么，如果要让某个变量被覆盖为 2，又该怎么做呢？</p>
+<p>​	<strong>注：以下对于内容的解释部分均为我自己的理解，如有错误，还请指正。</strong></p>
+<p>​	照理来说，想要某个变量被覆盖为 2 的话，就需要诸如</p>
+<blockquote>
+<p>aa% k$naa + 地址</p>
+</blockquote>
+<p>​	这样的字符串，所以是为啥呢？</p>
+<p>​	这里借用 julao 们的说法是</p>
+<blockquote>
+<p><strong>aa%k<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi>x</mi><mi>x</mi><mtext>，如果用这样的方式，前面</mtext><mi>a</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">nxx，如果用这样的方式，前面 aa%k 是第六个参数，</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">n</span><span class="mord mathnormal">x</span><span class="mord mathnormal">x</span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">如</span><span class="mord cjk_fallback">果</span><span class="mord cjk_fallback">用</span><span class="mord cjk_fallback">这</span><span class="mord cjk_fallback">样</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">方</span><span class="mord cjk_fallback">式</span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">前</span><span class="mord cjk_fallback">面</span><span class="mord mathnormal">a</span><span class="mord mathnormal">a</span></span></span></span>nxx 是第七个参数，后面在跟一个 我们想要修改的地址，那么这个地址就是第八个参数，只需要把 k 改成 8 就可以把这第八个参数改成 2，aa%8$nxx</strong></p>
+</blockquote>
+<p>​	我个人的理解为，在栈中，每个字符的长度为 1 字节，另外，对于格式化字符串的参数传递而言，每个参数都占用了四个字节（32 位），所以，这里需要前和中都构成四个字节的字符串，因此，第六位的字符串就是 aa% k，第七位就是 $naa，第八位就可以传入变量的地址了。</p>
+<p><strong>后续的内容需要花费一些时间，短时间内先放放，暂时放下不管，之后有时间再来补充。</strong></p>
+
+      <div class="tags">
+          <a href="/tags/Pwn/" rel="tag"><i class="ic i-tag"></i> Pwn</a>
+      </div>
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time title="修改时间：2024-06-20 21:28:54" itemprop="dateModified" datetime="2024-06-20T21:28:54+08:00">2024-06-20</time>
+  </span>
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wechatpay.png" alt="g01den 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/alipay.png" alt="g01den 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/paypal.png" alt="g01den 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>g01den <i class="ic i-at"><em>@</em></i>golden的部落阁
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.g01den.top/posts/a698ff8.html" title="pwn学习笔记（5）--格式化字符串漏洞（未完全完成）">http://blog.g01den.top/posts/a698ff8.html</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/posts/384200ef.html" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture5.jpg" title="SQL无列名注入">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Web狗的自我安慰</span>
+  <h3>SQL无列名注入</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/posts/cbafa55d.html" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;gitee.com&#x2F;gou-dengyue&#x2F;images&#x2F;raw&#x2F;master&#x2F;picture241.jpg" title="pwn学习笔记（6）--堆基础概述">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> Pwn手的自我修养</span>
+  <h3>pwn学习笔记（6）--堆基础概述</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pwn%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B05%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.</span> <span class="toc-text"> pwn 学习笔记（5）–格式化字符串漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%E5%9F%BA%E7%A1%80"><span class="toc-number">1.1.</span> <span class="toc-text"> 格式化字符串漏洞基础：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 格式化字符串介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 格式化字符串函数：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 格式化字符串的格式：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text"> 格式化字符串漏洞：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E6%8E%A2"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 初探：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E6%AC%A1%E7%AE%80%E5%8D%95%E7%9A%84%E6%BC%8F%E6%B4%9E%E7%9A%84%E5%AE%9E%E4%BE%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text"> 一次简单的漏洞的实例：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%84%E9%9C%B2%E5%86%85%E5%AD%98"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 泄露内存：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%84%E9%9C%B2%E4%BB%BB%E6%84%8F%E5%9C%B0%E5%9D%80%E7%9A%84%E5%86%85%E5%AD%98"><span class="toc-number">1.2.4.</span> <span class="toc-text"> 泄露任意地址的内存：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A6%86%E7%9B%96%E6%A0%88%E5%86%85%E5%AD%98"><span class="toc-number">1.2.5.</span> <span class="toc-text"> 覆盖栈内存：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A6%86%E7%9B%96%E5%B0%8F%E6%95%B0%E5%AD%97"><span class="toc-number">1.2.6.</span> <span class="toc-text"> 覆盖小数字：</span></a></li></ol></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul>
+          <li><a href="/posts/c06afb6e.html" rel="bookmark" title="Pwn学习笔记（1）--前置知识">Pwn学习笔记（1）--前置知识</a></li><li><a href="/posts/c3c1bd42.html" rel="bookmark" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></li><li><a href="/posts/e20e7502.html" rel="bookmark" title="pwn学习笔记（3）ret2syscall">pwn学习笔记（3）ret2syscall</a></li><li><a href="/posts/52965aaa.html" rel="bookmark" title="pwn学习笔记（4）ret2libc">pwn学习笔记（4）ret2libc</a></li><li class="active"><a href="/posts/a698ff8.html" rel="bookmark" title="pwn学习笔记（5）--格式化字符串漏洞（未完全完成）">pwn学习笔记（5）--格式化字符串漏洞（未完全完成）</a></li><li><a href="/posts/cbafa55d.html" rel="bookmark" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></li><li><a href="/posts/efb4c08.html" rel="bookmark" title="pwn学习笔记（7）--堆相关源码">pwn学习笔记（7）--堆相关源码</a></li><li><a href="/posts/d7e2e20f.html" rel="bookmark" title="pwn学习笔记（0）-事后补充">pwn学习笔记（0）-事后补充</a></li><li><a href="/posts/9b0d93f7.html" rel="bookmark" title="Pwn刷题记录（不停更新）">Pwn刷题记录（不停更新）</a></li><li><a href="/posts/2c0210e1.html" rel="bookmark" title="how2heap_zh">how2heap_zh</a></li><li><a href="/posts/9d5b1ce4.html" rel="bookmark" title="pwn学习笔记（8）-初识沙箱">pwn学习笔记（8）-初识沙箱</a></li><li><a href="/posts/c8624158.html" rel="bookmark" title="pwn学习笔记（9）-中级ROP--ret2csu">pwn学习笔记（9）-中级ROP--ret2csu</a></li><li><a href="/posts/540e5c20.html" rel="bookmark" title="Pwn学习笔记（10）--UAF">Pwn学习笔记（10）--UAF</a></li><li><a href="/posts/f1497b96.html" rel="bookmark" title="pwn学习笔记（11）--off_by_one">pwn学习笔记（11）--off_by_one</a></li><li><a href="/posts/d1a08bca.html" rel="bookmark" title="pwn学习笔记（12）--Chunk Extend and Overlapping">pwn学习笔记（12）--Chunk Extend and Overlapping</a></li>
+        </ul>
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="g01den"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">g01den</p>
+  <div class="description" itemprop="description">golden的部落阁</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">49</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+    <div class="item categories">
+      <a href="/categories/">
+        <span class="count">10</span>
+        <span class="name">分类</span>
+      </a>
+    </div>
+    <div class="item tags">
+      <a href="/tags/">
+        <span class="count">8</span>
+        <span class="name">标签</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL2cwMWRlbjE=" title="https:&#x2F;&#x2F;github.com&#x2F;g01den1"><i class="ic i-github"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+    
+  <li class="item">
+    <a href="/about/" rel="section"><i class="ic i-user"></i>关于</a>
+  </li>
+
+        
+  <li class="item dropdown">
+      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
+    <ul class="submenu">
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a>
+  </li>
+
+  </ul>
+    
+  <li class="item">
+    <a href="/links/" rel="section"><i class="ic i-magic"></i>links</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/posts/384200ef.html" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/posts/cbafa55d.html" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/4fb535d6.html" title="ctfshow-反序列化">ctfshow-反序列化</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/ad175165.html" title="ctfshow-文件包含">ctfshow-文件包含</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/9b0d93f7.html" title="Pwn刷题记录（不停更新）">Pwn刷题记录（不停更新）</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/f1497b96.html" title="pwn学习笔记（11）--off_by_one">pwn学习笔记（11）--off_by_one</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/c8624158.html" title="pwn学习笔记（9）-中级ROP--ret2csu">pwn学习笔记（9）-中级ROP--ret2csu</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/cbafa55d.html" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/4826d2ce.html" title="ctfshow-SSTI">ctfshow-SSTI</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+</div>
+
+    <span><a href="/posts/3d5d6561.html" title="三、Servlet基础">三、Servlet基础</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/ff5b88d5.html" title="python原型链污染">python原型链污染</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/97a7dff3.html" title="ctfshow-信息搜集">ctfshow-信息搜集</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">g01den @ golden的部落阁</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+     <p><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn">蜀ICP备2024083302号</a><!--|<a target="_blank" rel="noopener" href="https://beian.mps.gov.cn/#/query/webSearch">公网安备XXXXXXXX号</a> -->
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: 'posts/a698ff8.html',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,
+    copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//fastly.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>
