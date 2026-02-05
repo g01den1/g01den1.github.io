@@ -90,12 +90,12 @@
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://s2.loli.net/2024/06/20/XGTke71gsfl3KwH.jpg"></li>
-          <li class="item" data-background-image="https://s2.loli.net/2025/09/13/hLAZVGrtXDvxJIN.png"></li>
-          <li class="item" data-background-image="https://s2.loli.net/2024/09/15/LaIbXzAhBekDSMW.jpg"></li>
-          <li class="item" data-background-image="https://s2.loli.net/2024/09/14/wp2bUxsTC3alBZu.jpg"></li>
-          <li class="item" data-background-image="https://s2.loli.net/2024/06/25/P9ouR2rUeYGpsDx.png"></li>
           <li class="item" data-background-image="https://s2.loli.net/2025/09/13/1ZeTNhoJXlKgWs2.png"></li>
+          <li class="item" data-background-image="https://s2.loli.net/2025/09/13/1bZ2krhveAslJ4T.jpg"></li>
+          <li class="item" data-background-image="https://s2.loli.net/2024/06/25/P9ouR2rUeYGpsDx.png"></li>
+          <li class="item" data-background-image="https://s2.loli.net/2024/09/15/cy12CWkdY5sFTxn.jpg"></li>
+          <li class="item" data-background-image="https://s2.loli.net/2025/09/13/hLAZVGrtXDvxJIN.png"></li>
+          <li class="item" data-background-image="https://s2.loli.net/2024/05/21/tMpRqGTwXr1U3md.jpg"></li>
         </ul>
       </div>
     </header>
@@ -118,6 +118,71 @@
           
   <div class="index wrap">
     <div class="segments posts">
+        
+<article class="item">
+  <div class="cover">
+    <a href="/posts/f1497b96.html" itemprop="url" title="pwn学习笔记（11）--off_by_one"><img data-src="https://s2.loli.net/2024/11/09/1aRlLprxOQt8CoE.jpg"></a>
+  </div>
+  <div class="info">
+    
+<div class="meta">
+  <span class="item" title="创建时间：2024-11-09 21:31:09">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <time itemprop="dateCreated datePublished" datetime="2024-11-09T21:31:09+08:00">2024-11-09</time>
+  </span>
+</div>
+
+    <h3><a href="/posts/f1497b96.html" itemprop="url" title="pwn学习笔记（11）--off_by_one">pwn学习笔记（11）--off_by_one</a></h3>
+    <div class="excerpt">
+        # pwn 学习笔记（11）–off_by_one
+​		在处理 for 循环或者 while 循环的时候，有的可能会遇到如下情况：
+123456789101112#include&amp;lt;stdio.h&amp;gt;int main()&amp;#123; char buf[0x10]; for (int i = 0 ; i &amp;lt;= 0x10 ; i ++)&amp;#123; buf[i] = getchar(); &amp;#125; puts(buf); &amp;#125;
+​		多次输入几个 a 之后，发现了最后输出的时候输出了 17 个...
+    </div>
+    <div class="meta footer">
+      <span>
+        <a href="/categories/Pwn/" itemprop="url" title="Pwn手的自我修养"><i class="ic i-flag"></i>Pwn手的自我修养</a>
+      </span>
+    </div>
+    <a href="/posts/f1497b96.html" itemprop="url" title="pwn学习笔记（11）--off_by_one" class="btn">more...</a>
+  </div>
+</article>
+
+        
+<article class="item">
+  <div class="cover">
+    <a href="/posts/540e5c20.html" itemprop="url" title="Pwn学习笔记（10）--UAF"><img data-src="https://s2.loli.net/2024/11/05/hQ5dotLSvj7m96u.jpg"></a>
+  </div>
+  <div class="info">
+    
+<div class="meta">
+  <span class="item" title="创建时间：2024-11-05 11:47:12">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <time itemprop="dateCreated datePublished" datetime="2024-11-05T11:47:12+08:00">2024-11-05</time>
+  </span>
+</div>
+
+    <h3><a href="/posts/540e5c20.html" itemprop="url" title="Pwn学习笔记（10）--UAF">Pwn学习笔记（10）--UAF</a></h3>
+    <div class="excerpt">
+        # Pwn 学习笔记（10）–UAF：
+​		UAF 就是 Use-After-Free，即一个指向堆块的指针被释放后指针没有置零，形成了悬空指针，使得堆可以再次被使用。
+​		由于我环境似乎运行不了某个程序，所以演示就不做了，上个简单题来看看。
+​		题目是一个标准的菜单题，有创建 note 和输出删除的功能，别的不看了，直接看那三个函数：
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546unsigned int add_note()&amp;#123; int v0; //...
+    </div>
+    <div class="meta footer">
+      <span>
+        <a href="/categories/Pwn/" itemprop="url" title="Pwn手的自我修养"><i class="ic i-flag"></i>Pwn手的自我修养</a>
+      </span>
+    </div>
+    <a href="/posts/540e5c20.html" itemprop="url" title="Pwn学习笔记（10）--UAF" class="btn">more...</a>
+  </div>
+</article>
+
         
 <article class="item">
   <div class="cover">
@@ -396,77 +461,6 @@ prctl...
   </div>
 </article>
 
-        
-<article class="item">
-  <div class="cover">
-    <a href="/posts/ff5b88d5.html" itemprop="url" title="python原型链污染"><img data-src="https://gitee.com/gou-dengyue/images/raw/master/picture308.jpg"></a>
-  </div>
-  <div class="info">
-    
-<div class="meta">
-  <span class="item" title="创建时间：2024-07-21 04:48:16">
-    <span class="icon">
-      <i class="ic i-calendar"></i>
-    </span>
-    <time itemprop="dateCreated datePublished" datetime="2024-07-21T04:48:16+08:00">2024-07-21</time>
-  </span>
-</div>
-
-    <h3><a href="/posts/ff5b88d5.html" itemprop="url" title="python原型链污染">python原型链污染</a></h3>
-    <div class="excerpt">
-        # python 原型链污染
-​		后面会有跟着 Article_kelp 慢慢操作的，前面先面向题目学习。
-# 背景：
-​		国赛遇到了这个考点，然后之后的 DASCTF 夏季挑战赛也碰到了，抓紧粗略学一手，学了 JavaScript 之后再深究原型链污染。
-# 简介：
-​		python 中的原型链污染是指通过修改对象原型链中的属性，对程序的行为产生以外影响或利用漏洞进行攻击的一种技术。
-​		在 Python...
-    </div>
-    <div class="meta footer">
-      <span>
-        <a href="/categories/Web/" itemprop="url" title="Web狗的自我安慰"><i class="ic i-flag"></i>Web狗的自我安慰</a>
-      </span>
-    </div>
-    <a href="/posts/ff5b88d5.html" itemprop="url" title="python原型链污染" class="btn">more...</a>
-  </div>
-</article>
-
-        
-<article class="item">
-  <div class="cover">
-    <a href="/posts/ef2fddc9.html" itemprop="url" title="arcaea闲谈"><img data-src="https://gitee.com/gou-dengyue/images/raw/master/picture297.jpg"></a>
-  </div>
-  <div class="info">
-    
-<div class="meta">
-  <span class="item" title="创建时间：2024-06-27 17:36:38">
-    <span class="icon">
-      <i class="ic i-calendar"></i>
-    </span>
-    <time itemprop="dateCreated datePublished" datetime="2024-06-27T17:36:38+08:00">2024-06-27</time>
-  </span>
-</div>
-
-    <h3><a href="/posts/ef2fddc9.html" itemprop="url" title="arcaea闲谈">arcaea闲谈</a></h3>
-    <div class="excerpt">
-        # 1、关于我对这些谱面的评价：
-​		我只会挑一些我印象比较深的谱面来说。
-# &amp;lt;1&amp;gt;9+：
-# （1）sulfer（硫磺）：
-​		
-​		9 + 首 pm 的歌，神谱无需多言，大量的地面交互以及天地交互虽然给不少花紫人带来了巨大的挑战，但是，身为一首 9+，它给我们带来的不只是交互力的提升，还有任我们疯狂压榨的 ptt，在我花紫以及红框时期，这谱给我的 ptt 带来了至少 0.2 的提升妥妥的榨汁机。
-# &amp;lt;2&amp;gt;10：
-#...
-    </div>
-    <div class="meta footer">
-      <span>
-        <a href="/categories/Daily/" itemprop="url" title="发电日常"><i class="ic i-flag"></i>发电日常</a>
-      </span>
-    </div>
-    <a href="/posts/ef2fddc9.html" itemprop="url" title="arcaea闲谈" class="btn">more...</a>
-  </div>
-</article>
-
     </div>
 
   </div>
@@ -502,7 +496,7 @@ prctl...
 <nav class="state">
     <div class="item posts">
       <a href="/archives/">
-        <span class="count">49</span>
+        <span class="count">50</span>
         <span class="name">文章</span>
       </a>
     </div>
@@ -596,36 +590,6 @@ prctl...
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
-</div>
-
-    <span><a href="/posts/27a95d1a.html" title="hexo部署服务器">hexo部署服务器</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
-</div>
-
-    <span><a href="/posts/de34fe7b.html" title="【2024】HECTF-个人整理向">【2024】HECTF-个人整理向</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
-</div>
-
-    <span><a href="/posts/9dd9bec.html" title="Ciscn2024">Ciscn2024</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
 <a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
@@ -636,20 +600,10 @@ prctl...
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
 </div>
 
-    <span><a href="/posts/e3418ca3.html" title="随机二次元图api相关">随机二次元图api相关</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
-</div>
-
-    <span><a href="/posts/a929fb97.html" title="【2023】LitCTF">【2023】LitCTF</a></span>
+    <span><a href="/posts/4826d2ce.html" title="ctfshow-SSTI">ctfshow-SSTI</a></span>
   </li>
 
       
@@ -659,27 +613,7 @@ prctl...
 <a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
 </div>
 
-    <span><a href="/posts/53e2b2e1.html" title="ctfshow-命令执行">ctfshow-命令执行</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
-</div>
-
-    <span><a href="/posts/fe4eec6d.html" title="【2024】高校网络安全管理运维赛">【2024】高校网络安全管理运维赛</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
-</div>
-
-    <span><a href="/posts/97a7dff3.html" title="ctfshow-信息搜集">ctfshow-信息搜集</a></span>
+    <span><a href="/posts/b3ad4123.html" title="有小考点的Web题">有小考点的Web题</a></span>
   </li>
 
       
@@ -689,7 +623,67 @@ prctl...
 <a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/posts/c06afb6e.html" title="Pwn学习笔记（1）--前置知识">Pwn学习笔记（1）--前置知识</a></span>
+    <span><a href="/posts/d7e2e20f.html" title="pwn学习笔记（0）-事后补充">pwn学习笔记（0）-事后补充</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/posts/ef2fddc9.html" title="arcaea闲谈">arcaea闲谈</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/posts/7232a36b.html" title="小小的总结（日常发癫）">小小的总结（日常发癫）</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/215f7d8b.html" title="【2025】HECTF">【2025】HECTF</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/ff5b88d5.html" title="python原型链污染">python原型链污染</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/f1497b96.html" title="pwn学习笔记（11）--off_by_one">pwn学习笔记（11）--off_by_one</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/9b0d93f7.html" title="Pwn刷题记录（不停更新）">Pwn刷题记录（不停更新）</a></span>
   </li>
 
   </ul>
@@ -704,7 +698,7 @@ prctl...
   <div class="copyright">
     
     &copy; 2010 – 
-    <span itemprop="copyrightYear">2025</span>
+    <span itemprop="copyrightYear">2026</span>
     <span class="with-love">
       <i class="ic i-sakura rotate"></i>
     </span>

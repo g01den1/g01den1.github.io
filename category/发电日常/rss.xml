@@ -8,13 +8,13 @@
         <pubDate>Wed, 26 Mar 2025 22:52:27 +0800</pubDate>
         <lastBuildDate>Wed, 26 Mar 2025 22:52:27 +0800</lastBuildDate>
         <category>Game</category>
-        <category>Java</category>
         <category>CVE</category>
         <category>Web</category>
         <category>Daily life</category>
-        <category>Misc</category>
-        <category>Pwn</category>
         <category>408</category>
+        <category>Java</category>
+        <category>Pwn</category>
+        <category>Misc</category>
         <item>
             <guid isPermalink="true">http://blog.g01den.top/posts/cf99ed43.html</guid>
             <title>从NSSCTF开始的复建之路</title>
