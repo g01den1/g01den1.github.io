@@ -16,9 +16,9 @@
   <meta http-equiv="Cache-Control" content="no-siteapp">
 
 
-<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://blog.g01den.top/rss.xml" />
-<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://blog.g01den.top/atom.xml" />
-<link rel="alternate" type="application/json" title="golden的部落阁" href="http://blog.g01den.top/feed.json" />
+<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://g01den1.github.io/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://g01den1.github.io/atom.xml" />
+<link rel="alternate" type="application/json" title="golden的部落阁" href="http://g01den1.github.io/feed.json" />
 
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 
@@ -28,7 +28,7 @@
   <meta name="keywords" content="Pwn" />
 
 
-<link rel="canonical" href="http://blog.g01den.top/posts/2c0210e1.html">
+<link rel="canonical" href="http://g01den1.github.io/posts/2c0210e1.html">
 
 
 
@@ -132,7 +132,7 @@ golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
 </div>
 
     <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
-  <link itemprop="mainEntityOfPage" href="http://blog.g01den.top/posts/2c0210e1.html">
+  <link itemprop="mainEntityOfPage" href="http://g01den1.github.io/posts/2c0210e1.html">
 
   <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="image" content="/images/avatar.jpg">
@@ -147,39 +147,30 @@ golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
   <div class="body md" itemprop="articleBody">
     
 
-    <p>​		由于Pwn的堆方向感觉异常抽象，所以，我想着通过how2heap这个项目来入门heap。但是，由于有的程序不知为何调试总是出问题，不过，我会慢慢来解决的，所以这个文章也是处于慢慢更新的状态。</p>
-<p>​		glibc版本：最新</p>
+    <p>​		由于 Pwn 的堆方向感觉异常抽象，所以，我想着通过 how2heap 这个项目来入门 heap。但是，由于有的程序不知为何调试总是出问题，不过，我会慢慢来解决的，所以这个文章也是处于慢慢更新的状态。</p>
+<p>​		glibc 版本：最新</p>
 <p>​		源码：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;尽管这个例子没有演示攻击效果，但是它演示了 glibc 的分配机制\n&quot;</span>);</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;glibc 使用首次适应算法选择空闲的堆块\n&quot;</span>);</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;如果有一个空闲堆块且足够大，那么 malloc 将选择它\n&quot;</span>);</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;如果存在 use-after-free 的情况那可以利用这一特性\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;首先申请两个比较大的 chunk\n&quot;</span>);</span><br><span class="line">    <span class="type">char</span>* a = <span class="built_in">malloc</span>(<span class="number">0x512</span>);</span><br><span class="line">    <span class="type">char</span>* b = <span class="built_in">malloc</span>(<span class="number">0x256</span>);</span><br><span class="line">    <span class="type">char</span>* c;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;第一个 a = malloc(0x512) 在: %p\n&quot;</span>, a);</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;第二个 a = malloc(0x256) 在: %p\n&quot;</span>, b);</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;我们可以继续分配\n&quot;</span>);</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;现在我们把 \&quot;AAAAAAAA\&quot; 这个字符串写到 a 那里 \n&quot;</span>);</span><br><span class="line">    <span class="built_in">strcpy</span>(a, <span class="string">&quot;AAAAAAAA&quot;</span>);</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;第一次申请的 %p 指向 %s\n&quot;</span>, a, a);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;接下来 free 掉第一个...\n&quot;</span>);</span><br><span class="line">    <span class="built_in">free</span>(a);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;接下来只要我们申请一块小于 0x512 的 chunk，那就会分配到原本 a 那里: %p\n&quot;</span>, a);</span><br><span class="line"></span><br><span class="line">    c = <span class="built_in">malloc</span>(<span class="number">0x500</span>);</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;第三次 c = malloc(0x500) 在: %p\n&quot;</span>, c);</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;我们这次往里写一串 \&quot;CCCCCCCC\&quot; 到刚申请的 c 中\n&quot;</span>);</span><br><span class="line">    <span class="built_in">strcpy</span>(c, <span class="string">&quot;CCCCCCCC&quot;</span>);</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;第三次申请的 c %p 指向 %s\n&quot;</span>, c, c);</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;第一次申请的 a %p 指向 %s\n&quot;</span>, a, a);</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;可以看到，虽然我们刚刚看的是 a 的，但它的内容却是 \&quot;CCCCCCCC\&quot;\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>​		编译一下：<code>gcc -g first_fit.c</code> </p>
+<p>​		编译一下： <code>gcc -g first_fit.c</code></p>
 <p>​		运行一下看看</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">g01den@MSI:~/Temp$ ./heap</span><br><span class="line">尽管这个例子没有演示攻击效果，但是它演示了 glibc 的分配机制</span><br><span class="line">glibc 使用首次适应算法选择空闲的堆块</span><br><span class="line">如果有一个空闲堆块且足够大，那么 malloc 将选择它</span><br><span class="line">如果存在 use-after-free 的情况那可以利用这一特性</span><br><span class="line">首先申请两个比较大的 chunk</span><br><span class="line">第一个 a = malloc(0x512) 在: 0x5595c3a182a0</span><br><span class="line">第二个 a = malloc(0x256) 在: 0x5595c3a187c0</span><br><span class="line">我们可以继续分配</span><br><span class="line">现在我们把 <span class="string">&quot;AAAAAAAA&quot;</span> 这个字符串写到 a 那里</span><br><span class="line">第一次申请的 0x5595c3a182a0 指向 AAAAAAAA</span><br><span class="line">接下来 free 掉第一个...</span><br><span class="line">接下来只要我们申请一块小于 0x512 的 chunk，那就会分配到原本 a 那里: 0x5595c3a182a0</span><br><span class="line">第三次 c = malloc(0x500) 在: 0x5595c3a182a0</span><br><span class="line">我们这次往里写一串 <span class="string">&quot;CCCCCCCC&quot;</span> 到刚申请的 c 中</span><br><span class="line">第三次申请的 c 0x5595c3a182a0 指向 CCCCCCCC</span><br><span class="line">第一次申请的 a 0x5595c3a182a0 指向 CCCCCCCC</span><br><span class="line">可以看到，虽然我们刚刚看的是 a 的，但它的内容却是 <span class="string">&quot;CCCCCCCC&quot;</span></span><br></pre></td></tr></table></figure>
-
 <p>​		开始调试：</p>
-<p>​		首先，最开始，在第一次malloc分配内存之前，使用vmmap查看内存布局：</p>
+<p>​		首先，最开始，在第一次 malloc 分配内存之前，使用 vmmap 查看内存布局：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">vmmap</span></span><br><span class="line">LEGEND: STACK | HEAP | CODE | DATA | RWX | RODATA</span><br><span class="line">             Start                End Perm     Size Offset File</span><br><span class="line">    0x555555554000     0x555555555000 r--p     1000      0 /home/g01den/Temp/how2heap/first</span><br><span class="line">    0x555555555000     0x555555556000 r-xp     1000   1000 /home/g01den/Temp/how2heap/first</span><br><span class="line">    0x555555556000     0x555555557000 r--p     1000   2000 /home/g01den/Temp/how2heap/first</span><br><span class="line">    0x555555557000     0x555555558000 r--p     1000   2000 /home/g01den/Temp/how2heap/first</span><br><span class="line">    0x555555558000     0x555555559000 rw-p     1000   3000 /home/g01den/Temp/how2heap/first</span><br><span class="line">    0x7ffff7dcb000     0x7ffff7ded000 r--p    22000      0 /usr/lib/x86_64-linux-gnu/libc-2.31.so</span><br><span class="line">    0x7ffff7ded000     0x7ffff7f65000 r-xp   178000  22000 /usr/lib/x86_64-linux-gnu/libc-2.31.so</span><br><span class="line">    0x7ffff7f65000     0x7ffff7fb3000 r--p    4e000 19a000 /usr/lib/x86_64-linux-gnu/libc-2.31.so</span><br><span class="line">    0x7ffff7fb3000     0x7ffff7fb7000 r--p     4000 1e7000 /usr/lib/x86_64-linux-gnu/libc-2.31.so</span><br><span class="line">    0x7ffff7fb7000     0x7ffff7fb9000 rw-p     2000 1eb000 /usr/lib/x86_64-linux-gnu/libc-2.31.so</span><br><span class="line">    0x7ffff7fb9000     0x7ffff7fbf000 rw-p     6000      0 [anon_7ffff7fb9]</span><br><span class="line">    0x7ffff7fc9000     0x7ffff7fcd000 r--p     4000      0 [vvar]</span><br><span class="line">    0x7ffff7fcd000     0x7ffff7fcf000 r-xp     2000      0 [vdso]</span><br><span class="line">    0x7ffff7fcf000     0x7ffff7fd0000 r--p     1000      0 /usr/lib/x86_64-linux-gnu/ld-2.31.so</span><br><span class="line">    0x7ffff7fd0000     0x7ffff7ff3000 r-xp    23000   1000 /usr/lib/x86_64-linux-gnu/ld-2.31.so</span><br><span class="line">    0x7ffff7ff3000     0x7ffff7ffb000 r--p     8000  24000 /usr/lib/x86_64-linux-gnu/ld-2.31.so</span><br><span class="line">    0x7ffff7ffc000     0x7ffff7ffd000 r--p     1000  2c000 /usr/lib/x86_64-linux-gnu/ld-2.31.so</span><br><span class="line">    0x7ffff7ffd000     0x7ffff7ffe000 rw-p     1000  2d000 /usr/lib/x86_64-linux-gnu/ld-2.31.so</span><br><span class="line">    0x7ffff7ffe000     0x7ffff7fff000 rw-p     1000      0 [anon_7ffff7ffe]</span><br><span class="line">    0x7ffffffde000     0x7ffffffff000 rw-p    21000      0 [stack]</span><br></pre></td></tr></table></figure>
-
-<p>​		明显，这里不存在heap段，进行malloc之后，发现多出来了个heap段：</p>
+<p>​		明显，这里不存在 heap 段，进行 malloc 之后，发现多出来了个 heap 段：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">vmmap</span></span><br><span class="line">LEGEND: STACK | HEAP | CODE | DATA | RWX | RODATA</span><br><span class="line">             Start                End Perm     Size Offset File</span><br><span class="line">    0x555555554000     0x555555555000 r--p     1000      0 /home/g01den/Temp/how2heap/first</span><br><span class="line">    0x555555555000     0x555555556000 r-xp     1000   1000 /home/g01den/Temp/how2heap/first</span><br><span class="line">    0x555555556000     0x555555557000 r--p     1000   2000 /home/g01den/Temp/how2heap/first</span><br><span class="line">    0x555555557000     0x555555558000 r--p     1000   2000 /home/g01den/Temp/how2heap/first</span><br><span class="line">    0x555555558000     0x555555559000 rw-p     1000   3000 /home/g01den/Temp/how2heap/first</span><br><span class="line">    0x555555559000     0x55555557a000 rw-p    21000      0 [heap]</span><br><span class="line">    0x7ffff7dcb000     0x7ffff7ded000 r--p    22000      0 /usr/lib/x86_64-linux-gnu/libc-2.31.so</span><br><span class="line">    0x7ffff7ded000     0x7ffff7f65000 r-xp   178000  22000 /usr/lib/x86_64-linux-gnu/libc-2.31.so</span><br><span class="line">    0x7ffff7f65000     0x7ffff7fb3000 r--p    4e000 19a000 /usr/lib/x86_64-linux-gnu/libc-2.31.so</span><br><span class="line">    0x7ffff7fb3000     0x7ffff7fb7000 r--p     4000 1e7000 /usr/lib/x86_64-linux-gnu/libc-2.31.so</span><br><span class="line">    0x7ffff7fb7000     0x7ffff7fb9000 rw-p     2000 1eb000 /usr/lib/x86_64-linux-gnu/libc-2.31.so</span><br><span class="line">    0x7ffff7fb9000     0x7ffff7fbf000 rw-p     6000      0 [anon_7ffff7fb9]</span><br><span class="line">    0x7ffff7fc9000     0x7ffff7fcd000 r--p     4000      0 [vvar]</span><br><span class="line">    0x7ffff7fcd000     0x7ffff7fcf000 r-xp     2000      0 [vdso]</span><br><span class="line">    0x7ffff7fcf000     0x7ffff7fd0000 r--p     1000      0 /usr/lib/x86_64-linux-gnu/ld-2.31.so</span><br><span class="line">    0x7ffff7fd0000     0x7ffff7ff3000 r-xp    23000   1000 /usr/lib/x86_64-linux-gnu/ld-2.31.so</span><br><span class="line">    0x7ffff7ff3000     0x7ffff7ffb000 r--p     8000  24000 /usr/lib/x86_64-linux-gnu/ld-2.31.so</span><br><span class="line">    0x7ffff7ffc000     0x7ffff7ffd000 r--p     1000  2c000 /usr/lib/x86_64-linux-gnu/ld-2.31.so</span><br><span class="line">    0x7ffff7ffd000     0x7ffff7ffe000 rw-p     1000  2d000 /usr/lib/x86_64-linux-gnu/ld-2.31.so</span><br><span class="line">    0x7ffff7ffe000     0x7ffff7fff000 rw-p     1000      0 [anon_7ffff7ffe]</span><br><span class="line">    0x7ffffffde000     0x7ffffffff000 rw-p    21000      0 [stack]</span><br></pre></td></tr></table></figure>
-
-<p>​		先查看下chunk有些啥？</p>
+<p>​		先查看下 chunk 有些啥？</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; heap</span><br><span class="line">Allocated chunk | PREV_INUSE</span><br><span class="line">Addr: 0x555555559000</span><br><span class="line">Size: 0x290 (with flag bits: 0x291)</span><br><span class="line"></span><br><span class="line">Allocated chunk | PREV_INUSE</span><br><span class="line">Addr: 0x555555559290</span><br><span class="line">Size: 0x520 (with flag bits: 0x521)</span><br><span class="line"></span><br><span class="line">Allocated chunk | PREV_INUSE</span><br><span class="line">Addr: 0x5555555597b0</span><br><span class="line">Size: 0x260 (with flag bits: 0x261)</span><br><span class="line"></span><br><span class="line">Top chunk | PREV_INUSE</span><br><span class="line">Addr: 0x555555559a10</span><br><span class="line">Size: 0x205f0 (with flag bits: 0x205f1)</span><br></pre></td></tr></table></figure>
-
 <p>​		根据下面两个输出：</p>
 <figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">第一个 a = malloc(0x512) 在: 0x5555555592a0</span><br><span class="line">第二个 a = malloc(0x256) 在: 0x5555555597c0</span><br></pre></td></tr></table></figure>
-
-<p>​		可以看出来，上面那个heap结构中，第二个为a所在地址，第三个为b所在地址，为啥上下看到的地址不同，这个主要是和malloc函数返回指针的地址有关，这个这儿就不细说了。</p>
-<p>​		在把AAAAAAAA这个字符串写入a中，我们看看a的内存布局：</p>
+<p>​		可以看出来，上面那个 heap 结构中，第二个为 a 所在地址，第三个为 b 所在地址，为啥上下看到的地址不同，这个主要是和 malloc 函数返回指针的地址有关，这个这儿就不细说了。</p>
+<p>​		在把 AAAAAAAA 这个字符串写入 a 中，我们看看 a 的内存布局：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; x/10gx 0x555555559290</span><br><span class="line">0x555555559290: 0x0000000000000000      0x0000000000000521</span><br><span class="line">0x5555555592a0: 0x4141414141414141      0x0000000000000000</span><br><span class="line">0x5555555592b0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555555592c0: 0x0000000000000000      0x0000000000000000</span><br><span class="line">0x5555555592d0: 0x0000000000000000      0x0000000000000000</span><br></pre></td></tr></table></figure>
-
-<p>​		可以看出来，已经成功写入了，先free掉a，之后malloc一个比a小一点的，把这个地址赋给c，可以看出，输出的时候发现a原本的地址和c的地址相等：</p>
+<p>​		可以看出来，已经成功写入了，先 free 掉 a，之后 malloc 一个比 a 小一点的，把这个地址赋给 c，可以看出，输出的时候发现 a 原本的地址和 c 的地址相等：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#第一个 a = malloc(0x512) 在: 0x5555555592a0</span></span><br><span class="line"> 第三次 c = malloc(0x500) 在: 0x5555555592a0</span><br></pre></td></tr></table></figure>
-
-<p>​		之后将CCCCCCCC写入c的地址，之后通过a和c输出试试看：</p>
+<p>​		之后将 CCCCCCCC 写入 c 的地址，之后通过 a 和 c 输出试试看：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">第三次申请的 c 0x5555555592a0 指向 CCCCCCCC</span><br><span class="line">第一次申请的 a 0x5555555592a0 指向 CCCCCCCC</span><br></pre></td></tr></table></figure>
-
-<p>​		当释放了一块内存之后再去申请一个大小略小的空间，那么 glibc 倾向于将先前释放的空间重新分配，由于a的指针没有被置零，这就造成了可以直接通过a来访问已经free掉的chunk和重新分配好的略小的chunk，由此，造成了UAF漏洞。</p>
+<p>​		当释放了一块内存之后再去申请一个大小略小的空间，那么 glibc 倾向于将先前释放的空间重新分配，由于 a 的指针没有被置零，这就造成了可以直接通过 a 来访问已经 free 掉的 chunk 和重新分配好的略小的 chunk，由此，造成了 UAF 漏洞。</p>
 
       <div class="tags">
           <a href="/tags/Pwn/" rel="tag"><i class="ic i-tag"></i> Pwn</a>
@@ -230,7 +221,7 @@ golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
   </li>
   <li class="link">
     <strong>本文链接：</strong>
-    <a href="http://blog.g01den.top/posts/2c0210e1.html" title="how2heap_zh">http://blog.g01den.top/posts/2c0210e1.html</a>
+    <a href="http://g01den1.github.io/posts/2c0210e1.html" title="how2heap_zh">http://g01den1.github.io/posts/2c0210e1.html</a>
   </li>
   <li class="license">
     <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC96aC1DTg=="><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -394,10 +385,10 @@ golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
 </div>
 
-    <span><a href="/posts/20a3be2d.html" title="JavaWeb基础(一)-IO操作">JavaWeb基础(一)-IO操作</a></span>
+    <span><a href="/posts/88915f6f.html" title="无参数RCE的一些奇技淫巧">无参数RCE的一些奇技淫巧</a></span>
   </li>
 
       
@@ -407,89 +398,88 @@ golden的部落阁 = golden的部落阁 = subtitle写得真好</title>
 <a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
 </div>
 
-    <span><a href="/posts/53e2b2e1.html" title="ctfshow-命令执行">ctfshow-命令执行</a></span>
+    <span><a href="/posts/2d792864.html" title="Python栈帧逃逸">Python栈帧逃逸</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/CVE/" title="分类于 CVE复现">CVE复现</a>
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/f1497b96.html" title="pwn学习笔记（11）--off_by_one">pwn学习笔记（11）--off_by_one</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/e20e7502.html" title="pwn学习笔记（3）ret2syscall">pwn学习笔记（3）ret2syscall</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/4fb535d6.html" title="ctfshow-反序列化">ctfshow-反序列化</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/666fe8df.html" title="【2024】强网杯">【2024】强网杯</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/c06afb6e.html" title="Pwn学习笔记（1）--前置知识">Pwn学习笔记（1）--前置知识</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/ff5b88d5.html" title="python原型链污染">python原型链污染</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/posts/4a17b156.html" title="Hello World">Hello World</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Major/" title="分类于 考研专业课">考研专业课</a>
 <i class="ic i-angle-right"></i>
-<a href="/categories/CVE/Web/" title="分类于 Web">Web</a>
+<a href="/categories/Major/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="分类于 数据结构">数据结构</a>
 </div>
 
-    <span><a href="/posts/2bb7953f.html" title="部分CVE复现Web（1）">部分CVE复现Web（1）</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
-</div>
-
-    <span><a href="/posts/fe4eec6d.html" title="【2024】高校网络安全管理运维赛">【2024】高校网络安全管理运维赛</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
-</div>
-
-    <span><a href="/posts/97a7dff3.html" title="ctfshow-信息搜集">ctfshow-信息搜集</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
-</div>
-
-    <span><a href="/posts/d1a08bca.html" title="pwn学习笔记（12）--Chunk Extend and Overlapping">pwn学习笔记（12）--Chunk Extend and Overlapping</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
-</div>
-
-    <span><a href="/posts/d7e2e20f.html" title="pwn学习笔记（0）-事后补充">pwn学习笔记（0）-事后补充</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
-</div>
-
-    <span><a href="/posts/c3c1bd42.html" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
-</div>
-
-    <span><a href="/posts/a4378bd0.html" title="【2025】LitCTF">【2025】LitCTF</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
-</div>
-
-    <span><a href="/posts/955175a5.html" title="【2024】H&amp;NCTF">【2024】H&NCTF</a></span>
+    <span><a href="/posts/2c763aa6.html" title="数据结构-3、栈、队列和数组">数据结构-3、栈、队列和数组</a></span>
   </li>
 
   </ul>

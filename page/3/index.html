@@ -16,9 +16,9 @@
   <meta http-equiv="Cache-Control" content="no-siteapp">
 
 
-<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://blog.g01den.top/rss.xml" />
-<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://blog.g01den.top/atom.xml" />
-<link rel="alternate" type="application/json" title="golden的部落阁" href="http://blog.g01den.top/feed.json" />
+<link rel="alternate" type="application/rss+xml" title="golden的部落阁" href="http://g01den1.github.io/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="golden的部落阁" href="http://g01den1.github.io/atom.xml" />
+<link rel="alternate" type="application/json" title="golden的部落阁" href="http://g01den1.github.io/feed.json" />
 
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 
@@ -26,7 +26,7 @@
 
   
 
-<link rel="canonical" href="http://blog.g01den.top/page/3/">
+<link rel="canonical" href="http://g01den1.github.io/page/3/">
 
 
 
@@ -90,12 +90,12 @@
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://s2.loli.net/2025/09/13/1bZ2krhveAslJ4T.jpg"></li>
-          <li class="item" data-background-image="https://s2.loli.net/2024/09/15/cy12CWkdY5sFTxn.jpg"></li>
-          <li class="item" data-background-image="https://s2.loli.net/2024/09/14/wp2bUxsTC3alBZu.jpg"></li>
           <li class="item" data-background-image="https://s2.loli.net/2025/09/13/1ZeTNhoJXlKgWs2.png"></li>
-          <li class="item" data-background-image="https://s2.loli.net/2024/06/25/P9ouR2rUeYGpsDx.png"></li>
+          <li class="item" data-background-image="https://s2.loli.net/2024/05/21/tMpRqGTwXr1U3md.jpg"></li>
+          <li class="item" data-background-image="https://s2.loli.net/2025/09/13/hLAZVGrtXDvxJIN.png"></li>
+          <li class="item" data-background-image="https://s2.loli.net/2024/09/15/LaIbXzAhBekDSMW.jpg"></li>
           <li class="item" data-background-image="https://s2.loli.net/2024/06/20/XGTke71gsfl3KwH.jpg"></li>
+          <li class="item" data-background-image="https://s2.loli.net/2025/09/13/1bZ2krhveAslJ4T.jpg"></li>
         </ul>
       </div>
     </header>
@@ -136,10 +136,12 @@
 
     <h3><a href="/posts/c8624158.html" itemprop="url" title="pwn学习笔记（9）-中级ROP--ret2csu">pwn学习笔记（9）-中级ROP--ret2csu</a></h3>
     <div class="excerpt">
-        pwn学习笔记（9）-中级ROP–ret2csu前置知识​		首先是64位文件的传参方式：前六个参数是从左到右放入寄存器：rdi、rsi、rdx、rcx、r8、r9，之后的通过栈传参。
+        # pwn 学习笔记（9）- 中级 ROP–ret2csu
+# 前置知识
+​		首先是 64 位文件的传参方式：前六个参数是从左到右放入寄存器：rdi、rsi、rdx、rcx、r8、r9，之后的通过栈传参。
 ​		比如：
 
-传参函数大于7个：
+传参函数大于 7 个：
 H(a,b,c,d,e,f,g,h)
 a-&amp;gt;%rdi、b-&amp;gt;%rsi、c-&amp;gt;%rdx、d-&amp;gt;%rcx、e-&amp;gt;%r8、f-&amp;gt;%r9
 h-&amp;gt;(%esp)
@@ -173,8 +175,12 @@ call...
 
     <h3><a href="/posts/9d5b1ce4.html" itemprop="url" title="pwn学习笔记（8）-初识沙箱">pwn学习笔记（8）-初识沙箱</a></h3>
     <div class="excerpt">
-        初识Pwn沙箱​		沙箱机制，英文sandbox，是计算机领域的虚拟技术，常见于安全方向。一般说来，我们会将不受信任的软件放在沙箱中运行，一旦该软件有恶意行为，则禁止该程序的进一步运行，不会对真实系统造成任何危害。
-​		安全计算模式seccomp（Secure Computing...
+        # 初识 Pwn 沙箱
+​		沙箱机制，英文 sandbox，是计算机领域的虚拟技术，常见于安全方向。一般说来，我们会将不受信任的软件放在沙箱中运行，一旦该软件有恶意行为，则禁止该程序的进一步运行，不会对真实系统造成任何危害。
+​		安全计算模式 seccomp（Secure Computing Mode）在 Linux2.6.10 之后引入到 kernel 的特性，可用其实现一个沙箱环境。使用 seccomp 模式可以定义系统调用白名单和黑名单。seccomp 机制用于限制应用程序可以使用的系统调用，增加系统的安全性。
+​		在 ctf 中主要通过两种方式实现沙箱机制：
+
+prctl...
     </div>
     <div class="meta footer">
       <span>
@@ -203,12 +209,14 @@ call...
 
     <h3><a href="/posts/ef2fddc9.html" itemprop="url" title="arcaea闲谈">arcaea闲谈</a></h3>
     <div class="excerpt">
-        1、关于我对这些谱面的评价：​		我只会挑一些我印象比较深的谱面来说。
-&amp;lt;1&amp;gt;9+：（1）sulfer（硫磺）：​		
-​		9+首pm的歌，神谱无需多言，大量的地面交互以及天地交互虽然给不少花紫人带来了巨大的挑战，但是，身为一首9+，它给我们带来的不只是交互力的提升，还有任我们疯狂压榨的ptt，在我花紫以及红框时期，这谱给我的ptt带来了至少0.2的提升妥妥的榨汁机。
-&amp;lt;2&amp;gt;10：（1）sheriruth（黑魔王)：
-​		谱确实不错，但是，耐不住我在花紫甚至没到花紫的时候高强度越级导致了手癖，最后一直收不了。
-​		总的来说下吧，前面...
+        # 1、关于我对这些谱面的评价：
+​		我只会挑一些我印象比较深的谱面来说。
+# &amp;lt;1&amp;gt;9+：
+# （1）sulfer（硫磺）：
+​		
+​		9 + 首 pm 的歌，神谱无需多言，大量的地面交互以及天地交互虽然给不少花紫人带来了巨大的挑战，但是，身为一首 9+，它给我们带来的不只是交互力的提升，还有任我们疯狂压榨的 ptt，在我花紫以及红框时期，这谱给我的 ptt 带来了至少 0.2 的提升妥妥的榨汁机。
+# &amp;lt;2&amp;gt;10：
+#...
     </div>
     <div class="meta footer">
       <span>
@@ -237,8 +245,8 @@ call...
 
     <h3><a href="/posts/2c0210e1.html" itemprop="url" title="how2heap_zh">how2heap_zh</a></h3>
     <div class="excerpt">
-        ​		由于Pwn的堆方向感觉异常抽象，所以，我想着通过how2heap这个项目来入门heap。但是，由于有的程序不知为何调试总是出问题，不过，我会慢慢来解决的，所以这个文章也是处于慢慢更新的状态。
-​		glibc版本：最新
+        ​		由于 Pwn 的堆方向感觉异常抽象，所以，我想着通过 how2heap 这个项目来入门 heap。但是，由于有的程序不知为何调试总是出问题，不过，我会慢慢来解决的，所以这个文章也是处于慢慢更新的状态。
+​		glibc 版本：最新
 ​		源码：
 123456789101112131415161718192021222324252627282930313233343536#include &amp;lt;stdio.h&amp;gt;#include &amp;lt;stdlib.h&amp;gt;#include &amp;lt;string.h&amp;gt;int...
     </div>
@@ -269,7 +277,8 @@ call...
 
     <h3><a href="/posts/9b0d93f7.html" itemprop="url" title="Pwn刷题记录（不停更新）">Pwn刷题记录（不停更新）</a></h3>
     <div class="excerpt">
-        1、CTFshow-pwn04（基础canary）​		好久没碰过pwn了，今天临时做一道吧，毕竟刚联合了WSL和VSCode，想着试着做一道题看看，结果随手一点，就是一个很少接触的，拿来刷刷：
+        # 1、CTFshow-pwn04（基础 canary）
+​		好久没碰过 pwn 了，今天临时做一道吧，毕竟刚联合了 WSL 和 VSCode，想着试着做一道题看看，结果随手一点，就是一个很少接触的，拿来刷刷：
 ​		先查看下保护：
 1234567root@MSI:/home/g01den/Temp# checksec pwn[*] &amp;#x27;/home/g01den/Temp/pwn&amp;#x27; Arch: i386-32-little RELRO: Partial RELRO Stack: Canary found NX: NX enabled PIE: No PIE...
     </div>
@@ -300,9 +309,12 @@ call...
 
     <h3><a href="/posts/d7e2e20f.html" itemprop="url" title="pwn学习笔记（0）-事后补充">pwn学习笔记（0）-事后补充</a></h3>
     <div class="excerpt">
-        Pwn环境部署：1、背景：​		首先是在最开始的时候装环境此次碰壁，搞得没心思写这篇博客，其次，又因为虚拟机本身的问题，导致我对虚拟机有很强的不满，所以我最开始没有写这篇博客，但是，转念一想，为什么我必须得执着于 虚拟机呢？不是同样都是Linux吗，为啥我不直接采用 WSL 来部署 Pwn 环境呢？所以，这里我选择了重装了下 Pwn 环境，不过，因为我装好很大一部分之后才想起来记录博客，所以我只会把前面的内容简单记录一下，不进行二次实操了。
-​		WSL的安装我就不详细进行说明了，这个挺无脑的。
-2、基础工具：&amp;lt;1&amp;gt;Vim：​		我想，大部分的 Ubuntu...
+        # Pwn 环境部署：
+# 1、背景：
+​		首先是在最开始的时候装环境此次碰壁，搞得没心思写这篇博客，其次，又因为虚拟机本身的问题，导致我对虚拟机有很强的不满，所以我最开始没有写这篇博客，但是，转念一想，为什么我必须得执着于 虚拟机呢？不是同样都是 Linux 吗，为啥我不直接采用 WSL 来部署 Pwn 环境呢？所以，这里我选择了重装了下 Pwn 环境，不过，因为我装好很大一部分之后才想起来记录博客，所以我只会把前面的内容简单记录一下，不进行二次实操了。
+​		WSL 的安装我就不详细进行说明了，这个挺无脑的。
+# 2、基础工具：
+#...
     </div>
     <div class="meta footer">
       <span>
@@ -331,13 +343,17 @@ call...
 
     <h3><a href="/posts/2f610211.html" itemprop="url" title="反弹shell">反弹shell</a></h3>
     <div class="excerpt">
-        反弹shell：简介;​		反弹shell，就是攻击机监听在某个TCP&amp;#x2F;UDP端口为服务端，目标机主动发起请求到攻击机监听的端口，并将其命令行的输入输出转到攻击机。
-正向连接：​		假设我们攻击了一台机器，打开了该机器的一个端口，攻击者在自己的机器去连接目标机器（目标ip：目标机器端口），这是比较常规的形式，我们叫做正向连接。远程桌面、web服务、ssh、telnet等等都是正向连接。
-反向连接：​		反弹shell通常适用于如下几种情况：
+        # 反弹 shell：
+# 简介；
+​		反弹 shell，就是攻击机监听在某个 TCP/UDP 端口为服务端，目标机主动发起请求到攻击机监听的端口，并将其命令行的输入输出转到攻击机。
+# 正向连接：
+​		假设我们攻击了一台机器，打开了该机器的一个端口，攻击者在自己的机器去连接目标机器（目标 ip：目标机器端口），这是比较常规的形式，我们叫做正向连接。远程桌面、web 服务、ssh、telnet 等等都是正向连接。
+# 反向连接：
+​		反弹 shell 通常适用于如下几种情况：
 
 目标机因防火墙受限，目标机器只能发送请求，不能接收请求。
 目标机端口被占用。
-目标机位于局域网，或IP会动态变化，攻击机无法直接连接。...
+目标机位于局域网，或 IP...
     </div>
     <div class="meta footer">
       <span>
@@ -366,10 +382,12 @@ call...
 
     <h3><a href="/posts/2bb7953f.html" itemprop="url" title="部分CVE复现Web（1）">部分CVE复现Web（1）</a></h3>
     <div class="excerpt">
-        Apache HTTP Server 路径穿越漏洞CVE-2021-41773​	首先，先来看一下这个漏洞的官方描述：
+        # Apache HTTP Server 路径穿越漏洞 CVE-2021-41773
+​	首先，先来看一下这个漏洞的官方描述：
 
-​	CVE-2021-41773 是在 Apache HTTP Server 2.4.49 中对路径规范化所做的更改中发现了一个缺陷。攻击者可以使用路径遍历攻击将 URL 映射到预期文档根目录之外的文件，如果文档根目录之外的文件不受“要求全部拒绝”的保护，则这些请求可能会成功，如果还为这些别名路径启用了 CGI 脚本，则可以允许远程代码执行。
-漏洞条件：​	配置目录遍历,并且开启cgi mode 2.Apache HTTPd版本为2.4.49&amp;#x2F;2.4.50...
+​	CVE-2021-41773 是在 Apache HTTP Server 2.4.49 中对路径规范化所做的更改中发现了一个缺陷。攻击者可以使用路径遍历攻击将 URL 映射到预期文档根目录之外的文件，如果文档根目录之外的文件不受 “要求全部拒绝” 的保护，则这些请求可能会成功，如果还为这些别名路径启用了 CGI 脚本，则可以允许远程代码执行。
+# 漏洞条件：
+​	配置目录遍历，并且开启 cgi mode 2.Apache HTTPd 版本为...
     </div>
     <div class="meta footer">
       <span>
@@ -398,12 +416,15 @@ call...
 
     <h3><a href="/posts/2c763aa6.html" itemprop="url" title="数据结构-3、栈、队列和数组">数据结构-3、栈、队列和数组</a></h3>
     <div class="excerpt">
-        3.1、栈3.1.1、栈的基本概念：1、栈的定义：​	栈是只允许在一端进行插入或删除操作的线性表。首先，栈是一种线性表，但限定这种线性表只能在某一端进行插入和删除操作，如下图：
+        # 3.1、栈
+# 3.1.1、栈的基本概念：
+# 1、栈的定义：
+​	栈是只允许在一端进行插入或删除操作的线性表。首先，栈是一种线性表，但限定这种线性表只能在某一端进行插入和删除操作，如下图：
 
 ​	栈顶（Top）。线性表允许进行插入删除的那一端。
 ​	栈底（Bottom）。固定的，不允许进行插入和删除的另一端。
 ​	空栈。不包含任何元素的空表。
-​	假设某个栈 $S&amp;#x3D;(a_1,a_2,a_3,a_4,a_5)$，如上图所示，则 $a_1$为栈底元素，$a_5$为栈顶元素。由于栈只能在栈顶进行插入和删除操作，进栈次序依次为...
+​	假设某个栈 S=(a1,a2,a3,a4,a5)S=(a_1,a_2,a_3,a_4,a_5)S=(a1​,a2​,a3​,a4​,a5​)，如上图所示，则 a1a_1a1​ 为栈底元素，a5a_5a5​...
     </div>
     <div class="meta footer">
       <span>
@@ -432,8 +453,13 @@ call...
 
     <h3><a href="/posts/95e7063c.html" itemprop="url" title="数据结构笔记-2、线性表">数据结构笔记-2、线性表</a></h3>
     <div class="excerpt">
-        2.1、线性表的定义和基本操作如有侵权请联系删除。
-2.1.1、线性表的定义：​	线性表是具有相同数据类型的 n (n&amp;gt;&amp;#x3D;0) 个数据元素的有限序列，其中 n 为表长，当 n &amp;#x3D; 0 时线性表是一个空表。若用 L 命名线性表，则其一般表示为：$$L&amp;#x3D;(a_1,a_2,a_3,…,a_i,x_{i+1},…,a_n)$$式中， $a_1$ 是唯一的“第一个元素”，又称表头元素；$a_n$...
+        # 2.1、线性表的定义和基本操作
+如有侵权请联系删除。
+# 2.1.1、线性表的定义：
+​	线性表是具有相同数据类型的 n (n&amp;gt;=0) 个数据元素的有限序列，其中 n 为表长，当 n = 0 时线性表是一个空表。若用 L 命名线性表，则其一般表示为：
+L=(a1,a2,a3,...,ai,xi+1,...,an)L=(a_1,a_2,a_3,...,a_i,x_{i+1},...,a_n)
+L=(a1​,a2​,a3​,...,ai​,xi+1​,...,an​)
+式中， a1a_1a1​ 是唯一的 “第一个元素”，又称表头元素；ana_nan​ 是唯一的...
     </div>
     <div class="meta footer">
       <span>
@@ -574,10 +600,40 @@ call...
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
 </div>
 
-    <span><a href="/posts/384200ef.html" title="SQL无列名注入">SQL无列名注入</a></span>
+    <span><a href="/posts/4bf5e0ee.html" title="【2024】LitCTF">【2024】LitCTF</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/666fe8df.html" title="【2024】强网杯">【2024】强网杯</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
+</div>
+
+    <span><a href="/posts/70a9569d.html" title="记录第一次SpringBoot开发的失败经历">记录第一次SpringBoot开发的失败经历</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
+</div>
+
+    <span><a href="/posts/fe4eec6d.html" title="【2024】高校网络安全管理运维赛">【2024】高校网络安全管理运维赛</a></span>
   </li>
 
       
@@ -587,26 +643,7 @@ call...
 <a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
 </div>
 
-    <span><a href="/posts/b3ad4123.html" title="有小考点的Web题">有小考点的Web题</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
-</div>
-
-    <span><a href="/posts/20a3be2d.html" title="JavaWeb基础(一)-IO操作">JavaWeb基础(一)-IO操作</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-</div>
-
-    <span><a href="/posts/4a17b156.html" title="Hello World">Hello World</a></span>
+    <span><a href="/posts/ad175165.html" title="ctfshow-文件包含">ctfshow-文件包含</a></span>
   </li>
 
       
@@ -616,19 +653,37 @@ call...
 <a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
 </div>
 
-    <span><a href="/posts/9b0d93f7.html" title="Pwn刷题记录（不停更新）">Pwn刷题记录（不停更新）</a></span>
+    <span><a href="/posts/cbafa55d.html" title="pwn学习笔记（6）--堆基础概述">pwn学习笔记（6）--堆基础概述</a></span>
   </li>
 
       
   <li class="item">
     
 <div class="breadcrumb">
-<a href="/categories/CVE/" title="分类于 CVE复现">CVE复现</a>
-<i class="ic i-angle-right"></i>
-<a href="/categories/CVE/Web/" title="分类于 Web">Web</a>
+<a href="/categories/Daily/" title="分类于 发电日常">发电日常</a>
 </div>
 
-    <span><a href="/posts/2bb7953f.html" title="部分CVE复现Web（1）">部分CVE复现Web（1）</a></span>
+    <span><a href="/posts/ef2fddc9.html" title="arcaea闲谈">arcaea闲谈</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Pwn/" title="分类于 Pwn手的自我修养">Pwn手的自我修养</a>
+</div>
+
+    <span><a href="/posts/c3c1bd42.html" title="Pwn学习笔记（2）--ret_2_text_or_shellcode">Pwn学习笔记（2）--ret_2_text_or_shellcode</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
+</div>
+
+    <span><a href="/posts/4826d2ce.html" title="ctfshow-SSTI">ctfshow-SSTI</a></span>
   </li>
 
       
@@ -639,36 +694,6 @@ call...
 </div>
 
     <span><a href="/posts/a929fb97.html" title="【2023】LitCTF">【2023】LitCTF</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Game/" title="分类于 CTFer的比赛之路">CTFer的比赛之路</a>
-</div>
-
-    <span><a href="/posts/a4378bd0.html" title="【2025】LitCTF">【2025】LitCTF</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Web/" title="分类于 Web狗的自我安慰">Web狗的自我安慰</a>
-</div>
-
-    <span><a href="/posts/88915f6f.html" title="无参数RCE的一些奇技淫巧">无参数RCE的一些奇技淫巧</a></span>
-  </li>
-
-      
-  <li class="item">
-    
-<div class="breadcrumb">
-<a href="/categories/Java/" title="分类于 Java从入门到入狱">Java从入门到入狱</a>
-</div>
-
-    <span><a href="/posts/3fe30769.html" title="一、Servlet和JSP技术概述">一、Servlet和JSP技术概述</a></span>
   </li>
 
   </ul>
