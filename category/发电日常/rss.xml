@@ -2,23 +2,23 @@
 <rss version="2.0">
     <channel>
         <title>golden的部落阁 • Posts by &#34;发电日常&#34; category</title>
-        <link>http://g01den1.github.io</link>
+        <link>http://blog.g01den.top</link>
         <description>golden的部落阁</description>
         <language>zh-CN</language>
         <pubDate>Sun, 14 Jun 2026 20:14:55 +0800</pubDate>
         <lastBuildDate>Sun, 14 Jun 2026 20:14:55 +0800</lastBuildDate>
+        <category>Game</category>
+        <category>Daily life</category>
         <category>CVE</category>
         <category>Web</category>
-        <category>Daily life</category>
-        <category>Java</category>
-        <category>Game</category>
-        <category>408</category>
         <category>Misc</category>
+        <category>Java</category>
+        <category>408</category>
         <category>Pwn</category>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/27a95d1a.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/27a95d1a.html</guid>
             <title>hexo部署服务器</title>
-            <link>http://g01den1.github.io/posts/27a95d1a.html</link>
+            <link>http://blog.g01den.top/posts/27a95d1a.html</link>
             <category>Daily life</category>
             <pubDate>Sun, 14 Jun 2026 20:14:55 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;背景&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#背景&#34;&gt;#&lt;/a&gt; 背景：&lt;/h1&gt;
@@ -57,9 +57,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/70a9569d.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/70a9569d.html</guid>
             <title>记录第一次SpringBoot开发的失败经历</title>
-            <link>http://g01den1.github.io/posts/70a9569d.html</link>
+            <link>http://blog.g01den.top/posts/70a9569d.html</link>
             <category>Daily life</category>
             <pubDate>Wed, 08 Apr 2026 19:27:07 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;记录第一次springboot开发的失败经历&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#记录第一次springboot开发的失败经历&#34;&gt;#&lt;/a&gt; 记录第一次 SpringBoot 开发的失败经历&lt;/h1&gt;
@@ -105,9 +105,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/cf99ed43.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/cf99ed43.html</guid>
             <title>从NSSCTF开始的复建之路</title>
-            <link>http://g01den1.github.io/posts/cf99ed43.html</link>
+            <link>http://blog.g01den.top/posts/cf99ed43.html</link>
             <category>Daily life</category>
             <pubDate>Wed, 26 Mar 2025 22:52:27 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;从nssctf开始的复建之路&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#从nssctf开始的复建之路&#34;&gt;#&lt;/a&gt; 从 NSSCTF 开始的复建之路&lt;/h1&gt;
@@ -143,9 +143,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/ef2fddc9.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/ef2fddc9.html</guid>
             <title>arcaea闲谈</title>
-            <link>http://g01den1.github.io/posts/ef2fddc9.html</link>
+            <link>http://blog.g01den.top/posts/ef2fddc9.html</link>
             <category>Daily life</category>
             <pubDate>Thu, 27 Jun 2024 17:36:38 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;1-关于我对这些谱面的评价&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#1-关于我对这些谱面的评价&#34;&gt;#&lt;/a&gt; 1、关于我对这些谱面的评价：&lt;/h1&gt;
@@ -167,9 +167,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/e3418ca3.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/e3418ca3.html</guid>
             <title>随机二次元图api相关</title>
-            <link>http://g01den1.github.io/posts/e3418ca3.html</link>
+            <link>http://blog.g01den.top/posts/e3418ca3.html</link>
             <category>Daily life</category>
             <pubDate>Tue, 11 Jun 2024 00:32:54 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;爬虫获取所有图片&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#爬虫获取所有图片&#34;&gt;#&lt;/a&gt; 爬虫获取所有图片：&lt;/h1&gt;
@@ -191,9 +191,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/7232a36b.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/7232a36b.html</guid>
             <title>小小的总结（日常发癫）</title>
-            <link>http://g01den1.github.io/posts/7232a36b.html</link>
+            <link>http://blog.g01den.top/posts/7232a36b.html</link>
             <category>Daily life</category>
             <pubDate>Tue, 21 May 2024 21:23:52 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;总地看看这个学期&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#总地看看这个学期&#34;&gt;#&lt;/a&gt; 总地看看这个学期：&lt;/h1&gt;

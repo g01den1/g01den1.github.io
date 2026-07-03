@@ -2,23 +2,23 @@
 <rss version="2.0">
     <channel>
         <title>golden的部落阁 • Posts by &#34;pwn&#34; tag</title>
-        <link>http://g01den1.github.io</link>
+        <link>http://blog.g01den.top</link>
         <description>golden的部落阁</description>
         <language>zh-CN</language>
         <pubDate>Mon, 11 Nov 2024 19:51:40 +0800</pubDate>
         <lastBuildDate>Mon, 11 Nov 2024 19:51:40 +0800</lastBuildDate>
+        <category>Game</category>
+        <category>Daily life</category>
         <category>CVE</category>
         <category>Web</category>
-        <category>Daily life</category>
-        <category>Java</category>
-        <category>Game</category>
-        <category>408</category>
         <category>Misc</category>
+        <category>Java</category>
+        <category>408</category>
         <category>Pwn</category>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/d1a08bca.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/d1a08bca.html</guid>
             <title>pwn学习笔记（12）--Chunk Extend and Overlapping</title>
-            <link>http://g01den1.github.io/posts/d1a08bca.html</link>
+            <link>http://blog.g01den.top/posts/d1a08bca.html</link>
             <category>Pwn</category>
             <pubDate>Mon, 11 Nov 2024 19:51:40 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;pwn学习笔记12chunk-extend-and-overlapping&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#pwn学习笔记12chunk-extend-and-overlapping&#34;&gt;#&lt;/a&gt; pwn 学习笔记（12）–Chunk Extend and Overlapping&lt;/h1&gt;
@@ -95,9 +95,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/f1497b96.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/f1497b96.html</guid>
             <title>pwn学习笔记（11）--off_by_one</title>
-            <link>http://g01den1.github.io/posts/f1497b96.html</link>
+            <link>http://blog.g01den.top/posts/f1497b96.html</link>
             <category>Pwn</category>
             <pubDate>Sat, 09 Nov 2024 21:31:09 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;pwn学习笔记11off_by_one&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#pwn学习笔记11off_by_one&#34;&gt;#&lt;/a&gt; pwn 学习笔记（11）–off_by_one&lt;/h1&gt;
@@ -161,9 +161,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/540e5c20.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/540e5c20.html</guid>
             <title>Pwn学习笔记（10）--UAF</title>
-            <link>http://g01den1.github.io/posts/540e5c20.html</link>
+            <link>http://blog.g01den.top/posts/540e5c20.html</link>
             <category>Pwn</category>
             <pubDate>Tue, 05 Nov 2024 11:47:12 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;pwn学习笔记10uaf&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#pwn学习笔记10uaf&#34;&gt;#&lt;/a&gt; Pwn 学习笔记（10）–UAF：&lt;/h1&gt;
@@ -216,9 +216,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/c8624158.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/c8624158.html</guid>
             <title>pwn学习笔记（9）-中级ROP--ret2csu</title>
-            <link>http://g01den1.github.io/posts/c8624158.html</link>
+            <link>http://blog.g01den.top/posts/c8624158.html</link>
             <category>Pwn</category>
             <pubDate>Fri, 09 Aug 2024 02:55:43 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;pwn学习笔记9-中级ropret2csu&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#pwn学习笔记9-中级ropret2csu&#34;&gt;#&lt;/a&gt; pwn 学习笔记（9）- 中级 ROP–ret2csu&lt;/h1&gt;
@@ -257,9 +257,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/9d5b1ce4.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/9d5b1ce4.html</guid>
             <title>pwn学习笔记（8）-初识沙箱</title>
-            <link>http://g01den1.github.io/posts/9d5b1ce4.html</link>
+            <link>http://blog.g01den.top/posts/9d5b1ce4.html</link>
             <category>Pwn</category>
             <pubDate>Tue, 06 Aug 2024 04:04:38 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;初识pwn沙箱&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#初识pwn沙箱&#34;&gt;#&lt;/a&gt; 初识 Pwn 沙箱&lt;/h1&gt;
@@ -357,9 +357,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/2c0210e1.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/2c0210e1.html</guid>
             <title>how2heap_zh</title>
-            <link>http://g01den1.github.io/posts/2c0210e1.html</link>
+            <link>http://blog.g01den.top/posts/2c0210e1.html</link>
             <category>Pwn</category>
             <pubDate>Tue, 25 Jun 2024 16:28:04 +0800</pubDate>
             <description><![CDATA[ &lt;p&gt;​		由于 Pwn 的堆方向感觉异常抽象，所以，我想着通过 how2heap 这个项目来入门 heap。但是，由于有的程序不知为何调试总是出问题，不过，我会慢慢来解决的，所以这个文章也是处于慢慢更新的状态。&lt;/p&gt;
@@ -389,9 +389,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/9b0d93f7.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/9b0d93f7.html</guid>
             <title>Pwn刷题记录（不停更新）</title>
-            <link>http://g01den1.github.io/posts/9b0d93f7.html</link>
+            <link>http://blog.g01den.top/posts/9b0d93f7.html</link>
             <category>Pwn</category>
             <pubDate>Sun, 23 Jun 2024 18:49:18 +0800</pubDate>
             <description><![CDATA[ &lt;h2 id=&#34;1-ctfshow-pwn04基础canary&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#1-ctfshow-pwn04基础canary&#34;&gt;#&lt;/a&gt; 1、CTFshow-pwn04（基础 canary）&lt;/h2&gt;
@@ -416,9 +416,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/d7e2e20f.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/d7e2e20f.html</guid>
             <title>pwn学习笔记（0）-事后补充</title>
-            <link>http://g01den1.github.io/posts/d7e2e20f.html</link>
+            <link>http://blog.g01den.top/posts/d7e2e20f.html</link>
             <category>Pwn</category>
             <pubDate>Sun, 23 Jun 2024 17:35:42 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;pwn环境部署&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#pwn环境部署&#34;&gt;#&lt;/a&gt; Pwn 环境部署：&lt;/h1&gt;
@@ -476,9 +476,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/efb4c08.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/efb4c08.html</guid>
             <title>pwn学习笔记（7）--堆相关源码</title>
-            <link>http://g01den1.github.io/posts/efb4c08.html</link>
+            <link>http://blog.g01den.top/posts/efb4c08.html</link>
             <category>Pwn</category>
             <pubDate>Mon, 25 Mar 2024 19:10:34 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;相关源码&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#相关源码&#34;&gt;#&lt;/a&gt; 相关源码：&lt;/h1&gt;
@@ -624,9 +624,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/cbafa55d.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/cbafa55d.html</guid>
             <title>pwn学习笔记（6）--堆基础概述</title>
-            <link>http://g01den1.github.io/posts/cbafa55d.html</link>
+            <link>http://blog.g01den.top/posts/cbafa55d.html</link>
             <category>Pwn</category>
             <pubDate>Sat, 23 Mar 2024 19:10:34 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;glibc堆概述&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#glibc堆概述&#34;&gt;#&lt;/a&gt; glibc 堆概述：&lt;/h1&gt;
@@ -730,9 +730,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/a698ff8.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/a698ff8.html</guid>
             <title>pwn学习笔记（5）--格式化字符串漏洞（未完全完成）</title>
-            <link>http://g01den1.github.io/posts/a698ff8.html</link>
+            <link>http://blog.g01den.top/posts/a698ff8.html</link>
             <category>Pwn</category>
             <pubDate>Tue, 05 Mar 2024 19:10:34 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;pwn学习笔记5格式化字符串漏洞&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#pwn学习笔记5格式化字符串漏洞&#34;&gt;#&lt;/a&gt; pwn 学习笔记（5）–格式化字符串漏洞&lt;/h1&gt;
@@ -918,9 +918,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/52965aaa.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/52965aaa.html</guid>
             <title>pwn学习笔记（4）ret2libc</title>
-            <link>http://g01den1.github.io/posts/52965aaa.html</link>
+            <link>http://blog.g01den.top/posts/52965aaa.html</link>
             <category>Pwn</category>
             <pubDate>Mon, 19 Feb 2024 18:10:34 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;pwn学习笔记4&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#pwn学习笔记4&#34;&gt;#&lt;/a&gt; pwn 学习笔记（4）&lt;/h1&gt;
@@ -1025,9 +1025,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/e20e7502.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/e20e7502.html</guid>
             <title>pwn学习笔记（3）ret2syscall</title>
-            <link>http://g01den1.github.io/posts/e20e7502.html</link>
+            <link>http://blog.g01den.top/posts/e20e7502.html</link>
             <category>Pwn</category>
             <pubDate>Tue, 13 Feb 2024 18:10:34 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;pwn学习笔记3&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#pwn学习笔记3&#34;&gt;#&lt;/a&gt; pwn 学习笔记（3）&lt;/h1&gt;
@@ -1067,9 +1067,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/c3c1bd42.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/c3c1bd42.html</guid>
             <title>Pwn学习笔记（2）--ret_2_text_or_shellcode</title>
-            <link>http://g01den1.github.io/posts/c3c1bd42.html</link>
+            <link>http://blog.g01den.top/posts/c3c1bd42.html</link>
             <category>Pwn</category>
             <pubDate>Sun, 04 Feb 2024 18:10:34 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;pwn学习笔记2&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#pwn学习笔记2&#34;&gt;#&lt;/a&gt; pwn 学习笔记（2）&lt;/h1&gt;
@@ -1127,9 +1127,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/c06afb6e.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/c06afb6e.html</guid>
             <title>Pwn学习笔记（1）--前置知识</title>
-            <link>http://g01den1.github.io/posts/c06afb6e.html</link>
+            <link>http://blog.g01den.top/posts/c06afb6e.html</link>
             <category>Pwn</category>
             <pubDate>Sun, 04 Feb 2024 15:12:55 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;pwn学习笔记1&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#pwn学习笔记1&#34;&gt;#&lt;/a&gt; pwn 学习笔记（1）&lt;/h1&gt;

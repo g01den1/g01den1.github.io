@@ -3,11 +3,11 @@
   <title>golden的部落阁</title>
   
   <subtitle>subtitle写得真好</subtitle>
-  <link href="http://g01den1.github.io/atom.xml" rel="self"/>
+  <link href="http://blog.g01den.top/atom.xml" rel="self"/>
   
-  <link href="http://g01den1.github.io/"/>
+  <link href="http://blog.g01den.top/"/>
   <updated>2026-07-02T13:45:40.665Z</updated>
-  <id>http://g01den1.github.io/</id>
+  <id>http://blog.g01den.top/</id>
   
   <author>
     <name>g01den</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>hexo部署服务器</title>
-    <link href="http://g01den1.github.io/posts/27a95d1a.html"/>
-    <id>http://g01den1.github.io/posts/27a95d1a.html</id>
+    <link href="http://blog.g01den.top/posts/27a95d1a.html"/>
+    <id>http://blog.g01den.top/posts/27a95d1a.html</id>
     <published>2026-06-14T12:14:55.000Z</published>
     <updated>2026-07-02T13:45:40.665Z</updated>
     
@@ -35,17 +35,17 @@
     
     
     
-    <category term="发电日常" scheme="http://g01den1.github.io/categories/Daily/"/>
+    <category term="发电日常" scheme="http://blog.g01den.top/categories/Daily/"/>
     
     
-    <category term="Daily life" scheme="http://g01den1.github.io/tags/Daily-life/"/>
+    <category term="Daily life" scheme="http://blog.g01den.top/tags/Daily-life/"/>
     
   </entry>
   
   <entry>
     <title>记录第一次SpringBoot开发的失败经历</title>
-    <link href="http://g01den1.github.io/posts/70a9569d.html"/>
-    <id>http://g01den1.github.io/posts/70a9569d.html</id>
+    <link href="http://blog.g01den.top/posts/70a9569d.html"/>
+    <id>http://blog.g01den.top/posts/70a9569d.html</id>
     <published>2026-04-08T11:27:07.000Z</published>
     <updated>2026-04-08T12:05:22.680Z</updated>
     
@@ -60,17 +60,17 @@
     
     
     
-    <category term="发电日常" scheme="http://g01den1.github.io/categories/Daily/"/>
+    <category term="发电日常" scheme="http://blog.g01den.top/categories/Daily/"/>
     
     
-    <category term="Daily life" scheme="http://g01den1.github.io/tags/Daily-life/"/>
+    <category term="Daily life" scheme="http://blog.g01den.top/tags/Daily-life/"/>
     
   </entry>
   
   <entry>
     <title>【2025】HECTF</title>
-    <link href="http://g01den1.github.io/posts/215f7d8b.html"/>
-    <id>http://g01den1.github.io/posts/215f7d8b.html</id>
+    <link href="http://blog.g01den.top/posts/215f7d8b.html"/>
+    <id>http://blog.g01den.top/posts/215f7d8b.html</id>
     <published>2026-02-05T09:24:52.000Z</published>
     <updated>2026-02-05T09:34:59.554Z</updated>
     
@@ -86,17 +86,17 @@
     
     
     
-    <category term="CTFer的比赛之路" scheme="http://g01den1.github.io/categories/Game/"/>
+    <category term="CTFer的比赛之路" scheme="http://blog.g01den.top/categories/Game/"/>
     
     
-    <category term="Game" scheme="http://g01den1.github.io/tags/Game/"/>
+    <category term="Game" scheme="http://blog.g01den.top/tags/Game/"/>
     
   </entry>
   
   <entry>
     <title>Python栈帧逃逸</title>
-    <link href="http://g01den1.github.io/posts/2d792864.html"/>
-    <id>http://g01den1.github.io/posts/2d792864.html</id>
+    <link href="http://blog.g01den.top/posts/2d792864.html"/>
+    <id>http://blog.g01den.top/posts/2d792864.html</id>
     <published>2026-02-03T14:25:29.000Z</published>
     <updated>2026-02-05T09:55:36.352Z</updated>
     
@@ -111,17 +111,17 @@
     
     
     
-    <category term="Web狗的自我安慰" scheme="http://g01den1.github.io/categories/Web/"/>
+    <category term="Web狗的自我安慰" scheme="http://blog.g01den.top/categories/Web/"/>
     
     
-    <category term="Web" scheme="http://g01den1.github.io/tags/Web/"/>
+    <category term="Web" scheme="http://blog.g01den.top/tags/Web/"/>
     
   </entry>
   
   <entry>
     <title>python原型链污染</title>
-    <link href="http://g01den1.github.io/posts/ff5b88d5.html"/>
-    <id>http://g01den1.github.io/posts/ff5b88d5.html</id>
+    <link href="http://blog.g01den.top/posts/ff5b88d5.html"/>
+    <id>http://blog.g01den.top/posts/ff5b88d5.html</id>
     <published>2026-02-01T20:48:16.000Z</published>
     <updated>2026-02-05T09:54:54.648Z</updated>
     
@@ -136,17 +136,17 @@
     
     
     
-    <category term="Web狗的自我安慰" scheme="http://g01den1.github.io/categories/Web/"/>
+    <category term="Web狗的自我安慰" scheme="http://blog.g01den.top/categories/Web/"/>
     
     
-    <category term="Web" scheme="http://g01den1.github.io/tags/Web/"/>
+    <category term="Web" scheme="http://blog.g01den.top/tags/Web/"/>
     
   </entry>
   
   <entry>
     <title>【2025】LitCTF</title>
-    <link href="http://g01den1.github.io/posts/a4378bd0.html"/>
-    <id>http://g01den1.github.io/posts/a4378bd0.html</id>
+    <link href="http://blog.g01den.top/posts/a4378bd0.html"/>
+    <id>http://blog.g01den.top/posts/a4378bd0.html</id>
     <published>2025-12-25T13:55:55.000Z</published>
     <updated>2026-02-05T09:50:10.634Z</updated>
     
@@ -161,17 +161,17 @@
     
     
     
-    <category term="CTFer的比赛之路" scheme="http://g01den1.github.io/categories/Game/"/>
+    <category term="CTFer的比赛之路" scheme="http://blog.g01den.top/categories/Game/"/>
     
     
-    <category term="Game" scheme="http://g01den1.github.io/tags/Game/"/>
+    <category term="Game" scheme="http://blog.g01den.top/tags/Game/"/>
     
   </entry>
   
   <entry>
     <title>有小考点的Web题</title>
-    <link href="http://g01den1.github.io/posts/b3ad4123.html"/>
-    <id>http://g01den1.github.io/posts/b3ad4123.html</id>
+    <link href="http://blog.g01den.top/posts/b3ad4123.html"/>
+    <id>http://blog.g01den.top/posts/b3ad4123.html</id>
     <published>2025-10-27T14:38:34.000Z</published>
     <updated>2025-10-27T14:45:48.369Z</updated>
     
@@ -185,17 +185,17 @@
     
     
     
-    <category term="Web狗的自我安慰" scheme="http://g01den1.github.io/categories/Web/"/>
+    <category term="Web狗的自我安慰" scheme="http://blog.g01den.top/categories/Web/"/>
     
     
-    <category term="Web" scheme="http://g01den1.github.io/tags/Web/"/>
+    <category term="Web" scheme="http://blog.g01den.top/tags/Web/"/>
     
   </entry>
   
   <entry>
     <title>ctfshow-SSTI</title>
-    <link href="http://g01den1.github.io/posts/4826d2ce.html"/>
-    <id>http://g01den1.github.io/posts/4826d2ce.html</id>
+    <link href="http://blog.g01den.top/posts/4826d2ce.html"/>
+    <id>http://blog.g01den.top/posts/4826d2ce.html</id>
     <published>2025-05-03T15:19:26.000Z</published>
     <updated>2025-05-03T15:39:38.752Z</updated>
     
@@ -211,17 +211,17 @@
     
     
     
-    <category term="Web狗的自我安慰" scheme="http://g01den1.github.io/categories/Web/"/>
+    <category term="Web狗的自我安慰" scheme="http://blog.g01den.top/categories/Web/"/>
     
     
-    <category term="Web" scheme="http://g01den1.github.io/tags/Web/"/>
+    <category term="Web" scheme="http://blog.g01den.top/tags/Web/"/>
     
   </entry>
   
   <entry>
     <title>从NSSCTF开始的复建之路</title>
-    <link href="http://g01den1.github.io/posts/cf99ed43.html"/>
-    <id>http://g01den1.github.io/posts/cf99ed43.html</id>
+    <link href="http://blog.g01den.top/posts/cf99ed43.html"/>
+    <id>http://blog.g01den.top/posts/cf99ed43.html</id>
     <published>2025-03-26T14:52:27.000Z</published>
     <updated>2025-05-03T13:02:26.360Z</updated>
     
@@ -236,17 +236,17 @@
     
     
     
-    <category term="发电日常" scheme="http://g01den1.github.io/categories/Daily/"/>
+    <category term="发电日常" scheme="http://blog.g01den.top/categories/Daily/"/>
     
     
-    <category term="Daily life" scheme="http://g01den1.github.io/tags/Daily-life/"/>
+    <category term="Daily life" scheme="http://blog.g01den.top/tags/Daily-life/"/>
     
   </entry>
   
   <entry>
     <title>【2024】HECTF-个人整理向</title>
-    <link href="http://g01den1.github.io/posts/de34fe7b.html"/>
-    <id>http://g01den1.github.io/posts/de34fe7b.html</id>
+    <link href="http://blog.g01den.top/posts/de34fe7b.html"/>
+    <id>http://blog.g01den.top/posts/de34fe7b.html</id>
     <published>2024-12-09T12:59:36.000Z</published>
     <updated>2024-12-09T13:13:34.107Z</updated>
     
@@ -265,17 +265,17 @@
     
     
     
-    <category term="CTFer的比赛之路" scheme="http://g01den1.github.io/categories/Game/"/>
+    <category term="CTFer的比赛之路" scheme="http://blog.g01den.top/categories/Game/"/>
     
     
-    <category term="Game" scheme="http://g01den1.github.io/tags/Game/"/>
+    <category term="Game" scheme="http://blog.g01den.top/tags/Game/"/>
     
   </entry>
   
   <entry>
     <title>ctfshow-文件包含</title>
-    <link href="http://g01den1.github.io/posts/ad175165.html"/>
-    <id>http://g01den1.github.io/posts/ad175165.html</id>
+    <link href="http://blog.g01den.top/posts/ad175165.html"/>
+    <id>http://blog.g01den.top/posts/ad175165.html</id>
     <published>2024-11-24T13:38:01.000Z</published>
     <updated>2024-12-09T13:21:11.773Z</updated>
     
@@ -291,17 +291,17 @@
     
     
     
-    <category term="Web狗的自我安慰" scheme="http://g01den1.github.io/categories/Web/"/>
+    <category term="Web狗的自我安慰" scheme="http://blog.g01den.top/categories/Web/"/>
     
     
-    <category term="Web" scheme="http://g01den1.github.io/tags/Web/"/>
+    <category term="Web" scheme="http://blog.g01den.top/tags/Web/"/>
     
   </entry>
   
   <entry>
     <title>pwn学习笔记（12）--Chunk Extend and Overlapping</title>
-    <link href="http://g01den1.github.io/posts/d1a08bca.html"/>
-    <id>http://g01den1.github.io/posts/d1a08bca.html</id>
+    <link href="http://blog.g01den.top/posts/d1a08bca.html"/>
+    <id>http://blog.g01den.top/posts/d1a08bca.html</id>
     <published>2024-11-11T11:51:40.000Z</published>
     <updated>2024-11-11T11:55:32.756Z</updated>
     
@@ -315,17 +315,17 @@
     
     
     
-    <category term="Pwn手的自我修养" scheme="http://g01den1.github.io/categories/Pwn/"/>
+    <category term="Pwn手的自我修养" scheme="http://blog.g01den.top/categories/Pwn/"/>
     
     
-    <category term="Pwn" scheme="http://g01den1.github.io/tags/Pwn/"/>
+    <category term="Pwn" scheme="http://blog.g01den.top/tags/Pwn/"/>
     
   </entry>
   
   <entry>
     <title>pwn学习笔记（11）--off_by_one</title>
-    <link href="http://g01den1.github.io/posts/f1497b96.html"/>
-    <id>http://g01den1.github.io/posts/f1497b96.html</id>
+    <link href="http://blog.g01den.top/posts/f1497b96.html"/>
+    <id>http://blog.g01den.top/posts/f1497b96.html</id>
     <published>2024-11-09T13:31:09.000Z</published>
     <updated>2024-11-09T13:39:59.229Z</updated>
     
@@ -340,17 +340,17 @@
     
     
     
-    <category term="Pwn手的自我修养" scheme="http://g01den1.github.io/categories/Pwn/"/>
+    <category term="Pwn手的自我修养" scheme="http://blog.g01den.top/categories/Pwn/"/>
     
     
-    <category term="Pwn" scheme="http://g01den1.github.io/tags/Pwn/"/>
+    <category term="Pwn" scheme="http://blog.g01den.top/tags/Pwn/"/>
     
   </entry>
   
   <entry>
     <title>Pwn学习笔记（10）--UAF</title>
-    <link href="http://g01den1.github.io/posts/540e5c20.html"/>
-    <id>http://g01den1.github.io/posts/540e5c20.html</id>
+    <link href="http://blog.g01den.top/posts/540e5c20.html"/>
+    <id>http://blog.g01den.top/posts/540e5c20.html</id>
     <published>2024-11-05T03:47:12.000Z</published>
     <updated>2024-11-05T03:51:20.467Z</updated>
     
@@ -365,17 +365,17 @@
     
     
     
-    <category term="Pwn手的自我修养" scheme="http://g01den1.github.io/categories/Pwn/"/>
+    <category term="Pwn手的自我修养" scheme="http://blog.g01den.top/categories/Pwn/"/>
     
     
-    <category term="Pwn" scheme="http://g01den1.github.io/tags/Pwn/"/>
+    <category term="Pwn" scheme="http://blog.g01den.top/tags/Pwn/"/>
     
   </entry>
   
   <entry>
     <title>【2024】强网杯</title>
-    <link href="http://g01den1.github.io/posts/666fe8df.html"/>
-    <id>http://g01den1.github.io/posts/666fe8df.html</id>
+    <link href="http://blog.g01den.top/posts/666fe8df.html"/>
+    <id>http://blog.g01den.top/posts/666fe8df.html</id>
     <published>2024-11-03T11:28:49.000Z</published>
     <updated>2024-11-03T11:32:14.159Z</updated>
     
@@ -390,17 +390,17 @@
     
     
     
-    <category term="CTFer的比赛之路" scheme="http://g01den1.github.io/categories/Game/"/>
+    <category term="CTFer的比赛之路" scheme="http://blog.g01den.top/categories/Game/"/>
     
     
-    <category term="Game" scheme="http://g01den1.github.io/tags/Game/"/>
+    <category term="Game" scheme="http://blog.g01den.top/tags/Game/"/>
     
   </entry>
   
   <entry>
     <title>网鼎杯2024青龙组官方资格赛wp</title>
-    <link href="http://g01den1.github.io/posts/c2860616.html"/>
-    <id>http://g01den1.github.io/posts/c2860616.html</id>
+    <link href="http://blog.g01den.top/posts/c2860616.html"/>
+    <id>http://blog.g01den.top/posts/c2860616.html</id>
     <published>2024-10-31T11:24:37.000Z</published>
     <updated>2024-10-31T11:30:25.281Z</updated>
     
@@ -416,17 +416,17 @@
     
     
     
-    <category term="CTFer的比赛之路" scheme="http://g01den1.github.io/categories/Game/"/>
+    <category term="CTFer的比赛之路" scheme="http://blog.g01den.top/categories/Game/"/>
     
     
-    <category term="Game" scheme="http://g01den1.github.io/tags/Game/"/>
+    <category term="Game" scheme="http://blog.g01den.top/tags/Game/"/>
     
   </entry>
   
   <entry>
     <title>ctfshow-ssrf</title>
-    <link href="http://g01den1.github.io/posts/b856856d.html"/>
-    <id>http://g01den1.github.io/posts/b856856d.html</id>
+    <link href="http://blog.g01den.top/posts/b856856d.html"/>
+    <id>http://blog.g01den.top/posts/b856856d.html</id>
     <published>2024-09-26T11:09:50.000Z</published>
     <updated>2024-09-26T11:17:59.814Z</updated>
     
@@ -441,17 +441,17 @@
     
     
     
-    <category term="Web狗的自我安慰" scheme="http://g01den1.github.io/categories/Web/"/>
+    <category term="Web狗的自我安慰" scheme="http://blog.g01den.top/categories/Web/"/>
     
     
-    <category term="Web" scheme="http://g01den1.github.io/tags/Web/"/>
+    <category term="Web" scheme="http://blog.g01den.top/tags/Web/"/>
     
   </entry>
   
   <entry>
     <title>ctfshow-反序列化</title>
-    <link href="http://g01den1.github.io/posts/4fb535d6.html"/>
-    <id>http://g01den1.github.io/posts/4fb535d6.html</id>
+    <link href="http://blog.g01den.top/posts/4fb535d6.html"/>
+    <id>http://blog.g01den.top/posts/4fb535d6.html</id>
     <published>2024-09-17T12:19:47.000Z</published>
     <updated>2024-12-09T13:37:57.278Z</updated>
     
@@ -468,17 +468,17 @@
     
     
     
-    <category term="Web狗的自我安慰" scheme="http://g01den1.github.io/categories/Web/"/>
+    <category term="Web狗的自我安慰" scheme="http://blog.g01den.top/categories/Web/"/>
     
     
-    <category term="Web" scheme="http://g01den1.github.io/tags/Web/"/>
+    <category term="Web" scheme="http://blog.g01den.top/tags/Web/"/>
     
   </entry>
   
   <entry>
     <title>ctfshow-命令执行</title>
-    <link href="http://g01den1.github.io/posts/53e2b2e1.html"/>
-    <id>http://g01den1.github.io/posts/53e2b2e1.html</id>
+    <link href="http://blog.g01den.top/posts/53e2b2e1.html"/>
+    <id>http://blog.g01den.top/posts/53e2b2e1.html</id>
     <published>2024-09-16T13:04:45.000Z</published>
     <updated>2024-09-17T06:11:14.990Z</updated>
     
@@ -493,17 +493,17 @@
     
     
     
-    <category term="Web狗的自我安慰" scheme="http://g01den1.github.io/categories/Web/"/>
+    <category term="Web狗的自我安慰" scheme="http://blog.g01den.top/categories/Web/"/>
     
     
-    <category term="Web" scheme="http://g01den1.github.io/tags/Web/"/>
+    <category term="Web" scheme="http://blog.g01den.top/tags/Web/"/>
     
   </entry>
   
   <entry>
     <title>ctfshow-信息搜集</title>
-    <link href="http://g01den1.github.io/posts/97a7dff3.html"/>
-    <id>http://g01den1.github.io/posts/97a7dff3.html</id>
+    <link href="http://blog.g01den.top/posts/97a7dff3.html"/>
+    <id>http://blog.g01den.top/posts/97a7dff3.html</id>
     <published>2024-09-14T08:55:17.000Z</published>
     <updated>2024-09-14T09:06:10.494Z</updated>
     
@@ -520,10 +520,10 @@
     
     
     
-    <category term="Web狗的自我安慰" scheme="http://g01den1.github.io/categories/Web/"/>
+    <category term="Web狗的自我安慰" scheme="http://blog.g01den.top/categories/Web/"/>
     
     
-    <category term="Web" scheme="http://g01den1.github.io/tags/Web/"/>
+    <category term="Web" scheme="http://blog.g01den.top/tags/Web/"/>
     
   </entry>
   

